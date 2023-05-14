@@ -1,28 +1,30 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlogKulinarny.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
 namespace BlogKulinarny.Models
 {
-    public class user
+    public class User // brakuje relacji z ranks
     {
         [Key]
         public int Id { get; set; }
 
         [Display(Name = "Login")]
-        public string Login { get; set; }
+        public string login { get; set; }
 
         [Display(Name = "Password")]
-        public string Password { get; set; }
+        public string password { get; set; }
 
         [Display(Name = "Mail")]
-        public string Mail { get; set; }
+        public string mail { get; set; }
 
         [Display(Name = "ActivationStatus")]
-        public bool IsAccepted { get; set; }
+        public bool isAccepted { get; set; }
 
         [Display(Name = "Role")]
-        public int RoleId { get; set; }
+        public Ranks rank { get; set; }
 
         //Relationships
+
     }
 }
