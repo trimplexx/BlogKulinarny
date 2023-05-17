@@ -1,53 +1,64 @@
-﻿<form>
-  <!-- Email input -->
-  <div class="form-outline mb-4">
-    <input type="email" id="form2Example1" class="form-control" />
-    <label class="form-label" for="form2Example1">Email address</label>
-  </div>
+﻿<div class="container">
+	<div class="row justify-content-center">
+		<!-- Panel Logowania -->
+		<div class="col-lg-6 ">
+			<div class="border border-2 border-primary rounded-3 p-3">
+				<div class="p-2">
+					<!-- Form -->
+					<form>
+						<!-- Tytuł -->
+						<div class="mb-3">
+							<p class="text-center fw-bold fs-3">Zaloguj się</p>
+						</div>
+						<!-- Email -->
+						<div class="mb-3">
+							<label class="form-label text-nowrap">Adres Email*</label>
+							<input type="email" class="form-control" required>
+						</div>
+						<!-- Hasło -->
+						<div class="mb-3">
+							<!-- Wprowadzanie -->
+							<div class="mb-1">
+								<label class="form-label text-nowrap">Hasło*</label>
+								<input type="password" class="form-control" required>
+							</div>
+							<!-- Zapomniałeś? -->
+							<span>
+								Zapomniałeś hasła? 
+								<!-- Zresetuj je -->
+								<a href="">Zresetuj je</a>
+							</span>
+						</div>
+						<!-- Checkbox - Zapamiętaj mnie -->
+						<div class="mb-3 form-check">
+							<input type="checkbox" class="form-check-input" id="Pamiętaj">
+							<label class="form-check-label" for="Pamiętaj">Zapamiętaj mnie</label>
+						</div>
+						<!-- Text - Wymagane pola -->
+						<div class="mb-2">
+							<div class="form-text">
+								* - Wymagane pola.
+							</div>
+						</div>
+						<!-- Logowanie i Rejestracja-->
+						<div class="mb-0 hstack">
+							<!-- Logowanie -->
+							<button type="submit" class="btn btn-primary" disabled>Zaloguj się</button>
+							<!-- Rejestracja -->
+							<a asp-area="" asp-controller="Auth" asp-action="Register" class="btn btn-secondary ms-auto" role="button">Zarejestruj się</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 
-  <!-- Password input -->
-  <div class="form-outline mb-4">
-    <input type="password" id="form2Example2" class="form-control" />
-    <label class="form-label" for="form2Example2">Password</label>
-  </div>
-
-  <!-- 2 column grid layout for inline styling -->
-  <div class="row mb-4">
-    <div class="col d-flex justify-content-center">
-      <!-- Checkbox -->
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-        <label class="form-check-label" for="form2Example31"> Remember me </label>
-      </div>
-    </div>
-
-    <div class="col">
-      <!-- Simple link -->
-      <a href="#!">Forgot password?</a>
-    </div>
-  </div>
-
-  <!-- Submit button -->
-  <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
-
-  <!-- Register buttons -->
-  <div class="text-center">
-    <p>Not a member? <a href="#!">Register</a></p>
-    <p>or sign up with:</p>
-    <button type="button" class="btn btn-link btn-floating mx-1">
-      <i class="fab fa-facebook-f"></i>
-    </button>
-
-    <button type="button" class="btn btn-link btn-floating mx-1">
-      <i class="fab fa-google"></i>
-    </button>
-
-    <button type="button" class="btn btn-link btn-floating mx-1">
-      <i class="fab fa-twitter"></i>
-    </button>
-
-    <button type="button" class="btn btn-link btn-floating mx-1">
-      <i class="fab fa-github"></i>
-    </button>
-  </div>
-</form>
+		<!-- Panel Boczny -->
+		<div class="col-lg-4 d-none d-lg-block offset-1">
+			<div class="p-3">
+				<div class="p-2">
+					<p class="text-center fw-bold fs-3">Panel Boczny</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
