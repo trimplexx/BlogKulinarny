@@ -14,6 +14,13 @@ public class AuthService : IAuthService
         _dbContext = dbContext;
     }
 
+
+    /// <summary>
+    /// Logowanie
+    /// </summary>
+    /// <param name="emailOrLogin"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
     public bool Login(string emailOrLogin, string password)
     {
         var user = _dbContext.users.FirstOrDefault(u =>
@@ -28,6 +35,13 @@ public class AuthService : IAuthService
         return false;
     }
 
+    /// <summary>
+    /// Rejestracja
+    /// </summary>
+    /// <param name="login"></param>
+    /// <param name="password"></param>
+    /// <param name="email"></param>
+    /// <returns></returns>
     public async Task<RegistrationResult> RegisterUserAsync(string login, string password, string email)
     {
         try
