@@ -42,5 +42,26 @@ namespace BlogKulinarny.Controllers
         {
             return View();
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> Register(RegistrationViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var registrationResult = await _authService.RegisterUserAsync(model.Login, model.Password, model.Email);
+
+                if (registrationResult.Success)
+                {
+                    TempData["RegistrationSuccess"] = "Rejestracja przebiegła pomyślnie. Możesz się teraz zalogować.";
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    ModelState.AddModelError("", registrationResult.ErrorMessage);
+                }
+            }
+
+            return View("Register", model);
+        }
     }
 }
