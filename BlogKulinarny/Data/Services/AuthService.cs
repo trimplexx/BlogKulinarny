@@ -18,20 +18,23 @@ public class AuthService : IAuthService
     /// <summary>
     /// Logowanie
     /// </summary>
-    /// <param name="emailOrLogin"></param>
-    /// <param name="password"></param>
-    /// <returns></returns>
     public bool Login(string emailOrLogin, string password)
     {
 
         var user = _dbContext.users.FirstOrDefault(u =>
             u.mail == emailOrLogin || u.login == emailOrLogin);
 
-        if (user == null || VerifyPassword(password, user.password) == false || user.isAccepted == false)
+        if (user == null)
         {
+            // brak wgl podanych danych
             // Utwórz sesję użytkownika lub zapisz informacje o zalogowanym użytkowniku w sesji
             // Na przykład:
             //HttpContext.Session.SetString("UserId", user.Id.ToString());
+            return false;
+        }
+        if(VerifyPassword(password, user.password) == false || user.isAccepted == false)
+        {
+            // zle haslo ablo nie aktywowane konto
             return false;
         }
 
@@ -53,21 +56,15 @@ public class AuthService : IAuthService
     private static bool VerifyPassword(string enteredPassword, string hashedPassword)
     {
         byte[] hashedBytes = Convert.FromBase64String(hashedPassword);
-        using (var sha256 = SHA256.Create())
-        {
-            byte[] enteredBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(enteredPassword));
-            return hashedBytes.SequenceEqual(enteredBytes);
-        }
+        using var sha256 = SHA256.Create();
+        byte[] enteredBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(enteredPassword));
+        return hashedBytes.SequenceEqual(enteredBytes);
     }
 
 
     /// <summary>
     /// Rejestracja
     /// </summary>
-    /// <param name="login"></param>
-    /// <param name="password"></param>
-    /// <param name="email"></param>
-    /// <returns></returns>
     public async Task<RegistrationResult> RegisterUserAsync(string login, string password, string email)
     {
         try
