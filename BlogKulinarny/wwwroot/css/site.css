@@ -14,5 +14,11 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    display: block;
+    background-image: url('../images/BKBGlight.svg');
+    background-size: 81%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
 }
