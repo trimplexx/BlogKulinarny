@@ -26,9 +26,6 @@ public class AuthService : IAuthService
     {
         string hashedPassword = HashPassword(password);
 
-        var user = _dbContext.users.FirstOrDefault(u =>
-            u.mail == emailOrLogin || u.login == emailOrLogin);
-
         User? user = _dbContext.users.FirstOrDefault(u => (u.mail == emailOrLogin || u.login == emailOrLogin) && u.password == hashedPassword);
 
         if (user != null)
@@ -53,9 +50,6 @@ public class AuthService : IAuthService
         }
 
         return true;
-    }
-
-        return false;
     }
 
     public async Task Logout()
