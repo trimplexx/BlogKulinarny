@@ -2,38 +2,51 @@
 using System.Text;
 using BlogKulinarny.Data.Enums;
 using BlogKulinarny.Models;
+using Microsoft.AspNetCore.Authentication;
+
 
 namespace BlogKulinarny.Data.Services;
 
 public class AuthService : IAuthService
 {
     private readonly AppDbContext _dbContext;
-
-    public AuthService(AppDbContext dbContext)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public AuthService(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor)
     {
         _dbContext = dbContext;
+        _httpContextAccessor = httpContextAccessor;
     }
-
-
-    /// <summary>
-    /// Logowanie
-    /// </summary>
-    /// <param name="emailOrLogin"></param>
-    /// <param name="password"></param>
-    /// <returns></returns>
+    
     public bool Login(string emailOrLogin, string password)
     {
-        var user = _dbContext.users.FirstOrDefault(u =>
-            (u.mail == emailOrLogin || u.login == emailOrLogin) && u.password == password);
+        string hashedPassword = HashPassword(password);
+
+        User? user = _dbContext.users.FirstOrDefault(u => (u.mail == emailOrLogin || u.login == emailOrLogin) && u.password == hashedPassword);
 
         if (user != null)
-            // Utwórz sesję użytkownika lub zapisz informacje o zalogowanym użytkowniku w sesji
-            // Na przykład:
-            // HttpContext.Session.SetString("UserId", user.Id.ToString());
+        {
+            // Ustaw sesję użytkownika
+            _httpContextAccessor.HttpContext.Session.SetString("UserId", user.Id.ToString());
+            _httpContextAccessor.HttpContext.Session.SetString("Login", user.login);
             return true;
+        }
 
         return false;
     }
+
+    public async Task Logout()
+    {
+        if (_httpContextAccessor.HttpContext != null)
+        {
+            await _httpContextAccessor.HttpContext.SignOutAsync(); // Wylogowanie użytkownika
+
+            // Wyczyść dane sesji
+            _httpContextAccessor.HttpContext.Session.Clear();
+            _httpContextAccessor.HttpContext.Session.Remove("UserId");
+            _httpContextAccessor.HttpContext.Session.Remove("Login");
+        }
+    }
+
 
     /// <summary>
     /// Rejestracja
