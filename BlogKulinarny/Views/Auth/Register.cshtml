@@ -37,10 +37,13 @@
                                 <input id="ConfirmPassword" type="password" class="form-control" required asp-for="ConfirmPassword" />
                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                             </div>
-                            <span>
-                                Pokaż hasło
+                            <div class="mb-1 form-text">
+                                Twoje hasło musi mieć 8 znaków, wielką literę oraz znak specjalny
+                            </div>
+                            <div class="form-check">
                                 <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()" />
-                            </span>
+                                <label class="form-check-label" for="showPassword">Pokaż hasło</label>
+                            </div>
                         </div>
                         <!-- Checkbox - Akceptuj regulamin -->
                         <div class="mb-3 form-check">

@@ -28,14 +28,20 @@ namespace BlogKulinarny.Controllers
 
                 if (isAuthenticated)
                 {
-                    // Przekieruj do głównej strony po zalogowaniu
                     return RedirectToAction("Index", "Home");
                 }
 
-                ModelState.AddModelError("", "Nieprawidłowe dane logowania.");
+                ModelState.AddModelError("", "Nieprawidłowy adres email, login lub hasło.");
             }
 
             return View(model);
+        }
+        
+        // Metoda obsługująca żądanie wylogowania
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.Logout(); // Wywołanie metody Logout w AuthService
+            return RedirectToAction("Index", "Home"); // Przekierowanie użytkownika do strony głównej
         }
 
         public IActionResult Register()
