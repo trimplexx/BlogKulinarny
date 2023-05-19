@@ -23,17 +23,43 @@ public class AuthService : IAuthService
     /// <returns></returns>
     public bool Login(string emailOrLogin, string password)
     {
-        var user = _dbContext.users.FirstOrDefault(u =>
-            (u.mail == emailOrLogin || u.login == emailOrLogin) && u.password == password);
 
-        if (user != null)
+        var user = _dbContext.users.FirstOrDefault(u =>
+            u.mail == emailOrLogin || u.login == emailOrLogin);
+
+        if (user == null || VerifyPassword(password, user.password) == false || user.isAccepted == false)
+        {
             // Utwórz sesję użytkownika lub zapisz informacje o zalogowanym użytkowniku w sesji
             // Na przykład:
-            // HttpContext.Session.SetString("UserId", user.Id.ToString());
-            return true;
+            //HttpContext.Session.SetString("UserId", user.Id.ToString());
+            return false;
+        }
 
-        return false;
+        return true;
     }
+
+    /// <summary>
+    /// Metody związane z logowaniem
+    /// </summary>
+    private static string HashPassword(string password)
+    {
+        using (var sha256 = SHA256.Create())
+        {
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
+        }
+    }
+
+    private static bool VerifyPassword(string enteredPassword, string hashedPassword)
+    {
+        byte[] hashedBytes = Convert.FromBase64String(hashedPassword);
+        using (var sha256 = SHA256.Create())
+        {
+            byte[] enteredBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(enteredPassword));
+            return hashedBytes.SequenceEqual(enteredBytes);
+        }
+    }
+
 
     /// <summary>
     /// Rejestracja
@@ -79,13 +105,16 @@ public class AuthService : IAuthService
 
             return new RegistrationResult(true, "Rejestracja przebiegła pomyślnie.");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // Obsługa wyjątku - np. zapisanie w logach, wyrzucenie odpowiedniego komunikatu itp.
             return new RegistrationResult(false, "Wystąpił błąd podczas rejestracji użytkownika.");
         }
     }
 
+    /// <summary>
+    /// Metody związane z rejestracja
+    /// </summary>
     private bool IsPasswordValid(string password)
     {
         // Sprawdzenie czy hasło spełnia wymagania: przynajmniej 8 znaków, duża litera i znak specjalny
@@ -98,15 +127,6 @@ public class AuthService : IAuthService
     {
         // Sprawdzenie czy znak jest znakiem specjalnym
         return !char.IsLetterOrDigit(c);
-    }
-
-    private string HashPassword(string password)
-    {
-        using (var sha256 = SHA256.Create())
-        {
-            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(hashedBytes);
-        }
     }
 
     public class RegistrationResult

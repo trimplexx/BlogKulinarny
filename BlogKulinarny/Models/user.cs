@@ -10,13 +10,13 @@ namespace BlogKulinarny.Models
         public int Id { get; set; }
 
         [Display(Name = "Login")]
-        public string login { get; set; }
+        public string? login { get; set; }
 
         [Display(Name = "Password")]
-        public string password { get; set; }
+        public string? password { get; set; }
 
         [Display(Name = "Mail")]
-        public string mail { get; set; }
+        public string? mail { get; set; }
 
         [Display(Name = "ActivationStatus")]
         public bool isAccepted { get; set; }
