@@ -16,9 +16,9 @@ html {
 body {
     margin-bottom: 60px;
     display: block;
-    background-image: url('../images/BKBGlight.svg');
-    background-size: 81%;
-    background-attachment: fixed;
+    background-image: url('../images/BGTop.svg'), url('../images/BGBottom.svg');
+    background-size: 81%, 73%;
+    background-attachment: fixed, scroll;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: 50% 50%, center bottom 60px;
 }
