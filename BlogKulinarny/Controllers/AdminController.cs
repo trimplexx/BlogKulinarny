@@ -13,5 +13,10 @@ namespace BlogKulinarny.Controllers
         {
             return View();
         }
+
+        public IActionResult ConfirmRecipes()
+        {
+            return View();
+        }
     }
 }
