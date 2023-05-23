@@ -13,6 +13,12 @@ html {
   min-height: 100%;
 }
 
+header {
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
+}
+
 body {
     margin-bottom: 60px;
     display: block;
@@ -20,5 +26,9 @@ body {
     background-size: 81%, 73%;
     background-attachment: fixed, scroll;
     background-repeat: no-repeat;
-    background-position: 50% 50%, center bottom 60px;
+    background-position: 50% 80%, center bottom 60px;
+}
+
+.world {
+    padding-top: 75px;
 }
