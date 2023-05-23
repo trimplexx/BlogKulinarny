@@ -23,7 +23,7 @@ namespace BlogKulinarny.Data
                             login = "admin",
                             password = "admin",
                             mail = "admin@admin.pl",
-                            isAccepted = true,
+                            isAccepted = 1,
                             rank = Ranks.admin
 
                         },

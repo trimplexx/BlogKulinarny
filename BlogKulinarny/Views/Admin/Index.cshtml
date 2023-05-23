@@ -1,13 +1,12 @@
 ﻿
-
-            <h1 class="text-center">Panel Głowny</h1>
+           <h1 class="text-center">Panel Głowny</h1>
             <div class="row">
               <div class="col-sm-6 mb-3 mb-sm-0">
                 <div class="card text-white bg-dark">
                   <div class="card-body">
                     <h5 class="card-title">Użytkownicy</h5>
                     <p class="card-text">Przejdź żeby zarządzać użytkownikami na stronie</p>
-                    <a class="btn btn-primary" asp-area="" asp-controller="Admin" asp-action="ConfirmUsers">Zatwierdzanie użytkowników</a>
+                    <a class="btn btn-primary" asp-area="" asp-controller="Admin" asp-action="GetUnconfirmedUsers">Zatwierdzanie użytkowników</a>
                     <a class="btn btn-primary" asp-area="" asp-controller="Admin" >Edycja użytkowników</a>
                   </div>
                 </div>
@@ -32,7 +31,3 @@
                   </div>
                 </div>
             </div>
-
-
-
-

@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace BlogKulinarny.Models
 {
-    public class User // brakuje relacji z ranks
+    public class User
     {
         [Key]
         public int Id { get; set; }
@@ -19,7 +19,7 @@ namespace BlogKulinarny.Models
         public string? mail { get; set; }
 
         [Display(Name = "ActivationStatus")]
-        public bool isAccepted { get; set; }
+        public int isAccepted { get; set; }
 
         [Display(Name = "Role")]
         public Ranks rank { get; set; }

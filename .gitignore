@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /BlogKulinarny/appsettings.json
 /BlogKulinarny/appsettings.Development.json
+/BlogKulinarny/appsettings.Development.json.json

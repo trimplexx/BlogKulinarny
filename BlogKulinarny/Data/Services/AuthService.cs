@@ -1,9 +1,10 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using BlogKulinarny.Data.Enums;
+using BlogKulinarny.Data.Helpers;
+using BlogKulinarny.Data.Services.Admin;
 using BlogKulinarny.Models;
 using Microsoft.AspNetCore.Authentication;
-
 
 namespace BlogKulinarny.Data.Services;
 
@@ -16,8 +17,6 @@ public class AuthService : IAuthService
         _dbContext = dbContext;
         _httpContextAccessor = httpContextAccessor;
     }
-    
-
 
     /// <summary>
     /// Logowanie
@@ -43,7 +42,7 @@ public class AuthService : IAuthService
             //HttpContext.Session.SetString("UserId", user.Id.ToString());
             return false;
         }
-        if(VerifyPassword(password, user.password) == false || user.isAccepted == false)
+        if(VerifyPassword(password, user.password) == false || user.isAccepted == 0)
         {
             // zle haslo ablo nie aktywowane konto
             return false;
@@ -64,6 +63,7 @@ public class AuthService : IAuthService
             _httpContextAccessor.HttpContext.Session.Remove("Login");
         }
     }
+
     /// <summary>
     /// Metody związane z logowaniem
     /// </summary>
@@ -76,7 +76,6 @@ public class AuthService : IAuthService
         }
     }
 
-
     private static bool VerifyPassword(string enteredPassword, string hashedPassword)
     {
         byte[] hashedBytes = Convert.FromBase64String(hashedPassword);
@@ -85,29 +84,28 @@ public class AuthService : IAuthService
         return hashedBytes.SequenceEqual(enteredBytes);
     }
 
-
     /// <summary>
     /// Rejestracja
     /// </summary>
-    public async Task<RegistrationResult> RegisterUserAsync(string login, string password, string email)
+    public async Task<ChangesResult> RegisterUserAsync(string login, string password, string email)
     {
         try
         {
             // Walidacja długości loginu, maila i hasła
             if (login.Length > 40 || password.Length > 40 || email.Length > 40)
-                return new RegistrationResult(false, "Maksymalna długość loginu, hasła i adresu email to 40 znaków.");
+                return new ChangesResult(false, "Maksymalna długość loginu, hasła i adresu email to 40 znaków.");
             
             // Sprawdzenie czy podany adres email został już użyty
             if (_dbContext.users.Any(u => u.mail == email))
-                return new RegistrationResult(false, "Podany adres email został już użyty.");
+                return new ChangesResult(false, "Podany adres email został już użyty.");
 
             // Sprawdzenie czy podany login został już użyty
             if (_dbContext.users.Any(u => u.login == login))
-                return new RegistrationResult(false, "Podany login został już użyty.");
+                return new ChangesResult(false, "Podany login został już użyty.");
 
             // Sprawdzenie czy hasło spełnia wymagania
             if (!IsPasswordValid(password))
-                return new RegistrationResult(false,
+                return new ChangesResult(false,
                     "Hasło powinno składać się z przynajmniej 8 znaków, dużej litery oraz znaku specjalnego.");
 
             // Tworzenie nowego użytkownika
@@ -116,7 +114,7 @@ public class AuthService : IAuthService
                 login = login,
                 password = HashPassword(password),
                 mail = email,
-                isAccepted = false,
+                isAccepted = 0,
                 rank = Ranks.user // Dodawanie nowej roli
             };
 
@@ -124,12 +122,12 @@ public class AuthService : IAuthService
             _dbContext.users.Add(newUser);
             await _dbContext.SaveChangesAsync();
 
-            return new RegistrationResult(true, "Rejestracja przebiegła pomyślnie.");
+            return new ChangesResult(true, "Rejestracja przebiegła pomyślnie.");
         }
         catch (Exception)
         {
             // Obsługa wyjątku - np. zapisanie w logach, wyrzucenie odpowiedniego komunikatu itp.
-            return new RegistrationResult(false, "Wystąpił błąd podczas rejestracji użytkownika.");
+            return new ChangesResult(false, "Wystąpił błąd podczas rejestracji użytkownika.");
         }
     }
 
@@ -150,15 +148,4 @@ public class AuthService : IAuthService
         return !char.IsLetterOrDigit(c);
     }
 
-    public class RegistrationResult
-    {
-        public RegistrationResult(bool success, string errorMessage)
-        {
-            Success = success;
-            ErrorMessage = errorMessage;
-        }
-
-        public bool Success { get; }
-        public string ErrorMessage { get; }
-    }
 }
