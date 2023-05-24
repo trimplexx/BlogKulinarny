@@ -25,28 +25,23 @@ public class AuthService : IAuthService
     {
         string hashedPassword = HashPassword(password);
 
-        User? user = _dbContext.users.FirstOrDefault(u => (u.mail == emailOrLogin || u.login == emailOrLogin) && u.password == hashedPassword);
+        User user = _dbContext.users.FirstOrDefault(u => (u.mail == emailOrLogin || u.login == emailOrLogin) && u.password == hashedPassword);
 
-        if (user != null)
         if (user == null)
         {
-            // brak wgl podanych danych
-        {
-            // Ustaw sesję użytkownika
-            _httpContextAccessor.HttpContext.Session.SetString("UserId", user.Id.ToString());
-            _httpContextAccessor.HttpContext.Session.SetString("Login", user.login);
-            return true;
-        }
-            // Utwórz sesję użytkownika lub zapisz informacje o zalogowanym użytkowniku w sesji
-            // Na przykład:
-            //HttpContext.Session.SetString("UserId", user.Id.ToString());
+            // Brak wgl podanych danych
             return false;
         }
-        if(VerifyPassword(password, user.password) == false || user.isAccepted == 0)
+
+        if (VerifyPassword(password, user.password) == false || user.isAccepted == false)
         {
-            // zle haslo ablo nie aktywowane konto
+            // Złe hasło lub nieaktywowane konto
             return false;
         }
+
+        // Ustaw sesję użytkownika
+        _httpContextAccessor.HttpContext.Session.SetString("UserId", user.Id.ToString());
+        _httpContextAccessor.HttpContext.Session.SetString("Login", user.login);
 
         return true;
     }
@@ -114,8 +109,8 @@ public class AuthService : IAuthService
                 login = login,
                 password = HashPassword(password),
                 mail = email,
-                isAccepted = 0,
-                rank = Ranks.user // Dodawanie nowej roli
+                isAccepted = false,
+                rank = (int) Ranks.user // Dodawanie roli uzytkownika
             };
 
             // Dodanie użytkownika do bazy danych

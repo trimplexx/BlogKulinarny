@@ -19,7 +19,7 @@ namespace BlogKulinarny.Models
         public string? mail { get; set; }
 
         [Display(Name = "ActivationStatus")]
-        public int isAccepted { get; set; }
+        public bool isAccepted { get; set; }
 
         [Display(Name = "Role")]
         public Ranks rank { get; set; }

@@ -24,7 +24,7 @@ namespace BlogKulinarny.Data.Services.Admin
                 User user = await _dbContext.users.FirstOrDefaultAsync(u => u.Id == userId);
                 if (user != null)
                 {
-                    user.isAccepted = 1;
+                    user.isAccepted = true;
                     _dbContext.users.Update(user);
                     await _dbContext.SaveChangesAsync(); // Zapisz zmiany w bazie danych
                     return new ChangesResult(true, "Pomyslnie zaakcetpowano uzytkownika");

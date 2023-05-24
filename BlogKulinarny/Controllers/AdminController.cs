@@ -22,18 +22,17 @@ namespace BlogKulinarny.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult ConfirmRecipes()
+        public IActionResult UnconfirmedRecipes()
         {
             return View();
         }
 
         // uzytkownicy
-        public IActionResult GetUnconfirmedUsers()
+        public IActionResult UnconfirmedUsers()
         {
             try
             {
-                var unacceptedUsers = _dbContext.users.Where(u => u.isAccepted==0).ToList();
+                var unacceptedUsers = _dbContext.users.Where(u => u.isAccepted==false).ToList();
                 return View(unacceptedUsers);
             }
             catch (Exception ex)
