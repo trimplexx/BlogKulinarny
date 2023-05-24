@@ -13,9 +13,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-// Add others services
+// admin services
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AdminUsersService>();
+builder.Services.AddScoped<AdminRecipesService>();
 
 // Dodaj obsługę sesji
 builder.Services.AddDistributedMemoryCache();

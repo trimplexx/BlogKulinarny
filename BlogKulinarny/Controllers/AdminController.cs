@@ -10,19 +10,16 @@ namespace BlogKulinarny.Controllers
     public class AdminController : Controller
     {
         private readonly AdminUsersService _usersService;
+        private readonly AdminRecipesService _recipesService;
         private readonly AppDbContext _dbContext;
 
-        public AdminController(AdminUsersService UsersService, AppDbContext dbContext) {
+        public AdminController(AdminUsersService UsersService,AdminRecipesService adminRecipesService, AppDbContext dbContext) {
             _usersService = UsersService;
             _dbContext = dbContext;
+            _recipesService = adminRecipesService;
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult UnconfirmedRecipes()
         {
             return View();
         }
@@ -46,13 +43,46 @@ namespace BlogKulinarny.Controllers
         public async Task<IActionResult> ConfirmUser(AdminUsersViewModel model)
         {
             await _usersService.ConfirmUser(model.userId);
-            return Redirect("GetUnconfirmedUsers");
+            return Redirect("UnconfirmedUsers");
         }
 
         public async Task<IActionResult> DeleteUser(AdminUsersViewModel model)
         {
             await _usersService.DeleteUser(model.userId);
-            return Redirect("GetUnconfirmedUsers");
+            return Redirect("UnconfirmedUsers");
+        }
+
+        //przepis
+        public IActionResult UnconfirmedRecipes()
+        {
+            try
+            {
+                var recipes = _dbContext.recipes.Include(r => r.user).Include(r => r.recipesCategories).
+                    ThenInclude(rc => rc.category).Where(r => r.isAccepted == false).ToList();
+                return View(recipes);
+            }
+            catch (Exception ex)
+            {
+                var errorModel = new ErrorViewModel
+                {
+                    //Message = "An error occurred while retrieving recipes.",
+                    //Exception = ex
+                };
+                return View("Error", ex);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmRecipe(AdminUsersViewModel model)
+        {
+            await _recipesService.ConfirmRecipe(model.recipeId);
+            return Redirect("UnconfirmedRecipes");
+        }
+
+        public async Task<IActionResult> DeleteRecipe(AdminUsersViewModel model)
+        {
+            await _recipesService.DeleteRecipe(model.recipeId);
+            return Redirect("UnconfirmedRecipes");
         }
     }
 }

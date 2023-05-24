@@ -1,6 +1,10 @@
-﻿<div class="container-fluid mt-3">
+﻿@model List<BlogKulinarny.Models.Recipe>
+
+<div class="container-fluid mt-3">
     <div class="row">
         <!-- One card -->
+         @foreach (var recipe in Model)
+        {
         <div class="col-12 mt-2 mb-2">
             <!-- Card Body -->
             <div class="border border-warning border-2 border-primary rounded-3 p-3 shadow bg-light bg-opacity-25">
@@ -10,7 +14,7 @@
                         <div class="row gx-3">
                             <!-- Image -->
                             <div class="col-4">
-                                <img src="#" class="img-fluid" />
+                                <img src="@recipe.imageURL" class="img-fluid" />
                             </div>
                             <!-- Information -->
                             <div class="col-8">
@@ -18,31 +22,29 @@
                                     <!-- Nazwa -->
                                     <div class="col-12">
                                         <div class="text-truncate fw-bold fs-3" title="Nazwa Przepisu">
-                                            Nazwa Przepisu
+                                            @recipe.title
                                         </div>
                                     </div>
                                     <!-- Autor -->
                                     <div class="col-12">
                                         <div class="text-truncate" title="Autor">
-                                            Autor
+                                            Autor: @recipe.user.login
                                         </div>
                                     </div>
                                     <!-- Tags... -->
                                     <div class="col-md-12 mt-4">
+                                    @foreach (var tag in recipe.recipesCategories)
+                                    {
+                                    
                                         <div class="row gx-3 gy-3">
                                             <!-- Tag1 -->
                                             <div class="col-auto border border-2 rounded-2 border-warning mx-1">
                                                 <div class="p-1">
-                                                    Tag1
-                                                </div>
-                                            </div>
-                                            <!-- Tag2 -->
-                                            <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                <div class="p-1">
-                                                    Tag2
+                                                    @tag.category.name
                                                 </div>
                                             </div>
                                         </div>
+                                    }
                                     </div>
                                 </div>
                             </div>
@@ -52,107 +54,19 @@
                     <div class="col-sm-3">
                         <div class="row g-3">
                             <!-- ButtonAccept -->
-                            <div class="d-grid col-4 col-sm-12">
-                                <button type="button" class="btn btn-success text-nowrap">Zatwierdź</button>
-                            </div>
-                            <!-- ButtonDecline -->
-                            <div class="d-grid col-4 col-sm-12">
-                                <button type="button" class="btn btn-danger text-nowrap">Odrzuć</button>
-                            </div>
-                            <!-- ButtonInfo -->
-                            <div class="d-grid col-4 col-sm-12">
-                                <button type="button" class="btn btn-warning text-nowrap">Szczegóły</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Second card for show -->
-        <!-- One card -->
-        <div class="col-12 mt-2 mb-2">
-            <!-- Card Body -->
-            <div class="border border-warning border-2 border-primary rounded-3 p-3 shadow bg-light bg-opacity-25">
-                <div class="row gy-3 gx-3">
-                    <!-- Main -->
-                    <div class="col-sm-9">
-                        <div class="row gx-3">
-                            <!-- Image -->
-                            <div class="col-4">
-                                <img src="#" class="img-fluid" />
-                            </div>
-                            <!-- Information -->
-                            <div class="col-8">
-                                <div class="row gx-3 gy-3">
-                                    <!-- Nazwa -->
-                                    <div class="col-12">
-                                        <div class="text-truncate fw-bold" title="Dłuższa nazwa przepisu przykład jajecznica, ale jajecznica była za krótka i nic nie psuła">
-                                            Dłuższa nazwa przepisu przykład jajecznica, ale jajecznica była za krótka i nic nie psuła
-                                        </div>
-                                    </div>
-                                    <!-- Autor -->
-                                    <div class="col-12">
-                                        <div class="text-truncate" title="Dłuższa nazwa autora która mogłaby coś popsuć">
-                                            Dłuższa nazwa autora która mogłaby coś popsuć
-                                        </div>
-                                    </div>
-                                    <!-- Tags... -->
-                                    <div class="col-md-12 mt-4">
-                                        <div class="row gx-3 gy-3">
-                                            <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                <div class="p-1 text-truncate">
-                                                    #Jajka
-                                                </div>
-                                            </div>
-                                            <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                <div class="p-1 text-truncate">
-                                                    #Bekon
-                                                </div>
-                                            </div>
-                                            <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                <div class="p-1 text-truncate">
-                                                    #DanieNaPatelni
-                                                </div>
-                                            </div>
-                                            <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                <div class="p-1 text-truncate">
-                                                    #Smaczne
-                                                </div>
-                                            </div>
-                                            <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                <div class="p-1 text-truncate">
-                                                    #NiepotrzebnieDługi#####AbyPopsuć
-                                                </div>
-                                            </div>
-                                            <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                <div class="p-1 text-truncate">
-                                                    #NiepotrzebnieDługi#####AbyPopsućV2
-                                                </div>
-                                            </div>
-                                            <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                <div class="p-1 text-truncate">
-                                                    #NiepotrzebnieDługi#####AbyPopsućV2AleTymRazemJeszczeDłuższy
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <form asp-controller="Admin" asp-action="ConfirmRecipe" method="post">
+                                <div class="d-grid col-4 col-sm-12">
+                                    <input type="hidden" name="recipeId" value="@recipe.id" />
+                                    <button type="submit" class="btn btn-success text-nowrap">Zatwierdź</button>
                                 </div>
-                            </div>
-                        </div>  
-                    </div>
-                    <!-- Buttons -->
-                    <div class="col-sm-3">
-                        <div class="row g-3">
-                            <!-- ButtonAccept -->
-                            <div class="d-grid col-4 col-sm-12">
-                                <button type="button" class="btn btn-success text-nowrap">Zatwierdź</button>
-                            </div>
+                            </form>
                             <!-- ButtonDecline -->
-                            <div class="d-grid col-4 col-sm-12">
-                                <button type="button" class="btn btn-danger text-nowrap">Odrzuć</button>
-                            </div>
+                            <form asp-controller="Admin" asp-action="DeleteRecipe" method="post">
+                                <div class="d-grid col-4 col-sm-12">                                
+                                    <input type="hidden" name="recipeId" value="@recipe.id" />
+                                    <button type="submit" class="btn btn-danger text-nowrap">Odrzuć</button>
+                                </div>
+                            </form>
                             <!-- ButtonInfo -->
                             <div class="d-grid col-4 col-sm-12">
                                 <button type="button" class="btn btn-warning text-nowrap">Szczegóły</button>
@@ -162,5 +76,6 @@
                 </div>
             </div>
         </div>
+        }
     </div>
 </div>

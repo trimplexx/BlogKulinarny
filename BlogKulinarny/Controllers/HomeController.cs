@@ -33,7 +33,8 @@ namespace BlogKulinarny.Controllers
         {
             try
             {
-                var recipes = _dbContext.recipes.Include(r => r.recipesCategories).ThenInclude(rc => rc.category).ToList();
+                var recipes = _dbContext.recipes.Include(r => r.recipesCategories).ThenInclude(rc => rc.category).Where(r => r.isAccepted == true).ToList();
+
                 //Console.Write(recipes.recipesCategories);
                 return View(recipes);
             }

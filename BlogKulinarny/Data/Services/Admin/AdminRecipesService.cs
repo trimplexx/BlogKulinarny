@@ -1,33 +1,30 @@
 ﻿using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Exchange.WebServices.Data;
-using static BlogKulinarny.Data.Services.AuthService;
 
 namespace BlogKulinarny.Data.Services.Admin
 {
-    public class AdminUsersService : IAdminUsersService
+    public class AdminRecipesService : IAdminRecipesService
     {
         private readonly AppDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AdminUsersService(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public AdminRecipesService(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangesResult> ConfirmUser(int userId)
+        public async Task<ChangesResult> ConfirmRecipe(int recipeId)
         {
             try
             {
-                User user = await _dbContext.users.FirstOrDefaultAsync(u => u.Id == userId);
-                if (user != null)
+                Recipe recipe = await _dbContext.recipes.FirstOrDefaultAsync(r => r.id == recipeId);
+                if (recipe != null)
                 {
-                    user.isAccepted = true;
-                    _dbContext.users.Update(user);
+                    recipe.isAccepted = true;
+                    _dbContext.recipes.Update(recipe);
                     await _dbContext.SaveChangesAsync(); // Zapisz zmiany w bazie danych
-                    return new ChangesResult(true, "Pomyslnie zaakcetpowano uzytkownika");
+                    return new ChangesResult(true, "Pomyslnie zaakcetpowano przepis");
                 }
             }
             catch (Exception ex)
@@ -39,16 +36,19 @@ namespace BlogKulinarny.Data.Services.Admin
             return new ChangesResult(false, "wystapil blad");
         }
 
-        public async Task<ChangesResult> DeleteUser(int userId)
+        public async Task<ChangesResult> DeleteRecipe(int recipeId)
         {
             try
             {
-                User user = await _dbContext.users.FirstOrDefaultAsync(u => u.Id == userId);
-                if (user != null)
+                Recipe recipe = await _dbContext.recipes.FirstOrDefaultAsync(u => u.id == recipeId);
+                if (recipe != null)
                 {
-                    _dbContext.users.Remove(user);
+                    _dbContext.recipes.Remove(recipe);
                     await _dbContext.SaveChangesAsync(); // Zapisz zmiany w bazie danych
-                    return new ChangesResult(true, "Pomyslnie usunieto uzytkownika");
+
+                    // jeszcze trzeba tutaj dodac usuwanie wszystkich elementow przepisu
+
+                    return new ChangesResult(true, "Pomyslnie usunieto przepis");
                 }
             }
             catch (Exception ex)
