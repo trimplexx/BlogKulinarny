@@ -29,11 +29,23 @@ namespace BlogKulinarny.Controllers
             return View();
         }
 
-        public IActionResult RecipesList()
+        public IActionResult RecipesList(string SearchForRecipe)
         {
+            var recipes = _dbContext.recipes.Include(r => r.recipesCategories).ThenInclude(rc => rc.category).Where(r => r.isAccepted == true).ToList();
             try
             {
-                var recipes = _dbContext.recipes.Include(r => r.recipesCategories).ThenInclude(rc => rc.category).Where(r => r.isAccepted == true).ToList();
+                if (string.IsNullOrWhiteSpace(SearchForRecipe))
+                {
+                    return View(recipes);
+                }
+                recipes = _dbContext.recipes
+                    .Include(r => r.recipesCategories)
+                    .ThenInclude(rc => rc.category)
+                    .Where(r => r.isAccepted == true && r.title
+                    .Contains(SearchForRecipe) || r.recipesCategories
+                    .Any(rc => rc.category.name
+                    .Contains(SearchForRecipe)))
+                    .ToList();
 
                 //Console.Write(recipes.recipesCategories);
                 return View(recipes);
