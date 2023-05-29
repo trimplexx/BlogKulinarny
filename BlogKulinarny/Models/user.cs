@@ -24,7 +24,15 @@ namespace BlogKulinarny.Models
         [Display(Name = "Role")]
         public Ranks rank { get; set; }
 
-        //Relationships
+        // mailer
+        public string? VerificationToken { get; set; }
 
+        public DateTime? VerifiedAt { get; set; }
+
+        public string? PasswordResetToken { get; set; }
+
+        public DateTime? ResetTokenExpires { get; set; }
+
+        //Relationships
     }
 }

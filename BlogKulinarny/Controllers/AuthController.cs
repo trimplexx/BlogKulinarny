@@ -1,6 +1,7 @@
 ﻿using BlogKulinarny.Data.Services;
 using BlogKulinarny.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogKulinarny.Controllers
 {
@@ -22,17 +23,15 @@ namespace BlogKulinarny.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
-            if (ModelState.IsValid)
+
+            bool isAuthenticated = _authService.Login(model.EmailOrLogin, model.Password);
+
+            if (isAuthenticated)
             {
-                bool isAuthenticated = _authService.Login(model.EmailOrLogin, model.Password);
-
-                if (isAuthenticated)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-
-                ModelState.AddModelError("", "Nieprawidłowy adres email, login lub hasło.");
+                return RedirectToAction("Index", "Home");
             }
+
+            ModelState.AddModelError("", "Nieprawidłowy adres email, login lub hasło.");
 
             return View(model);
         }
@@ -54,7 +53,7 @@ namespace BlogKulinarny.Controllers
         {
             if (ModelState.IsValid)
             {
-                var registrationResult = await _authService.RegisterUserAsync(model.Login, model.Password, model.Email);
+                var registrationResult = await _authService.RegisterUserAsync(model.Login, model.Password, model.Email, this);
 
                 if (registrationResult.Success)
                 {
@@ -68,6 +67,39 @@ namespace BlogKulinarny.Controllers
             }
 
             return View("Register", model);
+        }
+
+        /// <summary>
+        /// weryfikacje i resetowanie hasel
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> Verify([FromQuery(Name = "token")] string token)
+        {
+            var verifyResult = await _authService.Verify(token);
+            Console.WriteLine("Weryfikacja smiga");
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> SendPasswdLink(ResetPasswordViewModel model)
+        {
+            var res = await _authService.SendPasswdLink(model.Email, this);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> ChangePasswd([FromQuery(Name = "token")] string token,ChangePasswordViewModel model)
+        {
+            var verifyResult = await _authService.ChangePasswd(token,model.Password);
+            return RedirectToAction("Index", "Home");
         }
     }
 }
