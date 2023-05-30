@@ -17,17 +17,25 @@ namespace BlogKulinarny.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (UserIsLoggedIn())
+            {
+                TempData["NotificationMessageType"] = "error";
+                TempData["NotificationMessage"] = "Jesteś już zalogowany.";
+                return RedirectToAction("Index", "Home");
+            }
+            
             return View();
         }
 
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
-
             bool isAuthenticated = _authService.Login(model.EmailOrLogin, model.Password);
 
             if (isAuthenticated)
             {
+                TempData["UserLoggedInMessageType"] = "success";
+                TempData["UserLoggedInMessage"] = "Pomyślnie zalogowano";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -36,7 +44,7 @@ namespace BlogKulinarny.Controllers
             return View(model);
         }
         
-        // Metoda obsługująca żądanie wylogowania
+        // Metoda obsługująca żądanie wylogowania   
         public async Task<IActionResult> Logout()
         {
             await _authService.Logout(); // Wywołanie metody Logout w AuthService
@@ -45,6 +53,13 @@ namespace BlogKulinarny.Controllers
 
         public IActionResult Register()
         {
+            if (UserIsLoggedIn())
+            {
+                TempData["NotificationMessageType"] = "error";
+                TempData["NotificationMessage"] = "Jesteś już zalogowany.";
+                return RedirectToAction("Index", "Home");
+            }
+            
             return View();
         }
         
@@ -57,7 +72,8 @@ namespace BlogKulinarny.Controllers
 
                 if (registrationResult.Success)
                 {
-                    TempData["RegistrationSuccess"] = "Rejestracja przebiegła pomyślnie. Możesz się teraz zalogować.";
+                    TempData["NotificationMessageType"] = "success";
+                    TempData["NotificationMessage"] = "Rejestracja przebiegła pomyślnie. Potwierdź swoje konto na mail.";
                     return RedirectToAction("Login");
                 }
                 else
@@ -100,6 +116,10 @@ namespace BlogKulinarny.Controllers
         {
             var verifyResult = await _authService.ChangePasswd(token,model.Password);
             return RedirectToAction("Index", "Home");
+        }
+        private bool UserIsLoggedIn()
+        {
+            return HttpContext.Session.TryGetValue("UserId", out _);
         }
     }
 }

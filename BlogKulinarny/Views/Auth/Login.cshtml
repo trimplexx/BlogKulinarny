@@ -1,59 +1,61 @@
 ﻿@model LoginViewModel
-
 <div class="container">
-    <div class="row justify-content-center">
-        <!-- Panel Logowania -->
-        <div class="col-lg-6">
-            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
-                <div class="p-2">
-                    <!-- Form -->
-                    <form asp-controller="Auth" asp-action="Login" method="post">
-                        @* Tytuł *@
-                        <div class="mb-2">
-                            <p class="text-center fw-bold fs-3">Zaloguj się</p>
-                        </div>
-                        @* Email *@
-                        <div class="mb-2">
-                            <label class="form-label text-nowrap">Login / Adres Email*</label>
-                            <input type="text" class="form-control" required asp-for="EmailOrLogin" />
-                        </div>
-                        @* Hasło *@
-                        <div class="mb-2">
-                            <div class="mb-1">
-                                <label class="form-label text-nowrap">Hasło*</label>
-                                <input type="password" class="form-control" required asp-for="Password" />
+    @{ await Html.RenderPartialAsync("_NotificationPartial"); }
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Panel Logowania -->
+            <div class="col-lg-6">
+                <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                    <div class="p-2">
+                        <!-- Form -->
+                        <form asp-controller="Auth" asp-action="Login" method="post">
+                            @* Tytuł *@
+                            <div class="mb-2">
+                                <p class="text-center fw-bold fs-3">Zaloguj się</p>
                             </div>
-                            <span>
-                                Zapomniałeś hasła?
-                                <a asp-area="" asp-controller="Auth" asp-action="ResetPassword" class="href" role="button">Zresetuj je</a>
-                            </span>
-                        </div>
-                        @* Checkbox - Zapamiętaj mnie *@
-                        <div class="mb-2 form-check">
-                            <input type="checkbox" class="form-check-input" id="Pamiętaj" />
-                            <label class="form-check-label" for="Pamiętaj">Zapamiętaj mnie</label>
-                        </div>
-                        @* Text - Wymagane pola *@
-                        <div class="mb-2">
-                            <div class="form-text">
-                                * - Wymagane pola.
+                            @* Email *@
+                            <div class="mb-2">
+                                <label class="form-label text-nowrap">Login / Adres Email*</label>
+                                <input type="text" class="form-control" required asp-for="EmailOrLogin"/>
                             </div>
-                        </div>
-                        @* Logowanie i Rejestracja *@
-                        <div class="mb-0 hstack">
-                            <button type="submit" class="btn btn-success">Zaloguj się</button>
-                            <a asp-area="" asp-controller="Auth" asp-action="Register" class="btn btn-secondary ms-auto" role="button">Zarejestruj się</a>
-                        </div>
-                    </form>
+                            @* Hasło *@
+                            <div class="mb-2">
+                                <div class="mb-1">
+                                    <label class="form-label text-nowrap">Hasło*</label>
+                                    <input type="password" class="form-control" required asp-for="Password"/>
+                                </div>
+                                <span>
+                                    Zapomniałeś hasła?
+                                    <a asp-area="" asp-controller="Auth" asp-action="ResetPassword" class="href" role="button">Zresetuj je</a>
+                                </span>
+                            </div>
+                            @* Checkbox - Zapamiętaj mnie *@
+                            <div class="mb-2 form-check">
+                                <input type="checkbox" class="form-check-input" id="Pamiętaj"/>
+                                <label class="form-check-label" for="Pamiętaj">Zapamiętaj mnie</label>
+                            </div>
+                            @* Text - Wymagane pola *@
+                            <div class="mb-2">
+                                <div class="form-text">
+                                    * - Wymagane pola.
+                                </div>
+                            </div>
+                            @* Logowanie i Rejestracja *@
+                            <div class="mb-0 hstack">
+                                <button type="submit" class="btn btn-success">Zaloguj się</button>
+                                <a asp-area="" asp-controller="Auth" asp-action="Register" class="btn btn-secondary ms-auto" role="button">Zarejestruj się</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Panel Boczny -->
-        <div class="col-lg-4 d-none d-lg-block offset-1">
-            <div class="p-3">
-                <div class="p-2">
-                    <p class="text-center fw-bold fs-3">Panel Boczny</p>
+            <!-- Panel Boczny -->
+            <div class="col-lg-4 d-none d-lg-block offset-1">
+                <div class="p-3">
+                    <div class="p-2">
+                        <p class="text-center fw-bold fs-3">Panel Boczny</p>
+                    </div>
                 </div>
             </div>
         </div>

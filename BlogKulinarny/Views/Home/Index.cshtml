@@ -1,8 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="container text-center">
+<div class="container">
+    @{ await Html.RenderPartialAsync("_NotificationPartial"); }
+    <div class="container text-center">
         <div class="row justify-content-center">
             <div class="col-6">
                 <p class="text-center fs-1 fst-italic">Gotowanie jest ok.</p>
@@ -38,9 +39,10 @@
                                 <button class="btn btn-warning text-secondary" type="submit" id="button-addon1"><i class="bi bi-search"></i></button>
                                 <input type="text" class="form-control border-warning" name="SearchForRecipe" placeholder="Szukaj przepisu" aria-label="Example text with button addon" aria-describedby="button-addon1">
                             </div>
-                         </form>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>

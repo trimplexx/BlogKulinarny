@@ -1,27 +1,23 @@
 ﻿using BlogKulinarny.Data;
+using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Data.Services.Admin;
 using BlogKulinarny.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Exchange.WebServices.Data;
 
 namespace BlogKulinarny.Controllers
 {
+    [TypeFilter(typeof(AuthorizeRankFilterFactory), Arguments = new object[] { 1 })]
     public class AdminController : Controller
     {
         private readonly AdminUsersService _usersService;
         private readonly AdminRecipesService _recipesService;
         private readonly AppDbContext _dbContext;
-
+        
         public AdminController(AdminUsersService UsersService,AdminRecipesService adminRecipesService, AppDbContext dbContext) {
             _usersService = UsersService;
             _dbContext = dbContext;
             _recipesService = adminRecipesService;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
         // uzytkownicy
