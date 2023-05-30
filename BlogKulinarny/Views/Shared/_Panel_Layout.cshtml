@@ -1,7 +1,26 @@
-﻿@{
+﻿@using BlogKulinarny.Data
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int userRank = ViewData["UserRank"] as int? ?? 0;
-    bool isAdmin = userRank >= 1; // Zakładając, że ranga administratora to 1
+}
+@functions {
+    private bool IsAdmin()
+    {
+        int? userRank = null;
+        if (HttpContextAccessor.HttpContext.Session.TryGetValue("UserId", out byte[] userIdBytes)
+            && int.TryParse(System.Text.Encoding.UTF8.GetString(userIdBytes), out int userId))
+        {
+            var dbContext = HttpContextAccessor.HttpContext.RequestServices.GetService(typeof(AppDbContext)) as AppDbContext;
+            var user = dbContext.users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                userRank = (int?)user.rank;
+            }
+        }
+        return userRank.HasValue && userRank.Value >= 1;
+    }
 }
 
 <div class="container-fluid mt-3">
@@ -17,7 +36,7 @@
                 <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Edycja przepisów</a>
             </div>
 
-            @if (isAdmin)
+            @if (IsAdmin())
             {
             <!-- Część Panelu bocznego tylko dla adminów -->
             <div>
