@@ -20,6 +20,11 @@ namespace BlogKulinarny.Controllers
             _recipesService = adminRecipesService;
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
+        
         // uzytkownicy
         public IActionResult UnconfirmedUsers()
         {

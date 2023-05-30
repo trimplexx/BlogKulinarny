@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="~/BlogKulinarny.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css" />
     <link rel="icon" href="~/images/Icon.svg" type="image/svg" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/user-menu.css" asp-append-version="true" />
+    <link rel="icon" href="~/images/Icon.svg" type="image/svg" />
 </head>
 <body>
 <header>
@@ -40,25 +43,39 @@
                 <!-- Dodaj ikonę użytkownika i rozwijane menu -->
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-fill"></i>
+                        <i class="bi bi-person-circle"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <ul class="dropdown-menu dropdown-menu-end user-menu" aria-labelledby="userDropdown">
                         @if (Context.Session.GetString("UserId") != null)
                         {
                             <li>
-                                <div class="dropdown-item-text">Logged in as: @Context.Session.GetString("Login")</div>
+                                <div class="position-relative">
+                                    <i class="bi bi-person-circle" style="font-size: 48px; display: block; text-align: center; margin-bottom: 4px;"></i>
+                                    <div class="user-profile-heading">@Context.Session.GetString("Login")</div>
+                                    <div class="user-profile-email">@Context.Session.GetString("Email")</div>
+                                    
+                                    <!-- Kontener dla ikony edycji -->
+                                    <div class="edit-profile-container">
+                                        <a href="@Url.Action("EditUser", "User")" class="edit-profile-icon" title="Edytuj profil">
+                                            <i class="bi bi-pencil-square" style="font-size: 24px;"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </li>
                             <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Przepisy</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Logout">Wyloguj</a>
                             </li>
                         }
                         else
                         {
                             <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Login">Login</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Login">Logowanie</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Register">Register</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Register">Rejestracja</a>
                             </li>
                         }
                     </ul>
@@ -82,7 +99,8 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/user-menu.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
