@@ -1,8 +1,10 @@
 using BlogKulinarny.Data;
 using BlogKulinarny.Data.Services;
 using BlogKulinarny.Data.Services.Admin;
+using BlogKulinarny.Data.Services.Users;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Exchange.WebServices.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AdminUsersService>();
 builder.Services.AddScoped<AdminRecipesService>();
+
+//user services
+builder.Services.AddScoped<UserRecipesService>();
 
 // Dodaj obsługę sesji
 builder.Services.AddDistributedMemoryCache();
