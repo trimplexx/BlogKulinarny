@@ -1,0 +1,47 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int userRank = ViewData["UserRank"] as int? ?? 0;
+    bool isAdmin = userRank >= 1; // Zakładając, że ranga administratora to 1
+}
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-2 sidebar border border-end-3 border-warning ">
+            <!-- Część Panelu bocznego dla użytkowników i adminów -->
+            <h4>Panel Użytkownika</h4>
+            <div class="d-grid mt-3">
+                <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="EditUser">Edycja użytkownika</a>
+            </div>
+            <div class="d-grid mt-3">
+                <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Edycja przepisów</a>
+            </div>
+
+            @if (isAdmin)
+            {
+            <!-- Część Panelu bocznego tylko dla adminów -->
+            <div>
+                <hr class="hr"/>
+                <h4>Panel Admina</h4>
+                <div class="d-grid mt-3">
+                    <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedUsers">Zatwierdzanie użytkowników</a>
+                </div>
+                <div class="d-grid mt-3">
+                    <a class="btn btn-warning" asp-area="" asp-controller="Admin">Edycja użytkowników</a>
+                </div>
+                <div class="d-grid mt-3">
+                    <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedRecipes">Zatwierdzanie przepisów</a>
+                </div>
+             </div>
+             }
+            
+        </div>
+        <div class="col-2">
+
+        </div>
+        <!-- Main View -->
+        <div class="col-8">
+            @RenderBody()
+        </div>
+    </div>
+</div>

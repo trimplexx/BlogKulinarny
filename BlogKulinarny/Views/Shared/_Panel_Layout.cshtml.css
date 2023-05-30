@@ -1,0 +1,8 @@
+﻿.sidebar {
+    position: fixed;
+    top: 70px; /* Wysokość domyślnego paska nawigacyjnego (dostosuj wartość, jeśli jest inna) */
+    left: 0;
+    bottom: 0;
+    background-color: #f8f9fa; /* Kolor tła panelu bocznego */
+    padding: 20px; /* Wewnętrzny margines panelu bocznego */
+}
