@@ -1,0 +1,46 @@
+﻿@model EditUserModel
+<div class="container">
+    <div class="row justify-content-center">
+        <!-- Panel Edycji Użytkownika -->
+        <div class="col-lg-6">
+            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                <div class="p-2">
+                    <!-- Formularz -->
+                    <form asp-controller="User" asp-action="Edit" method="post">
+                        <!-- Tytuł -->
+                        <div class="mb-0">
+                            <div class="text-center fw-bold fs-3">Edycja użytkownika</div>
+                        </div>
+                        <!-- Login -->
+                        <div class="mb-2">
+                            <label class="form-label text-nowrap">Login*</label>
+                            <input type="text" class="form-control" required asp-for="Login" />
+                            <span asp-validation-for="Login" class="text-danger"></span>
+                        </div>
+                        <!-- Email -->
+                        <div class="mb-2">
+                            <label class="form-label text-nowrap">Adres Email*</label>
+                            <input type="email" class="form-control" required asp-for="Email" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <!-- Hasło -->
+                        <div class="mb-2">
+                            <label class="form-label text-nowrap">Hasło*</label>
+                            <input type="password" class="form-control" required asp-for="Password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-1 form-text">
+                            Twoje hasło musi mieć 8 znaków, wielką literę oraz znak specjalny
+                        </div>
+                        <!-- Komunikat błędu -->
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <!-- Przycisk Zapisz -->
+                        <div class="hstack">
+                            <button type="submit" class="btn btn-primary me-auto">Zapisz</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

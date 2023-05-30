@@ -3,10 +3,12 @@ using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Data.Services;
 using BlogKulinarny.Data.Services.Admin;
 using BlogKulinarny.Data.Services.Mail;
+using BlogKulinarny.Data.Services.Users;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Exchange.WebServices.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<AdminUsersService>();
 builder.Services.AddScoped<AdminRecipesService>();
+
+//user services
+builder.Services.AddScoped<UserRecipesService>();
 
 // Dodaj obsługę sesji
 builder.Services.AddDistributedMemoryCache();
