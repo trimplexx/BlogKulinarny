@@ -34,8 +34,12 @@ namespace BlogKulinarny.Controllers
             }
             catch (Exception ex)
             {
-                ex.HelpLink = "Error";
-                return View(ex);
+                var errorViewModel = new ErrorViewModel
+                {
+                    Message = ex.Message,
+                };
+
+                return View("Error", errorViewModel);
             }
         }
 
@@ -63,12 +67,12 @@ namespace BlogKulinarny.Controllers
             }
             catch (Exception ex)
             {
-                var errorModel = new ErrorViewModel
+                var errorViewModel = new ErrorViewModel
                 {
-                    //Message = "An error occurred while retrieving recipes.",
-                    //Exception = ex
+                    Message = ex.Message,
                 };
-                return View("Error", ex);
+
+                return View("Error", errorViewModel);
             }
         }
 
@@ -83,6 +87,11 @@ namespace BlogKulinarny.Controllers
         {
             await _recipesService.DeleteRecipe(model.recipeId);
             return Redirect("UnconfirmedRecipes");
+        }
+
+        public IActionResult DetailsUser()
+        {
+            throw new NotImplementedException();
         }
     }
 }

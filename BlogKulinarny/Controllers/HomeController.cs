@@ -41,23 +41,22 @@ namespace BlogKulinarny.Controllers
                         .Include(r => r.recipesCategories)
                         .ThenInclude(rc => rc.category)
                         .Where(r => r.isAccepted == true && r.title
-                        .Contains(SearchForRecipe) || r.recipesCategories
-                        .Any(rc => rc.category.name
-                        .Contains(SearchForRecipe)))
+                            .Contains(SearchForRecipe) || r.recipesCategories
+                            .Any(rc => rc.category.name
+                                .Contains(SearchForRecipe)))
                         .ToList();
                 }
 
-                //Console.Write(recipes.recipesCategories);
                 return View(recipes);
             }
             catch (Exception ex)
             {
-                var errorModel = new ErrorViewModel
+                var errorViewModel = new ErrorViewModel
                 {
-                    //Message = "An error occurred while retrieving recipes.",
-                    //Exception = ex
+                    Message = ex.Message,
                 };
-                return View("Error", ex);
+
+                return View("Error", errorViewModel);
             }
         }
 
