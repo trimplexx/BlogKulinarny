@@ -13,44 +13,77 @@ public class UserService
         _dbContext = dbContext;
     }
     
-    public async Task<ChangesResult> ChangePasswordAsync(string login, string oldPassword, string newPassword, string confirmNewPassword)
+    public async Task<bool> DeleteAccountAsync(string userId, string password)
     {
-        try
+        int userIdAsInt;
+    
+        // Spróbuj przekonwertować wartość userId na typ int
+        if (!int.TryParse(userId, out userIdAsInt))
         {
-            // Wyszukanie użytkownika w bazie danych
-            var user = _dbContext.users.FirstOrDefault(u => u.login == login);
-            if (user == null)
-                return new ChangesResult(false, "Użytkownik nie istnieje.");
-
-            // Sprawdzenie poprawności starego hasła
-            if (user.password != HashPassword(oldPassword))
-                return new ChangesResult(false, "Podane stare hasło jest nieprawidłowe.");
-
-            // Sprawdzenie czy nowe hasło spełnia wymagania
-            if (!IsPasswordValid(newPassword))
-                return new ChangesResult(false, "Hasło powinno składać się z przynajmniej 8 znaków, dużej litery oraz znaku specjalnego.");
-
-            // Sprawdzenie czy nowe hasło zgadza się z powtórzonym hasłem
-            if (newPassword != confirmNewPassword)
-                return new ChangesResult(false, "Nowe hasło i powtórzone hasło nie zgadzają się.");
-
-            // Sprawdzenie czy nowe hasło nie jest takie samo jak stare
-            if (newPassword == oldPassword)
-                return new ChangesResult(false, "Nowe hasło nie może być takie samo jak stare hasło.");
-
-            // Aktualizacja hasła
-            user.password = HashPassword(newPassword);
+            return false; // Jeśli konwersja się nie powiedzie, zwróć false
+        }
+    
+        // Użyj przekonwertowanego userIdAsInt zamiast userId
+        var user = await _dbContext.users.FindAsync(userIdAsInt);
+        if (user != null && user.password == HashPassword(password))
+        {
+            _dbContext.users.Remove(user);
             await _dbContext.SaveChangesAsync();
-
-            return new ChangesResult(true, "Zmiana hasła przebiegła pomyślnie.");
+            return true;
         }
-        catch (Exception)
-        {
-            // Obsługa wyjątku - np. zapisanie w logach, wyrzucenie odpowiedniego komunikatu itp.
-            return new ChangesResult(false, "Wystąpił błąd podczas zmiany hasła.");
-        }
+        return false;
     }
 
+    public async Task<ChangesResult> ChangePasswordAsync(string userId, string oldPassword, string newPassword)
+    {
+        int userIdAsInt;
+    
+        // Spróbuj przekonwertować wartość userId na typ int
+        if (!int.TryParse(userId, out userIdAsInt))
+        {
+            return new ChangesResult(false, "Błąd konwersji Id");
+        }
+    
+        // Użyj przekonwertowanego userIdAsInt zamiast userId
+        var user = await _dbContext.users.FindAsync(userIdAsInt);
+        if (user != null)
+        {
+            var oldPasswordHash = HashPassword(oldPassword);
+            if (user.password == oldPasswordHash)
+            {
+                if (IsPasswordValid(newPassword))
+                {
+                    var newPasswordHash = HashPassword(newPassword);
+                    if (user.password != newPasswordHash)
+                    {
+                        user.password = newPasswordHash;
+                        _dbContext.users.Update(user);
+                        await _dbContext.SaveChangesAsync();
+                        return new ChangesResult(true, "Poprawnie zmieniono hasło");
+                    }
+                    else
+                    {
+                        return new ChangesResult(false, "Nowe hasło musi być różne od starego hasła.");
+                    }
+                }
+                else
+                {
+                    return new ChangesResult(false, "Hasło nie spełnia wymagań.");
+                }
+            }
+        }
+
+        return new ChangesResult(false, "Nie udało się zmienić hasła.");
+    }
+    
+    private static string HashPassword(string password)
+    {
+        using (var sha256 = SHA256.Create())
+        {
+            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hashedBytes);
+        }
+    }
     private bool IsPasswordValid(string password)
     {
         // Sprawdzenie czy hasło spełnia wymagania: przynajmniej 8 znaków, duża litera i znak specjalny
@@ -63,14 +96,5 @@ public class UserService
     private bool IsSpecialCharacter(char c)
     {
         return !char.IsLetterOrDigit(c);
-    }
-
-    private static string HashPassword(string password)
-    {
-        using (var sha256 = SHA256.Create())
-        {
-            var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(hashedBytes);
-        }
     }
 }

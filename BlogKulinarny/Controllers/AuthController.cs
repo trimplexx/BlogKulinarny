@@ -38,8 +38,11 @@ namespace BlogKulinarny.Controllers
                 TempData["UserLoggedInMessage"] = "Pomyślnie zalogowano";
                 return RedirectToAction("Index", "Home");
             }
-
-            ModelState.AddModelError("", "Nieprawidłowy adres email, login lub hasło.");
+            else
+            {
+                TempData["NotificationMessageType"] = "error";
+                TempData["NotificationMessage"] = "Wprowadzono błędne dane!";
+            }
 
             return View(model);
         }

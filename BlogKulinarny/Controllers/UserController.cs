@@ -1,4 +1,5 @@
-﻿using BlogKulinarny.Data;
+﻿
+using BlogKulinarny.Data;
 using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Data.Services.Admin;
 using BlogKulinarny.Data.Services.Users;
@@ -28,6 +29,12 @@ namespace BlogKulinarny.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+        
+        [HttpGet]
+        public IActionResult LoadPartialView(string viewName)
+        {
+            return PartialView(viewName);
         }
         
         public IActionResult RecipeList()
@@ -90,30 +97,60 @@ namespace BlogKulinarny.Controllers
             return View(model);
         }
         
+
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(EditUserModel model)
+        public async Task<IActionResult> DeleteAccount(DeleteAccountModel model)
         {
             if (ModelState.IsValid)
             {
-                var login = _httpContextAccessor.HttpContext.Session.GetString("login");
-                if (login != null)
+                
+                var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+                var success = userId != null && await _userService.DeleteAccountAsync(userId, model.Password);
+
+                if (success)
                 {
-                    var result = await _userService.ChangePasswordAsync(login, model.OldPassword, model.NewPassword, model.ConfirmNewPassword);
+                    // Usunięcie użytkownika z sesji i przekierowanie do strony logowania
+                    _httpContextAccessor.HttpContext.Session.Clear();
+                    _httpContextAccessor.HttpContext.Session.Remove("UserId");
+                    _httpContextAccessor.HttpContext.Session.Remove("Login");
+                    _httpContextAccessor.HttpContext.Session.Remove("Email");
+                    TempData["NotificationMessageType"] = "success";
+                    TempData["NotificationMessage"] = "Poprawnie usunięto konto.";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    TempData["NotificationMessageType"] = "error";
+                    TempData["NotificationMessage"] = "Konto nie zostało usunięte, podałeś błędne hasło!";
+                }
+            }
+            return View("EditUser");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    var result = await _userService.ChangePasswordAsync(userId, model.OldPassword, model.NewPassword);
+                    TempData["NotificationMessageType"] = result.Success ? "success" : "error";
+                    TempData["NotificationMessage"] = result.ErrorMessage;
+
                     if (result.Success)
                     {
-                        TempData["NotificationMessageType"] = "success";
-                        TempData["NotificationMessage"] = "Poprawnie zmieniono hasło!";
                         return RedirectToAction("EditUser", "User");
                     }
                     else
                     {
-                        TempData["NotificationMessageType"] = "error";
-                        TempData["NotificationMessage"] = "Błąd zmiany hasła!";
-                        return RedirectToAction("EditUser", "User");
+                        ViewBag.ErrorMessage = result.ErrorMessage;
                     }
                 }
             }
-            return View("EditUser", model);
+            return RedirectToAction("EditUser", "User");
         }
     }
 }
+

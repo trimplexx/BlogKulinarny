@@ -47,9 +47,9 @@ public class AuthService : IAuthService
         }
 
         // Ustaw sesję użytkownika
-        _httpContextAccessor.HttpContext.Session.SetString("UserId", user.Id.ToString());
-        _httpContextAccessor.HttpContext.Session.SetString("Login", user.login);
-        _httpContextAccessor.HttpContext.Session.SetString("Email", user.mail);
+        _httpContextAccessor.HttpContext?.Session.SetString("UserId", user.Id.ToString());
+        _httpContextAccessor.HttpContext?.Session.SetString("Login", user.login);
+        _httpContextAccessor.HttpContext?.Session.SetString("Email", user.mail);
 
         return true;
     }
