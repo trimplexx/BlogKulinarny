@@ -25,6 +25,7 @@ builder.Services.AddScoped<AdminRecipesService>();
 
 //user services
 builder.Services.AddScoped<UserRecipesService>();
+builder.Services.AddScoped<UserService>();
 
 // Dodaj obsługę sesji
 builder.Services.AddDistributedMemoryCache();

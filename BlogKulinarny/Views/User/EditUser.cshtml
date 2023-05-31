@@ -1,47 +1,91 @@
 ﻿@model EditUserModel
-@{Layout = "~/Views/Shared/_Panel_Layout.cshtml";}
+@{ Layout = "~/Views/Shared/_Panel_Layout.cshtml"; }
 <div class="container">
-    <div class="row justify-content-center">
-        <!-- Panel Edycji Użytkownika -->
-        <div class="col-lg-6">
-            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
-                <div class="p-2">
-                    <!-- Formularz -->
-                    <form asp-controller="User" asp-action="Edit" method="post">
-                        <!-- Tytuł -->
-                        <div class="mb-0">
-                            <div class="text-center fw-bold fs-3">Edycja użytkownika</div>
-                        </div>
-                        <!-- Login -->
-                        <div class="mb-2">
-                            <label class="form-label text-nowrap">Login*</label>
-                            <input type="text" class="form-control" required asp-for="Login" />
-                            <span asp-validation-for="Login" class="text-danger"></span>
-                        </div>
-                        <!-- Email -->
-                        <div class="mb-2">
-                            <label class="form-label text-nowrap">Adres Email*</label>
-                            <input type="email" class="form-control" required asp-for="Email" />
-                            <span asp-validation-for="Email" class="text-danger"></span>
-                        </div>
-                        <!-- Hasło -->
-                        <div class="mb-2">
-                            <label class="form-label text-nowrap">Hasło*</label>
-                            <input type="password" class="form-control" required asp-for="Password" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                        <div class="mb-1 form-text">
-                            Twoje hasło musi mieć 8 znaków, wielką literę oraz znak specjalny
-                        </div>
-                        <!-- Komunikat błędu -->
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <!-- Przycisk Zapisz -->
-                        <div class="hstack">
-                            <button type="submit" class="btn btn-primary me-auto">Zapisz</button>
-                        </div>
-                    </form>
+    @{ await Html.RenderPartialAsync("_NotificationPartial"); }
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Kafelek Edycji Użytkownika -->
+            <div class="col-lg-6">
+                <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                    <div class="p-2">
+                        <div class="text-center fw-bold fs-3 mb-3">Edycja użytkownika</div>
+                        <form asp-controller="User" asp-action="EditUser" method="post">
+                            <!-- Login -->
+                            <div class="mb-2">
+                                <label class="form-label text-nowrap">Login</label>
+                                <input type="text" class="form-control" asp-for="Login"/>
+                                <span asp-validation-for="Login" class="text-danger"></span>
+                            </div>
+                            <!-- Email -->
+                            <div class="mb-2">
+                                <label class="form-label text-nowrap">Adres Email</label>
+                                <input type="email" class="form-control" asp-for="Email"/>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <!-- Przycisk Zapisz -->
+                            <div class="mb-3 hstack">
+                                <button type="submit" class="btn btn-primary me-auto">Zapisz</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Kafelek Zmiany Hasła -->
+            <div class="col-lg-6">
+                <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                    <div class="p-2">
+                        <div class="text-center fw-bold fs-3 mb-3">Zmiana hasła</div>
+                        <form asp-controller="User" asp-action="ChangePassword" method="post">
+                            <!-- Stare hasło -->
+                            <div class="mb-2">
+                                <label class="form-label text-nowrap">Stare hasło*</label>
+                                <input type="password" class="form-control" required asp-for="OldPassword" id="oldPassword"/>
+                                <span asp-validation-for="OldPassword" class="text-danger"></span>
+                            </div>
+                            <!-- Nowe hasło -->
+                            <div class="mb-2">
+                                <label class="form-label text-nowrap">Nowe hasło*</label>
+                                <input type="password" class="form-control" required asp-for="NewPassword" id="newPassword"/>
+                                <span asp-validation-for="NewPassword" class="text-danger"></span>
+                            </div>
+                            <!-- Powtórz nowe hasło -->
+                            <div class="mb-2">
+                                <label class="form-label text-nowrap">Powtórz nowe hasło*</label>
+                                <input type="password" class="form-control" required asp-for="ConfirmNewPassword" id="confirmNewPassword"/>
+                                <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
+                            </div>
+                            <!-- Checkbox Pokaż hasło -->
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="showPassword" onclick="togglePasswordVisibility()">
+                                <label class="form-check-label" for="showPassword">Pokaż hasło</label>
+                            </div>
+                            <!-- Przycisk Zapisz -->
+                            <div class="mb-3 hstack">
+                                <button type="submit" class="btn btn-primary me-auto">Zapisz</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function togglePasswordVisibility() {
+        var oldPassword = document.getElementById("oldPassword");
+        var newPassword = document.getElementById("newPassword");
+       var confirmNewPassword = document.getElementById("confirmNewPassword");
+        var showPasswordCheckbox = document.getElementById("showPassword");
+
+        if (showPasswordCheckbox.checked) {
+            oldPassword.type = "text";
+            newPassword.type = "text";
+            confirmNewPassword.type = "text";
+        } else {
+            oldPassword.type = "password";
+            newPassword.type = "password";
+            confirmNewPassword.type = "password";
+        }
+    }
+</script>

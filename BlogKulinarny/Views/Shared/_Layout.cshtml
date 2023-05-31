@@ -33,12 +33,12 @@
                 </ul>
                 <!-- Dodaj ikonę użytkownika i rozwijane menu -->
                 <div class="dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end user-menu" aria-labelledby="userDropdown">
-                        @if (Context.Session.GetString("UserId") != null)
-                        {
+                    @if (Context.Session.GetString("UserId") != null)
+                    {
+                        <a class="nav-link dropdown-toggle" style="color: #5c636a;" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
+                            <i class="bi bi-person-circle" style="font-size: 24px;" ></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end user-menu" aria-labelledby="userDropdown">
                             <li>
                                 <div class="position-relative">
                                     <i class="bi bi-person-circle" style="font-size: 48px; display: block; text-align: center; margin-bottom: 4px;"></i>
@@ -54,25 +54,19 @@
                                 </div>
                             </li>
                             <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="EditUser">Edycja użytkownika</a>
-                            </li>
-                            <li>
                                 <a class="dropdown-item" asp-area="" asp-controller="User" asp-action="RecipeList">Edycja przepisów</a>
                             </li>
                             <li>
                                 <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Logout">Wyloguj</a>
                             </li>
-                        }
-                        else
-                        {
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Login">Logowanie</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Register">Rejestracja</a>
-                            </li>
-                        }
-                    </ul>
+                        </ul>
+                    }
+                    else
+                    {
+                        <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Login" style="color: #5c636a;">
+                            <i class="bi bi-person-circle" style="font-size: 24px;"></i> Zaloguj się
+                        </a>
+                    }
                 </div>
                 <!-- Koniec ikony użytkownika i rozwijanego menu -->
             </div>

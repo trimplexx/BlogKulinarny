@@ -1,29 +1,35 @@
 ﻿using BlogKulinarny.Data;
+using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Data.Services.Admin;
 using BlogKulinarny.Data.Services.Users;
 using BlogKulinarny.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Exchange.WebServices.Data;
 
 namespace BlogKulinarny.Controllers
 {
+    [TypeFilter(typeof(AuthorizeRankFilterFactory), Arguments = new object[] { 0 })]
     public class UserController : Controller
     {
         private readonly AppDbContext _dbContext;
         private readonly UserRecipesService _recipesService;
+        private readonly UserService _userService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserController(UserRecipesService userRecipesService, AppDbContext dbContext)
+        public UserController(UserRecipesService userRecipesService, AppDbContext dbContext, UserService userService, 
+            IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _recipesService = userRecipesService;
+            _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
         }
         public IActionResult Index()
         {
             return View();
         }
-
-
-
+        
         public IActionResult RecipeList()
         {
             try
@@ -82,6 +88,32 @@ namespace BlogKulinarny.Controllers
 
             // Jeśli walidacja modelu nie powiedzie się, zwróć widok edycji wraz z błędami
             return View(model);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(EditUserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var login = _httpContextAccessor.HttpContext.Session.GetString("login");
+                if (login != null)
+                {
+                    var result = await _userService.ChangePasswordAsync(login, model.OldPassword, model.NewPassword, model.ConfirmNewPassword);
+                    if (result.Success)
+                    {
+                        TempData["NotificationMessageType"] = "success";
+                        TempData["NotificationMessage"] = "Poprawnie zmieniono hasło!";
+                        return RedirectToAction("EditUser", "User");
+                    }
+                    else
+                    {
+                        TempData["NotificationMessageType"] = "error";
+                        TempData["NotificationMessage"] = "Błąd zmiany hasła!";
+                        return RedirectToAction("EditUser", "User");
+                    }
+                }
+            }
+            return View("EditUser", model);
         }
     }
 }

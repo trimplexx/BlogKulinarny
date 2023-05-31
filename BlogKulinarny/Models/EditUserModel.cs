@@ -7,20 +7,25 @@ namespace BlogKulinarny.Models
         [Required(ErrorMessage = "Pole Login jest wymagane.")]
         [Display(Name = "Login")]
         public string? Login { get; set; }
-
-        [Required(ErrorMessage = "Pole Hasło jest wymagane.")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Hasło")]
-        public string? Password { get; set; }
-
-        [Required(ErrorMessage = "Pole Powtórz hasło jest wymagane.")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Powtórz hasło")]
-        [Compare("Password", ErrorMessage = "Hasła nie są zgodne.")]
-        public string? ConfirmPassword { get; set; }
-
+        
         [EmailAddress(ErrorMessage = "Nieprawidłowy format adresu email.")]
         [Display(Name = "Adres email")]
         public string? Email { get; set; }
+        
+        [Required(ErrorMessage = "Wymagane podanie starego hasła.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Stare hasło")]
+        public string OldPassword { get; set; }
+
+        [Required(ErrorMessage = "Wymagane podanie nowego hasła.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Nowe hasło")]
+        public string NewPassword { get; set; }
+
+        [Required(ErrorMessage = "Wymagane potwierdzenie nowego hasła.")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Potwierdź nowe hasło")]
+        [Compare("NewPassword", ErrorMessage = "Nowe hasło i potwierdzenie nowego hasła muszą się zgadzać.")]
+        public string ConfirmNewPassword { get; set; }
     }
 }
