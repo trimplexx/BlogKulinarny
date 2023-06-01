@@ -24,6 +24,9 @@ namespace BlogKulinarny.Models
         [Display(Name = "Role")]
         public Ranks rank { get; set; }
 
+        [Display(Name = "Image")]
+        public string? imageURL { get; set; }
+
         // mailer
         public string? VerificationToken { get; set; }
 
