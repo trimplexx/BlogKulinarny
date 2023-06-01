@@ -4,13 +4,13 @@
     <!-- Login -->
     <div class="mb-2">
         <label class="form-label text-nowrap">Login</label>
-        <input type="text" class="form-control" asp-for="Login"/>
+        <input type="text" class="form-control" asp-for="Login" readonly value="@Context.Session.GetString("Login")" />
         <span asp-validation-for="Login" class="text-danger"></span>
     </div>
     <!-- Email -->
     <div class="mb-2">
         <label class="form-label text-nowrap">Adres Email</label>
-        <input type="email" class="form-control" asp-for="Email"/>
+        <input type="email" class="form-control" asp-for="Email" value="@Context.Session.GetString("Email")" />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <!-- Przycisk Zapisz -->

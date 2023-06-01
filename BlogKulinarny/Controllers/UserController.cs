@@ -76,25 +76,29 @@ namespace BlogKulinarny.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditUser(EditUserModel model)
+        public async Task<IActionResult> EditUser(EditUserModel model)
         {
             if (ModelState.IsValid)
             {
-                // Zapisz zmiany w bazie danych (np. poprzez serwis użytkowników lub Identity)
-                // Przetwarzaj model i zaktualizuj dane użytkownika
+                var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    var result = await _userService.UpdateUserEmailAsync(userId, model.Email);
+            
+                    TempData["NotificationMessageType"] = result ? "success" : "error";
+                    TempData["NotificationMessage"] = result ? "Adres email został zaktualizowany!" : "Wystąpił błąd podczas aktualizacji adresu email.";
 
-                // Przykładowe zapisanie zmian:
-                var user = new User(); // Pobierz użytkownika do edycji
-                user.login = model.Login;
-                user.mail = model.Email;
-
-                // Zapisz użytkownika w bazie danych
-
-                return RedirectToAction("Index", "Home"); // Przekieruj na inny widok po zapisaniu zmian
+                    if (result)
+                    {
+                        return RedirectToAction("EditUser", "User");
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Wystąpił błąd podczas aktualizacji adresu email.";
+                    }
+                }
             }
-
-            // Jeśli walidacja modelu nie powiedzie się, zwróć widok edycji wraz z błędami
-            return View(model);
+            return RedirectToAction("EditUser", "User");
         }
         
 

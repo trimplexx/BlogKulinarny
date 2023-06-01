@@ -1,16 +1,21 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using BlogKulinarny.Data.Helpers;
+using BlogKulinarny.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogKulinarny.Data.Services.Users;
 
 public class UserService
 {
     private readonly AppDbContext _dbContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserService(AppDbContext dbContext)
+    public UserService(AppDbContext dbContext,IHttpContextAccessor httpContextAccessor)
     {
         _dbContext = dbContext;
+        _httpContextAccessor = httpContextAccessor;
     }
     
     public async Task<bool> DeleteAccountAsync(string userId, string password)
@@ -96,5 +101,34 @@ public class UserService
     private bool IsSpecialCharacter(char c)
     {
         return !char.IsLetterOrDigit(c);
+    }
+
+    public async Task<bool> UpdateUserEmailAsync(string userId, string newEmail)
+    {
+        int userIdAsInt;
+
+        // Spróbuj przekonwertować wartość userId na typ int
+        if (!int.TryParse(userId, out userIdAsInt))
+        {
+            return false; // Jeśli konwersja się nie powiedzie, zwróć false
+        }
+
+        var user = await _dbContext.users.FirstOrDefaultAsync(u => u.Id == userIdAsInt);
+        if (user == null)
+        {
+            return false;
+        }
+
+        // Sprawdź, czy nowy adres email różni się od aktualnego adresu email
+        if (user.mail != newEmail)
+        {
+            user.mail = newEmail;
+            await _dbContext.SaveChangesAsync();
+            _httpContextAccessor.HttpContext?.Session.SetString("Email", newEmail);
+            return true;
+        }
+
+        // Jeśli adresy email są takie same, zwróć false, aby oznaczyć brak zmian
+        return false;
     }
 }

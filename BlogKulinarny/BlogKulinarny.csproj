@@ -40,9 +40,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Services\NewFolder\" />
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\images\avatars\" />
   </ItemGroup>
 
 </Project>
