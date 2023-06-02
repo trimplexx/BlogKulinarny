@@ -6,8 +6,7 @@
         <div class="col-lg-3 sidebar">
             <!-- Dodaj tutaj zawartość panelu bocznego -->
             <!-- Przykładowa treść -->
-            <h4>Panel boczny</h4>
-            <div class="row">
+            <div class="row mt-2">
                 <form action="/Home/RecipesList" method="get">
                     <div class="input-group input-group-sm">
                         <button class="btn btn-warning text-secondary" type="submit" id="button-addon1"><i class="bi bi-search"></i></button>
@@ -25,42 +24,28 @@
                 {
                     <div class="col-12 mt-2 mb-2">
                         <!-- Card Body -->
-                        <div class="border border-warning border-2 border-primary rounded-3 p-3 shadow bg-light bg-opacity-25">
-                            <div class="row gy-3 gx-3">
-                                <!-- Main -->
-                                <div class="col-sm-8">
-                                    <div class="row gx-3">
-                                        <!-- Information -->
-                                        <div class="col-md-7">
-                                            <div class="py-2 text-truncate fw-bold" title="Nazwa Przepisu">
+                        <div class="card border-warning border-2 border-primary rounded-3 shadow bg-light bg-opacity-25">
+                            <!-- Main -->
+                            <div class="row g-0">
+                                <div class="col-md-4">
+                                    <a href="">
+                                        <img src="@recipe.imageURL" class="img-fluid rounded-start" alt="...">
+                                    </a>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a href="" class="text-decoration-none link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
                                                 @recipe.title
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <div class="py-2 text-truncate" title="Autor">
-                                                @recipe.user
-                                            </div>
-                                        </div>
-                                        <!-- Tags -->
+                                            </a>
+                                        </h5>
+                                        <div class="overflow-auto p-1 border-top border-2 border-warning" style="max-height: 100px;">
                                         @foreach (var tag in recipe.recipesCategories)
                                         {
-                                            <div class="col-md-12">
-                                                <div class="row gx-3 gy-3">
-                                                    <div class="col-auto border border-2 rounded-2 border-warning mx-1">
-                                                        <div class="p-1">
-                                                            @tag.category.name
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <a href="/Home/RecipesList?SearchForRecipe=@tag.category.name" class="card-link border border-warning border-2 rounded-3 bg-light bg-opacity-25 text-decoration-none link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                            #@tag.category.name
+                                        </a>
                                         }
-                                    </div>
-                                </div>
-                                <!-- Image -->
-                                <div class="col-sm-4">
-                                    <div class="row gx-3">
-                                        <div class="col-md-12">
-                                            <img src="@recipe.imageURL" class="img-fluid">
                                         </div>
                                     </div>
                                 </div>

@@ -33,7 +33,12 @@ namespace BlogKulinarny.Controllers
         {
             try
             {
-                var recipes = _dbContext.recipes.Include(r => r.recipesCategories).ThenInclude(rc => rc.category).Where(r => r.isAccepted == true).ToList();
+                var recipes = _dbContext.recipes
+                    .Include(r => r.recipesCategories)
+                    .ThenInclude(rc => rc.category)
+                    .Where(r => r.isAccepted == true)
+                    .OrderByDescending(r => r.id)
+                    .ToList();
 
                 if (!string.IsNullOrWhiteSpace(SearchForRecipe))
                 {
@@ -44,6 +49,7 @@ namespace BlogKulinarny.Controllers
                             .Contains(SearchForRecipe) || r.recipesCategories
                             .Any(rc => rc.category.name
                                 .Contains(SearchForRecipe)))
+                        .OrderByDescending(r => r.id)
                         .ToList();
                 }
 
