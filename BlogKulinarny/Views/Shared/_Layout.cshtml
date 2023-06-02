@@ -32,16 +32,17 @@
                     </li>
                 </ul>
                 <!-- Dodaj ikonę użytkownika i rozwijane menu -->
+                <!-- Dodaj ikonę użytkownika i rozwijane menu -->
                 <div class="dropdown">
                     @if (Context.Session.GetString("UserId") != null)
                     {
-                        <a class="nav-link dropdown-toggle" style="color: #5c636a;" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" >
-                            <i class="bi bi-person-circle" style="font-size: 24px;" ></i>
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" style="color: #5c636a;" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.webp")" class="bi bi-person-circle" style="font-size: 40px; width: 40px; height: 40px; border-radius: 50%;" />
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end user-menu" aria-labelledby="userDropdown">
                             <li>
-                                <div class="position-relative">
-                                    <i class="bi bi-person-circle" style="font-size: 48px; display: block; text-align: center; margin-bottom: 4px;"></i>
+                                <div class="position-relative text-center">
+                                    <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.webp")" class="bi bi-pencil-square" style="font-size: 100px; width: 100px; height: 100px; border-radius: 50%;" />
                                     <div class="user-profile-heading">@Context.Session.GetString("Login")</div>
                                     <div class="user-profile-email">@Context.Session.GetString("Email")</div>
                                     
@@ -64,7 +65,7 @@
                     else
                     {
                         <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Login" style="color: #5c636a;">
-                            <i class="bi bi-person-circle" style="font-size: 24px;"></i> Zaloguj się
+                            <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.webp")" class="bi bi-person-circle" style="font-size: 40px; width: 40px; height: 40px; border-radius: 50%;" />Zaloguj się
                         </a>
                     }
                 </div>

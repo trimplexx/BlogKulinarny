@@ -17,14 +17,16 @@ namespace BlogKulinarny.Controllers
         private readonly UserRecipesService _recipesService;
         private readonly UserService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IWebHostEnvironment _env;
 
         public UserController(UserRecipesService userRecipesService, AppDbContext dbContext, UserService userService, 
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
         {
             _dbContext = dbContext;
             _recipesService = userRecipesService;
             _userService = userService;
             _httpContextAccessor = httpContextAccessor;
+            _env = env;
         }
         public IActionResult Index()
         {
@@ -60,16 +62,30 @@ namespace BlogKulinarny.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditUser()
+        public async Task<IActionResult> EditUser()
         {
-            // Pobierz dane użytkownika (możesz użyć np. Identity lub serwisu użytkowników)
-            var user = new User(); // Pobierz użytkownika do edycji
+            var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+            int userIdAsInt;
+
+            // Spróbuj przekonwertować wartość userId na typ int
+            if (!int.TryParse(userId, out userIdAsInt))
+            {
+                return Unauthorized(); // Jeśli konwersja się nie powiedzie, zwróć false
+            }
+            
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var user = await _dbContext.users.FirstOrDefaultAsync(u => u.Id == userIdAsInt);
 
             // Utwórz model edycji użytkownika na podstawie danych z bazy
             var editUserModel = new EditUserModel
             {
-                Login = user.login,
-                Email = user.mail
+                Login = user?.login,
+                Email = user?.mail,
+                AvatarUrl = user?.imageURL
             };
 
             return View(editUserModel);
@@ -154,6 +170,35 @@ namespace BlogKulinarny.Controllers
                 }
             }
             return RedirectToAction("EditUser", "User");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAvatar([FromBody] EditUserModel model)
+        {
+            var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+            int userIdAsInt;
+
+            // Spróbuj przekonwertować wartość userId na typ int
+            if (!int.TryParse(userId, out userIdAsInt))
+            {
+                return Unauthorized(); // Jeśli konwersja się nie powiedzie, zwróć false
+            }
+            
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var user = await _dbContext.users.FirstOrDefaultAsync(u => u.Id == userIdAsInt);
+            if (user == null)
+            {
+                return NotFound($"Nie znaleziono użytkownika z id: {userId}");
+            }
+            user.imageURL = model.AvatarUrl;
+            _dbContext.users.Update(user);
+            await _dbContext.SaveChangesAsync();
+            _httpContextAccessor.HttpContext?.Session.SetString("Avatar", user.imageURL);
+            return Ok();
         }
     }
 }

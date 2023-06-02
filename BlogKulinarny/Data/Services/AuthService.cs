@@ -50,6 +50,7 @@ public class AuthService : IAuthService
         _httpContextAccessor.HttpContext?.Session.SetString("UserId", user.Id.ToString());
         _httpContextAccessor.HttpContext?.Session.SetString("Login", user.login);
         _httpContextAccessor.HttpContext?.Session.SetString("Email", user.mail);
+        _httpContextAccessor.HttpContext?.Session.SetString("Avatar", user.imageURL);
 
         return true;
     }
@@ -65,6 +66,7 @@ public class AuthService : IAuthService
             _httpContextAccessor.HttpContext.Session.Remove("UserId");
             _httpContextAccessor.HttpContext.Session.Remove("Login");
             _httpContextAccessor.HttpContext.Session.Remove("Email");
+            _httpContextAccessor.HttpContext.Session.Remove("Avatar");
         }
     }
 
@@ -120,7 +122,8 @@ public class AuthService : IAuthService
                 mail = email,
                 isAccepted = false,
                 rank = (int)Ranks.user,
-                VerificationToken = CreateRandomToken()
+                VerificationToken = CreateRandomToken(),
+                imageURL = "/images/avatars/avatar0.webp"
             };
 
             string link = $"{Utilities.GetBuilder(controller).Uri.AbsoluteUri}Auth/verify?token={newUser.VerificationToken}";
