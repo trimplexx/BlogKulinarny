@@ -35,6 +35,13 @@ body {
 
 .form-select:focus,
 .form-control:focus,
-.btn:focus {
+.btn:focus,
+.form-check-input:focus {
+    box-shadow: none;
+}
+
+.form-check-input:checked {
+    background-color: #FFC107;
+    border-color: #FFC107;
     box-shadow: none;
 }

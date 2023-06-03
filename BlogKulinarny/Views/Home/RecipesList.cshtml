@@ -6,14 +6,50 @@
         <div class="col-lg-3 sidebar">
             <!-- Dodaj tutaj zawartość panelu bocznego -->
             <!-- Przykładowa treść -->
-            <div class="row mt-2">
-                <form action="/Home/RecipesList" method="get">
+            <form action="/Home/RecipesList" method="get">
+                <div class="row mt-2">
                     <div class="input-group input-group-sm">
                         <button class="btn btn-warning text-secondary" type="submit" id="button-addon1"><i class="bi bi-search"></i></button>
-                        <input type="text" class="form-control border-warning" name="SearchForRecipe" placeholder="Szukaj przepisu" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                        <input type="text" class="form-control border-warning" name="SearchForRecipe" placeholder="Szukaj przepisu" aria-label="Example text with button addon" aria-describedby="button-addon1" value="@ViewBag.SearchForRecipe">
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="row mt-2">
+                    <h4>Sortowanie:</h4>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Alfabetycznie
+                        </label>
+                    </div>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Czas wykonania
+                        </label>
+                    </div>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Poziom trudności
+                        </label>
+                    </div>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="radio" name="sortOption" id="sortAlphabetical" value="alphabetical" checked disabled>
+                        <label class="form-check-label" for="sortAlphabetical">
+                            Najłatwiejsze
+                        </label>
+                    </div>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="radio" name="sortOption" id="sortDifficulty" value="difficulty" disabled>
+                        <label class="form-check-label" for="sortDifficulty">
+                            Najtrudniejsze
+                        </label>
+                    </div>
+                    <div class="row ps-5 pe-5 mt-2">
+                        <button type="button" class="btn btn-sm btn-secondary mt-1 mb-1" id="resetSort">Reset</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <!-- Recipes -->

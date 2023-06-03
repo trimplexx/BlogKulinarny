@@ -31,6 +31,7 @@ namespace BlogKulinarny.Controllers
 
         public IActionResult RecipesList(string SearchForRecipe)
         {
+            ViewBag.SearchForRecipe = SearchForRecipe;
             try
             {
                 var recipes = _dbContext.recipes
