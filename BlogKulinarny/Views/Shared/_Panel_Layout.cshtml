@@ -23,43 +23,52 @@
     }
 }
 
-<div class="container-fluid mt-3">
-    <div class="row">
+<div class="containe">
+    <div class="row gx-3">
         <!-- Sidebar -->
-        <div class="col-2 sidebar border border-end-3 border-warning ">
-            <!-- Część Panelu bocznego dla użytkowników i adminów -->
-            <h4>Panel Użytkownika</h4>
-            <div class="d-grid mt-3">
-                <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="EditUser">Edycja użytkownika</a>
-            </div>
-            <div class="d-grid mt-3">
-                <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Edycja przepisów</a>
-            </div>
+        <div class="col-lg-3 col-md-4">
+            <div class="border border-end-3 border-warning p-3">
+                <div class="row gy-3">
+                 <!-- Część Panelu bocznego dla użytkowników i adminów -->
+                <div class="col-12">
+                    <h4 class="text-center">Panel Użytkownika</h4>
+                </div>
+                <div class="col-6 col-md-12 d-grid">
+                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="EditUser">Edycja użytkownika</a>
+                </div>
+                <div class="col-6 col-md-12 d-grid">
+                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="AddRecipe">Dodawanie przepisów</a>
+                </div>
+                <div class="col-6 col-md-12 d-grid">
+                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Edycja przepisów</a>
+                </div>
 
-            @if (IsAdmin())
-            {
-            <!-- Część Panelu bocznego tylko dla adminów -->
-            <div>
-                <hr class="hr"/>
-                <h4>Panel Admina</h4>
-                <div class="d-grid mt-3">
-                    <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedUsers">Zatwierdzanie użytkowników</a>
+                @if (IsAdmin())
+                {
+                <!-- Część Panelu bocznego tylko dla adminów -->
+                    <div class="col-12">
+                        <hr class="hr"/>
+                        <h4 class="text-center">Panel Admina</h4>
+                    </div>
+                    <div class="col-6 col-md-12 d-grid">
+                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedUsers">Zatwierdzanie użytkowników</a>
+                    </div>
+                    <div class="col-6 col-md-12 d-grid">
+                        <a class="btn btn-warning" asp-area="" asp-controller="Admin">Edycja użytkowników</a>
+                    </div>
+                    <div class="col-6 col-md-12 d-grid">
+                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedRecipes">Zatwierdzanie przepisów</a>
+                    </div>
+                 }
                 </div>
-                <div class="d-grid mt-3">
-                    <a class="btn btn-warning" asp-area="" asp-controller="Admin">Edycja użytkowników</a>
-                </div>
-                <div class="d-grid mt-3">
-                    <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedRecipes">Zatwierdzanie przepisów</a>
-                </div>
-             </div>
-             }
+
             
+            </div>
         </div>
-        <div class="col-2">
+        
 
-        </div>
         <!-- Main View -->
-        <div class="col-8">
+        <div class="col-lg-9 col-md-8">
             @RenderBody()
         </div>
     </div>

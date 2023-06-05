@@ -200,6 +200,11 @@ namespace BlogKulinarny.Controllers
             _httpContextAccessor.HttpContext?.Session.SetString("Avatar", user.imageURL);
             return Ok();
         }
+
+        public IActionResult AddRecipe()
+        {
+            return View();
+        }
     }
 }
 
