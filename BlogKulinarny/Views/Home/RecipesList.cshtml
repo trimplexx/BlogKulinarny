@@ -3,7 +3,7 @@
 <div class="container-fluid mt-3">
     <div class="row">
         <!-- Sidebar -->
-        <div class="col-lg-3 sidebar">
+        <div class="col-lg-3 sidebar border-end border-warning border-1">
             <!-- Dodaj tutaj zawartość panelu bocznego -->
             <!-- Przykładowa treść -->
             <form action="/Home/RecipesList" method="get">
@@ -28,25 +28,22 @@
                         </label>
                     </div>
                     <div class="form-check-sm mt-1 mb-1">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3" onchange="enableRadioButtons()">
+                        <input class="form-check-input" type="checkbox" name="unlock" value="true" id="flexCheckDefault3" onchange="enableRadioButtons()" @(ViewBag.unlock == "true" ? "checked" : "")>
                         <label class="form-check-label" for="flexCheckDefault">
                             Poziom trudności
                         </label>
                     </div>
                     <div class="form-check-sm mt-1 mb-1">
-                        <input class="form-check-input" type="radio" name="sortOption3" id="sortEasiest" value="easiest" @(ViewBag.SortOption3 == "easiest" ? "checked" : "") disabled>
+                        <input class="form-check-input" type="radio" name="sortOption3" id="sortEasiest" value="easiest" @(ViewBag.SortOption3 == "easiest" ? "checked" : "") @(ViewBag.unlock == "true" ? "" : "disabled")>
                         <label class="form-check-label" for="sortEasiest">
                             Najłatwiejsze
                         </label>
                     </div>
                     <div class="form-check-sm mt-1 mb-1">
-                        <input class="form-check-input" type="radio" name="sortOption3" id="sortHardest" value="hardest" @(ViewBag.SortOption3 == "hardest" ? "checked" : "") disabled>
+                        <input class="form-check-input" type="radio" name="sortOption3" id="sortHardest" value="hardest" @(ViewBag.SortOption3 == "hardest" ? "checked" : "") @(ViewBag.unlock == "true" ? "" : "disabled")>
                         <label class="form-check-label" for="sortHardest">
                             Najtrudniejsze
                         </label>
-                    </div>
-                    <div class="row ps-5 pe-5 mt-2">
-                        <button type="button" class="btn btn-sm btn-secondary mt-1 mb-1" id="resetSort">Reset</button>
                     </div>
                 </div>
             </form>
@@ -65,7 +62,7 @@
                             <div class="row g-0">
                                 <div class="col-md-4">
                                     <a href="">
-                                        <img src="@recipe.imageURL" class="img-fluid rounded-start" style="width: 200px; height: 200px;" alt="...">
+                                        <img src="@recipe.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" alt="...">
                                     </a>
                                 </div>
                                 <div class="col-md-8">
@@ -83,6 +80,11 @@
                                         </a>
                                         }
                                         </div>
+                                        <p class="card-text mt-3"><small class="text-body-secondary">
+                                            Ilość porcji: <i class="bi bi-egg-fried text-info"></i> @recipe.portions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            Poziom trudności: <i class="bi bi-capslock-fill text-danger"></i> @recipe.difficulty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            Czas przygotowania: <i class="bi bi-stopwatch text-primary"></i> @recipe.avgTime min
+                                        </small></p>
                                     </div>
                                 </div>
                             </div>
