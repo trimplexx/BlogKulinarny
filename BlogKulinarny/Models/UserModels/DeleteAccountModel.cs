@@ -1,4 +1,4 @@
-﻿namespace BlogKulinarny.Models;
+﻿namespace BlogKulinarny.Models.UserModels;
 
 public class DeleteAccountModel
 {

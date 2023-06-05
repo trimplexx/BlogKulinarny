@@ -1,5 +1,6 @@
 ﻿using BlogKulinarny.Data.Services;
-using BlogKulinarny.Models;
+using BlogKulinarny.Models.AuthModels;
+using BlogKulinarny.Models.UserModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

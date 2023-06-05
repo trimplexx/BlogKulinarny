@@ -1,5 +1,6 @@
 ﻿using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Models;
+using BlogKulinarny.Models.RecipeModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogKulinarny.Data.Services.Users
@@ -15,11 +16,13 @@ namespace BlogKulinarny.Data.Services.Users
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ChangesResult> CreateRecipe(Recipe recipe)
+        public async Task<ChangesResult> CreateRecipe(AddRecipeViewModel recipe)
         {
             try
             {
-                _dbContext.recipes.Add(recipe);
+                var recp = new Recipe(false, recipe.title,recipe.imageURL,recipe.description, 
+                    ConvertRange(recipe.difficulty), recipe.avgTime, recipe.portions,recipe.userId); 
+                _dbContext.recipes.Add(recp);
                 await _dbContext.SaveChangesAsync();
                 return new ChangesResult(true, "Pomyslnie dodano przepis");
             }
@@ -67,6 +70,29 @@ namespace BlogKulinarny.Data.Services.Users
             }
 
             return new ChangesResult(false, "wystapil blad");
+        }
+
+        //metody pomocnicze
+
+        public int ConvertRange(int range)
+        {
+            if (range <= 25)
+            {
+                range = 1;
+            }
+            else if (range <= 60)
+            {
+                range = 2;
+            }
+            else if (range <= 80)
+            {
+                range = 3;
+            }
+            else
+            {
+                range = 4;
+            }
+            return 1;
         }
     }
 }

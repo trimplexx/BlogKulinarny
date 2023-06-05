@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlogKulinarny.Models
+namespace BlogKulinarny.Models.UserModels
 {
     public class ChangePasswordViewModel
     {

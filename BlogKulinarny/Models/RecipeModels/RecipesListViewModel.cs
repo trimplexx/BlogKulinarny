@@ -1,4 +1,4 @@
-﻿namespace BlogKulinarny.Models
+﻿namespace BlogKulinarny.Models.RecipeModels
 {
     public class RecipesListViewModel
     {

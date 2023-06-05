@@ -7,7 +7,6 @@ using BlogKulinarny.Data.Services.Mail;
 using BlogKulinarny.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using BlogKulinarny.Data.Helpers;
 using MailKit.Net.Smtp;
 using MimeKit;
 using Microsoft.AspNetCore.Mvc;

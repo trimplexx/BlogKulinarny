@@ -1,9 +1,10 @@
-﻿
-using BlogKulinarny.Data;
+﻿using BlogKulinarny.Data;
 using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Data.Services.Admin;
 using BlogKulinarny.Data.Services.Users;
 using BlogKulinarny.Models;
+using BlogKulinarny.Models.RecipeModels;
+using BlogKulinarny.Models.UserModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Exchange.WebServices.Data;
@@ -201,9 +202,24 @@ namespace BlogKulinarny.Controllers
             return Ok();
         }
 
+
         public IActionResult AddRecipe()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRecipe(AddRecipeViewModel recipe)
+        {
+
+            var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+            recipe.userId = Int32.Parse(userId);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var result = await _recipesService.CreateRecipe(recipe);
+            }
+
+            return RedirectToAction("RecipeList", "User");
         }
     }
 }
