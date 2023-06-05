@@ -29,7 +29,7 @@ namespace BlogKulinarny.Controllers
             return View();
         }
 
-        public IActionResult RecipesList(string SearchForRecipe, string sortOption1, string sortOption2, string sortOption3)
+        public IActionResult RecipesList(string SearchForRecipe, string sortOption1, string sortOption2, string sortOption3, string unlock)
         {
             ViewBag.SearchForRecipe = SearchForRecipe;
             try
@@ -66,16 +66,18 @@ namespace BlogKulinarny.Controllers
                     ViewBag.SortOption2 = sortOption2;
                 }
 
-                if (sortOption3 == "easiest")
+                if (sortOption3 == "easiest" && unlock == "true")
                 {
                     recipes = recipes.OrderBy(r => r.difficulty).ToList();
                     ViewBag.SortOption3 = sortOption3;
+                    ViewBag.unlock = unlock;
                 }
 
-                if (sortOption3 == "hardest")
+                if (sortOption3 == "hardest" && unlock == "true")
                 {
                     recipes = recipes.OrderByDescending(r => r.difficulty).ToList();
                     ViewBag.SortOption3 = sortOption3;
+                    ViewBag.unlock = unlock;
                 }
 
                 return View(recipes);
