@@ -14,11 +14,16 @@
 function loadAvatars() {
     // Przykładowa tablica z URL-ami awatarów.
     const avatars = [
-        '/images/avatars/avatar0.webp',
-        '/images/avatars/avatar1.jpg',
-        '/images/avatars/avatar2.jpg',
-        '/images/avatars/avatar3.jpg',
-        '/images/avatars/avatar4.jpg',
+        '/images/avatars/avatar0.png',
+        '/images/avatars/avatar2.png',
+        '/images/avatars/avatar3.png',
+        '/images/avatars/avatar4.png',
+        '/images/avatars/avatar6.png',
+        '/images/avatars/avatar8.png',
+        '/images/avatars/avatar9.png',
+        '/images/avatars/avatar10.png',
+        '/images/avatars/avatar11.png',
+        '/images/avatars/avatar12.png',
     ];
 
     // Pobierz kontener awatarów z modalu.
