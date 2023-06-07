@@ -30,5 +30,6 @@ namespace BlogKulinarny.Data
         public DbSet<RecipeElements> recipesElements { get; set; }
         public DbSet<RecipesCategory> recipesCategories { get; set; }
         public DbSet<User> users { get; set; }
+        public DbSet<Comment> comments { get; set; }
     }
 }

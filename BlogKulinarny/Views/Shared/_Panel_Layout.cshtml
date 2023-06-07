@@ -40,7 +40,7 @@
                     <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="AddRecipe">Dodawanie przepisów</a>
                 </div>
                 <div class="col-6 col-md-12 d-grid">
-                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Edycja przepisów</a>
+                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Twoje przepisy</a>
                 </div>
 
                 @if (IsAdmin())
@@ -54,18 +54,15 @@
                         <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedUsers">Zatwierdzanie użytkowników</a>
                     </div>
                     <div class="col-6 col-md-12 d-grid">
-                        <a class="btn btn-warning" asp-area="" asp-controller="Admin">Edycja użytkowników</a>
+                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedRecipes">Zatwierdzanie przepisów</a>
                     </div>
                     <div class="col-6 col-md-12 d-grid">
-                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedRecipes">Zatwierdzanie przepisów</a>
+                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="RecipeList">Edycja przepisów</a>
                     </div>
                  }
                 </div>
-
-            
             </div>
-        </div>
-        
+        </div>       
 
         <!-- Main View -->
         <div class="col-lg-9 col-md-8">

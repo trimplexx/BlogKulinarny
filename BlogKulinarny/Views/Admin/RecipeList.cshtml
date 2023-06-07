@@ -1,0 +1,81 @@
+﻿@model List<BlogKulinarny.Models.Recipe>
+@{Layout = "~/Views/Shared/_Panel_Layout.cshtml";}
+
+<div class="container">
+    <div class="row my-3">
+        <!-- One card -->
+        @foreach (var recipe in Model)
+        {
+            <div class="col-12 mt-2 mb-2">
+                <!-- Card Body -->
+                <div class="border border-warning border-2 border-primary rounded-3 p-3 shadow bg-light bg-opacity-25">
+                    <div class="row gy-3 gx-3">
+                        <!-- Main -->
+                        <div class="col-sm-9">
+                            <div class="row gx-3">
+                                <!-- Image -->
+                                <div class="col-4">
+                                    <img src="@recipe.imageURL" class="img-fluid" />
+                                </div>
+                                <!-- Information -->
+                                <div class="col-8">
+                                    <div class="row gx-3 gy-3">
+                                        <!-- Nazwa -->
+                                        <div class="col-12">
+                                            <div class="text-truncate fw-bold fs-3" title="Nazwa Przepisu">
+                                                @recipe.title
+                                            </div>
+                                        </div>
+                                        <!-- Autor -->
+                                        <div class="col-12">
+                                            <div class="text-truncate" title="Autor">
+                                                Autor: @recipe.user.login
+                                            </div>
+                                        </div>
+                                        <!-- Tags... -->
+                                        <div class="col-md-12 mt-4">
+                                            @foreach (var tag in recipe.recipesCategories)
+                                            {
+                                                <div class="row gx-3 gy-3">
+                                                    <!-- Tag1 -->
+                                                    <div class="col-auto border border-2 rounded-2 border-warning mx-1">
+                                                        <div class="p-1">
+                                                            @tag.category.name
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Buttons -->
+                        <div class="col-sm-3">
+                            <div class="row g-3">
+                                <!-- ButtonAccept -->
+                                <form asp-controller="User" asp-action="EditRecipe" method="post">
+                                    <div class="d-grid col-4 col-sm-12">
+                                        <input type="hidden" name="recipeId" value="@recipe.id" />
+                                        <button type="submit" class="btn btn-success text-nowrap">Edytuj</button>
+                                    </div>
+                                </form>
+                                <!-- ButtonDecline -->
+                                <form asp-controller="User" asp-action="DeleteRecipe" method="post">
+                                    <div class="d-grid col-4 col-sm-12">
+                                        <input type="hidden" name="recipeId" value="@recipe.id" />
+                                        <button type="submit" class="btn btn-danger text-nowrap">Usuń</button>
+                                    </div>
+                                </form>
+                                <!-- ButtonInfo -->
+                                <div class="d-grid col-4 col-sm-12">
+                                    <button type="button" class="btn btn-warning text-nowrap">Szczegóły</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,80 @@
+﻿@model BlogKulinarny.Models.Recipe
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col">
+            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                <div class="row p-2">
+                    <div class="col-12 mb-0">
+                        <div class="text-center fw-bold fs-3">@Model.title</div>
+                    </div>
+                    <div class="col-md-6 mb-2 mt-2">
+                        <img src="@Model.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" alt="...">
+                    </div>
+                    <div class="col-md-6 mb-2 mt-2">
+                        <label class="form-label text-nowrap">Trudność przepisu: @Model.difficulty</label>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label text-nowrap">Porcje przepisu: @Model.portions</label>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <label class="form-label text-nowrap">Czas przygotowania przepisu: @Model.avgTime</label>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <label class="form-label text-nowrap">Opis przepisu:</label>
+                        <div class="form-label" style="min-height: 150px;">@Model.description</div>
+                    </div>
+                </div>
+                <div class="col-12 mx-2 mb-2">
+                    <label class="form-label text-nowrap">Kategorie</label>
+                    <div class="input-group">
+                        <div class="border-2 border-transparent  rounded-2 mx-5 " id="tagContainer">
+                            <div class="row row-cols-auto" id="tagListContainer">
+                                @foreach (var category in Model.recipesCategories)
+                                {
+                                    <div class="card-link border border-warning border-2 rounded-3 
+                                        bg-light bg-opacity-25 text-decoration-none link-secondary link-offset-2 
+                                            link-underline-opacity-25 link-underline-opacity-100-hover">
+                                        #@category.category.name
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 my-2">
+                        <label class="form-label text-nowrap">Składniki:</label>
+                        @if (Model.recipeElements != null && Model.recipeElements.Any())
+                        {
+                            <div class="form-label" style="min-height: 80px;">@Model.recipeElements[0].description</div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.recipeElements != null && Model.recipeElements.Any())
+            {
+                @foreach (var step in Model.recipeElements)
+                {
+                    @if (step.imageURL != "brak")
+                    {
+                        <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                            <div class="row p-2">
+                                <div class="col-12">
+                                    <div class="row gx-0">
+                                        <div class="col-10">
+                                            <label class="form-label text-nowrap">Krok nr. @(Model.recipeElements.IndexOf(step) + 1)</label>
+                                            <img src="@step.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" alt="...">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <div class="form-label" style="min-height: 80px;">@step.description</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

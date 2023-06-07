@@ -29,6 +29,17 @@ namespace BlogKulinarny.Controllers
             return View();
         }
 
+        public IActionResult RecipeDetails(int recipeId)
+        {
+            var recipe = _dbContext.recipes
+                .Include(r => r.recipesCategories)
+                    .ThenInclude(rc => rc.category)
+                .Include(r => r.recipeElements)
+                .SingleOrDefault(r => r.isAccepted && r.id == recipeId);
+
+            return View(recipe);
+        }
+
         public IActionResult RecipesList(string SearchForRecipe, string sortOption1, string sortOption2, string sortOption3, string unlock)
         {
             ViewBag.SearchForRecipe = SearchForRecipe;

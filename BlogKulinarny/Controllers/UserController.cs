@@ -44,9 +44,23 @@ namespace BlogKulinarny.Controllers
         {
             try
             {
+                var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+                int userIdAsInt;
+
+                // Spróbuj przekonwertować wartość userId na typ int
+                if (!int.TryParse(userId, out userIdAsInt))
+                {
+                    return Unauthorized(); // Jeśli konwersja się nie powiedzie, zwróć false
+                }
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized();
+                }
+
                 var userRecipes = _dbContext.recipes.Include(r => r.user).Include(r => r.recipesCategories)
                     .ThenInclude(rc => rc.category)
-                    .Where(r => r.isAccepted == true)
+                    .Where(r => r.isAccepted == true).Where(r => r.userId == userIdAsInt)
                     .ToList();
 
                 return View(userRecipes);
@@ -203,6 +217,9 @@ namespace BlogKulinarny.Controllers
         }
 
 
+        /// <summary>
+        /// dodawanie przepisow
+        /// </summary>
         public IActionResult AddRecipe()
         {
             AddRecipeViewModel model = new AddRecipeViewModel();

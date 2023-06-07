@@ -14,11 +14,13 @@ namespace BlogKulinarny.Controllers
         private readonly AdminUsersService _usersService;
         private readonly AdminRecipesService _recipesService;
         private readonly AppDbContext _dbContext;
-        
-        public AdminController(AdminUsersService UsersService,AdminRecipesService adminRecipesService, AppDbContext dbContext) {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public AdminController(AdminUsersService UsersService,AdminRecipesService adminRecipesService, AppDbContext dbContext, IHttpContextAccessor httpContextAccessor) {
             _usersService = UsersService;
             _dbContext = dbContext;
             _recipesService = adminRecipesService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -94,6 +96,42 @@ namespace BlogKulinarny.Controllers
         public IActionResult DetailsUser()
         {
             throw new NotImplementedException();
+        }
+
+        public IActionResult RecipeList()
+        {
+            try
+            {
+                var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+                int userIdAsInt;
+
+                // Spróbuj przekonwertować wartość userId na typ int
+                if (!int.TryParse(userId, out userIdAsInt))
+                {
+                    return Unauthorized(); // Jeśli konwersja się nie powiedzie, zwróć false
+                }
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized();
+                }
+
+                var userRecipes = _dbContext.recipes.Include(r => r.user).Include(r => r.recipesCategories)
+                    .ThenInclude(rc => rc.category)
+                    .Where(r => r.isAccepted == true)
+                    .ToList();
+
+                return View(userRecipes);
+            }
+            catch (Exception ex)
+            {
+                var errorModel = new ErrorViewModel
+                {
+                    //Message = "An error occurred while retrieving recipes.",
+                    //Exception = ex
+                };
+                return View("Error", errorModel);
+            }
         }
     }
 }
