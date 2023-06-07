@@ -205,13 +205,15 @@ namespace BlogKulinarny.Controllers
 
         public IActionResult AddRecipe()
         {
-            return View();
+            AddRecipeViewModel model = new AddRecipeViewModel();
+            List<Category> categories = _dbContext.categories.ToList();
+            model.categories = categories;
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateRecipe(AddRecipeViewModel recipe)
         {
-
             var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
             recipe.userId = Int32.Parse(userId);
             if (!string.IsNullOrEmpty(userId))

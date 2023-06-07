@@ -14,6 +14,12 @@ namespace BlogKulinarny.Models.RecipeModels
         public int userId { get; set; }
 
         //recipeElements
-        //List<RecipeElements> RecipeElements { get; set; }
+        public string selectedTags { get; set; }
+
+        public List<Category> categories { get; set; }
+
+        public string ingredients { get; set; }
+
+        public string saveSteps { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace BlogKulinarny.Models
         public int noOfList { get; set; }
 
         [Display(Name = "ImageUrl")]
-        public string imageURL { get; set; }
+        public string? imageURL { get; set; }
 
         [Display(Name = "Description")]
         public string description { get; set; }

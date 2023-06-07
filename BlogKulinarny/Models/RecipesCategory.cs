@@ -1,4 +1,4 @@
-﻿using BlogKulinarny.Data.Enums;
+﻿ using BlogKulinarny.Data.Enums;
 
 namespace BlogKulinarny.Models
 {
