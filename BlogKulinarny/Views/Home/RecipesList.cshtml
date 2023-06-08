@@ -82,7 +82,24 @@
                                     </div>
                                     <p class="card-text mt-3"><small class="text-body-secondary">
                                         Ilość porcji: <i class="bi bi-egg-fried text-info"></i> @recipe.portions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        Poziom trudności: <i class="bi bi-capslock-fill text-danger"></i> @recipe.difficulty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Poziom trudności: <i class="bi bi-capslock-fill text-danger"></i>
+                                                @if (recipe.difficulty == 1)
+                                                {
+                                                    <a class="text-success text-decoration-none">Łatwy</a>
+                                                }
+                                                else if (recipe.difficulty == 2)
+                                                {
+                                                    <a class="text-warning text-decoration-none">Średni</a>
+                                                }
+                                                else if (recipe.difficulty == 3)
+                                                {
+                                                    <a class="text-danger text-decoration-none">Trudny</a>
+                                                }
+                                                else if (recipe.difficulty == 4)
+                                                {
+                                                    <a class="text-danger text-decoration-none">Bardzo trudny</a>
+                                                }
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         Czas przygotowania: <i class="bi bi-stopwatch text-primary"></i> @recipe.avgTime min
                                     </small></p>
                                     <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })" class="btn btn-warning text-nowrap">Szczegóły</a>
