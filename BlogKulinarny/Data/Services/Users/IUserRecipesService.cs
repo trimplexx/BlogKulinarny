@@ -2,14 +2,13 @@
 using BlogKulinarny.Models;
 using BlogKulinarny.Models.RecipeModels;
 
-namespace BlogKulinarny.Data.Services.Users
+namespace BlogKulinarny.Data.Services.Users;
+
+public interface IUserRecipesService
 {
-    public interface IUserRecipesService
-    {
-        Task<ChangesResult> CreateRecipe(AddRecipeViewModel recipe);
+    Task<ChangesResult> CreateRecipe(AddRecipeViewModel recipe);
 
-        Task<ChangesResult> UpdateRecipe(Recipe recipe);
+    Task<ChangesResult> UpdateRecipe(Recipe recipe);
 
-        Task<ChangesResult> DeleteRecipe(int recipeId);
-    }
+    Task<ChangesResult> DeleteRecipe(int recipeId);
 }

@@ -1,26 +1,26 @@
-﻿ <!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - BlogKulinarny</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BlogKulinarny.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css" />
-    <link rel="icon" href="~/images/Icon.svg" type="image/svg" />
-    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css" />
-    <link rel="stylesheet" href="~/css/user-menu.css" asp-append-version="true" />
-    <link rel="icon" href="~/images/Icon.svg" type="image/svg" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/BlogKulinarny.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css"/>
+    <link rel="icon" href="~/images/Icon.svg" type="image/svg"/>
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="~/css/user-menu.css" asp-append-version="true"/>
+    <link rel="icon" href="~/images/Icon.svg" type="image/svg"/>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom border-warning box-shadow">
         <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/Logo.svg" style="width:50px;height:50px;" />
-                    BlogKulinarny
-                </a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/images/Logo.svg" style="width:50px;height:50px;"/>
+                BlogKulinarny
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -37,15 +37,15 @@
                     @if (Context.Session.GetString("UserId") != null)
                     {
                         <a class="nav-link dropdown-toggle d-flex align-items-center" style="color: #5c636a;" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.png")" class="bi bi-person-circle" style="font-size: 40px; width: 40px; height: 40px; border-radius: 50%;" />
+                            <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.png")" class="bi bi-person-circle" style="font-size: 40px; width: 40px; height: 40px; border-radius: 50%;"/>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end user-menu" aria-labelledby="userDropdown">
                             <li>
                                 <div class="position-relative text-center">
-                                    <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.png")" class="bi bi-pencil-square" style="font-size: 100px; width: 100px; height: 100px; border-radius: 50%;" />
+                                    <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.png")" class="bi bi-pencil-square" style="font-size: 100px; width: 100px; height: 100px; border-radius: 50%;"/>
                                     <div class="user-profile-heading">@Context.Session.GetString("Login")</div>
                                     <div class="user-profile-email">@Context.Session.GetString("Email")</div>
-                                    
+
                                     <!-- Kontener dla ikony edycji -->
                                     <div class="edit-profile-container">
                                         <a href="@Url.Action("EditUser", "User")" class="edit-profile-icon" title="Edytuj profil">
@@ -65,7 +65,7 @@
                     else
                     {
                         <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Login" style="color: #5c636a;">
-                            <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.png")" class="bi bi-person-circle" style="font-size: 40px; width: 40px; height: 40px; border-radius: 50%;" />Zaloguj się
+                            <img src="@(!string.IsNullOrEmpty(Context.Session.GetString("Avatar")) ? Context.Session.GetString("Avatar") : "/images/avatars/avatar0.png")" class="bi bi-person-circle" style="font-size: 40px; width: 40px; height: 40px; border-radius: 50%;"/>Zaloguj się
                         </a>
                     }
                 </div>
@@ -75,21 +75,21 @@
     </nav>
 </header>
 
-    <div class="world">
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+<div class="world">
+    <main role="main">
+        @RenderBody()
+    </main>
+</div>
 
-    <footer class="border-top border-warning footer text-muted bg-white">
-        <div class="container">
-            &copy; 2023 - BlogKulinarny - <a class="link-warning" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<footer class="border-top border-warning footer text-muted bg-white">
+    <div class="container">
+        &copy; 2023 - BlogKulinarny - <a class="link-warning" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+</footer>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="~/js/user-menu.js" asp-append-version="true"></script>
-@await RenderSectionAsync("Scripts", required: false)
+@await RenderSectionAsync("Scripts", false)
 </body>
 </html>

@@ -23,4 +23,3 @@ public class RegistrationViewModel
     [Display(Name = "Adres email")]
     public string? Email { get; set; }
 }
-

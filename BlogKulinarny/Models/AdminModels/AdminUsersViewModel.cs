@@ -1,9 +1,8 @@
-﻿namespace BlogKulinarny.Models.AdminModels
-{
-    public class AdminUsersViewModel
-    {
-        public int userId { get; set; }
+﻿namespace BlogKulinarny.Models.AdminModels;
 
-        public int recipeId { get; set; }
-    }
+public class AdminUsersViewModel
+{
+    public int userId { get; set; }
+
+    public int recipeId { get; set; }
 }

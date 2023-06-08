@@ -14,23 +14,23 @@
                         <!-- Tytuł -->
                         <div class="col-12 mb-0">
                             <div class="text-center fw-bold fs-3">Dodawanie postów</div>
-                            <input type="text" class="form-control" asp-for="title" />
+                            <input type="text" class="form-control" asp-for="title"/>
                         </div>
                         <!-- Obraz -->
                         <div class="col-md-6 mb-2 mt-2">
                             <label class="form-label text-nowrap">Obraz</label>
-                            <input type="text" class="form-control" asp-for="imageURL" />
+                            <input type="text" class="form-control" asp-for="imageURL"/>
                         </div>
                         <!-- Trudność -->
                         <div class="col-md-6 mb-2 mt-2">
                             <label class="form-label text-nowrap">Trudność przepisu:</label>
                             <span id="difficultyLabel">Średni</span>
-                            <input type="range" class="form-range" asp-for="difficulty" onchange="updateDifficultyLabel(this)" />
+                            <input type="range" class="form-range" asp-for="difficulty" onchange="updateDifficultyLabel(this)"/>
                         </div>
                         <!-- Porcje -->
                         <div class="col-md-6 mb-2">
                             <label class="form-label text-nowrap">Porcje przepisu</label>
-                            <input type="number" class="form-control" min="1" max="8" value="4" asp-for="portions" />
+                            <input type="number" class="form-control" min="1" max="8" value="4" asp-for="portions"/>
                         </div>
                         <!-- Czas przygotowania -->
                         <div class="col-md-6 mb-2">
@@ -60,7 +60,7 @@
                             </div>
 
                             <!-- Tag -->
-                             <div class="border-2 border-transparent  rounded-2 mx-5 " id="tagContainer">
+                            <div class="border-2 border-transparent  rounded-2 mx-5 " id="tagContainer">
                                 <div class="row row-cols-auto" id="tagListContainer">
                                 </div>
                             </div>
@@ -71,11 +71,11 @@
                             <label class="form-label text-nowrap">Składniki</label>
                             <textarea class="form-control" id="recipeElements" rows="2" required asp-for="ingredients"></textarea>
                         </div>
-                    </div>                  
+                    </div>
                 </div>
-            
-               <!-- Kafelek kroku -->
-                <div id="stepsContainer"> 
+
+                <!-- Kafelek kroku -->
+                <div id="stepsContainer">
                     <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3" id="stepTitle">
                         <div class="row p-2">
                             <div class="col-12">
@@ -112,8 +112,8 @@
                 <!-- Submit -->
                 <div class="d-grid mt-3 shadow">
                     <button type="submit" class="btn btn-success" onclick="saveStepsToViewModel()">Dodaj Przepis</button>
-                    <input type="hidden" id="selectedTags" name="selectedTags" />
-                    <input type="hidden" id="saveSteps" name="saveSteps" />
+                    <input type="hidden" id="selectedTags" name="selectedTags"/>
+                    <input type="hidden" id="saveSteps" name="saveSteps"/>
                 </div>
             </form>
         </div>

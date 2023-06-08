@@ -9,5 +9,5 @@ public class LoginViewModel
     public string EmailOrLogin { get; set; }
 
     [Required(ErrorMessage = "Pole Hasło jest wymagane.")]
-    public string Password { get; set; }
+    public string? Password { get; set; }
 }

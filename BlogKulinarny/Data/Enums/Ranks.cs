@@ -1,9 +1,22 @@
-﻿namespace BlogKulinarny.Data.Enums
+﻿namespace BlogKulinarny.Data.Enums;
+
+/// <summary>
+///     Reprezentuje poziomy rang w systemie bloga kulinarnego.
+/// </summary>
+public enum Ranks
 {
-    public enum Ranks
-    {
-        user = 0,
-        admin = 1,
-        headAdmin = 2
-    }
+    /// <summary>
+    ///     Ranga zwykłego użytkownika.
+    /// </summary>
+    user = 0,
+
+    /// <summary>
+    ///     Ranga administratora.
+    /// </summary>
+    admin = 1,
+
+    /// <summary>
+    ///     Ranga głównego administratora.
+    /// </summary>
+    headAdmin = 2
 }

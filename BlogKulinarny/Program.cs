@@ -7,8 +7,6 @@ using BlogKulinarny.Data.Services.Users;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Exchange.WebServices.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,11 +37,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 //mailer
 var emailConfig = builder.Configuration
-        .GetSection("EmailConfiguration")
-        .Get<EmailConfiguration>();
+    .GetSection("EmailConfiguration")
+    .Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-builder.Services.Configure<FormOptions>(o => {
+builder.Services.Configure<FormOptions>(o =>
+{
     o.ValueLengthLimit = int.MaxValue;
     o.MultipartBodyLengthLimit = int.MaxValue;
     o.MemoryBufferThreshold = int.MaxValue;
@@ -69,14 +68,14 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Dodaj obsługę uwierzytelniania
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Dodaj obsługę sesji
 app.UseSession();
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
 
 // initial seeding data
 AppDbInitializer.Seed(app);

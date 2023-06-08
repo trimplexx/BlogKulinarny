@@ -2,24 +2,35 @@
 using System.Text;
 using BlogKulinarny.Data.Enums;
 using BlogKulinarny.Data.Helpers;
-using BlogKulinarny.Data.Services.Admin;
 using BlogKulinarny.Data.Services.Mail;
 using BlogKulinarny.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
-using MailKit.Net.Smtp;
-using MimeKit;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogKulinarny.Data.Services;
 
+/// <summary>
+///     Serwis odpowiedzialny za uwierzytelnianie użytkowników.
+/// </summary>
 public class AuthService : IAuthService
 {
     private readonly AppDbContext _dbContext;
+
+    /// <summary>
+    ///     Metody związane z mailami
+    /// </summary>
+    private readonly IEmailSender _emailSender;
+
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public AuthService(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor,IEmailSender emailSender)
+
+    /// <summary>
+    ///     Inicjalizuje nową instancję klasy <see cref="AuthService" />.
+    /// </summary>
+    /// <param name="dbContext">Kontekst bazy danych.</param>
+    /// <param name="httpContextAccessor">Dostęp do kontekstu HTTP.</param>
+    /// <param name="emailSender">Usługa wysyłania e-maili.</param>
+    public AuthService(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender)
     {
         _emailSender = emailSender;
         _dbContext = dbContext;
@@ -27,23 +38,21 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Logowanie
+    ///     Loguje użytkownika do systemu.
     /// </summary>
-    public bool Login(string emailOrLogin, string password)
+    /// <param name="emailOrLogin">Adres e-mail lub login użytkownika.</param>
+    /// <param name="password">Hasło użytkownika.</param>
+    /// <returns>Prawda, jeśli logowanie powiodło się; w przeciwnym razie, fałsz.</returns>
+    public bool Login(string emailOrLogin, string? password)
     {
-        string hashedPassword = HashPassword(password);
+        var hashedPassword = HashPassword(password);
 
-        User user = _dbContext.users.FirstOrDefault(u => (u.mail == emailOrLogin || u.login == emailOrLogin) && u.password == hashedPassword);
+        var user = _dbContext.users.FirstOrDefault(u =>
+            (u.mail == emailOrLogin || u.login == emailOrLogin) && u.password == hashedPassword);
 
-        if (user == null)
-        {
-            return false;
-        }
+        if (user == null) return false;
 
-        if (VerifyPassword(password, user.password) == false || user.isAccepted == false)
-        {
-            return false;
-        }
+        if (VerifyPassword(password, user.password) == false || user.isAccepted == false) return false;
 
         // Ustaw sesję użytkownika
         _httpContextAccessor.HttpContext?.Session.SetString("UserId", user.Id.ToString());
@@ -54,6 +63,10 @@ public class AuthService : IAuthService
         return true;
     }
 
+    /// <summary>
+    ///     Wylogowuje użytkownika.
+    /// </summary>
+    /// <returns>Task reprezentujący asynchroniczne wylogowanie.</returns>
     public async Task Logout()
     {
         if (_httpContextAccessor.HttpContext != null)
@@ -70,9 +83,9 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Metody związane z logowaniem
+    ///     Metody związane z logowaniem
     /// </summary>
-    private static string HashPassword(string password)
+    private static string HashPassword(string? password)
     {
         using (var sha256 = SHA256.Create())
         {
@@ -81,25 +94,31 @@ public class AuthService : IAuthService
         }
     }
 
-    private static bool VerifyPassword(string enteredPassword, string hashedPassword)
+    private static bool VerifyPassword(string? enteredPassword, string hashedPassword)
     {
-        byte[] hashedBytes = Convert.FromBase64String(hashedPassword);
+        var hashedBytes = Convert.FromBase64String(hashedPassword);
         using var sha256 = SHA256.Create();
-        byte[] enteredBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(enteredPassword));
+        var enteredBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(enteredPassword));
         return hashedBytes.SequenceEqual(enteredBytes);
     }
 
     /// <summary>
-    /// Rejestracja
+    ///     Rejestruje nowego użytkownika.
     /// </summary>
-    public async Task<ChangesResult> RegisterUserAsync(string login, string password, string email, Controller controller)
+    /// <param name="login">Login użytkownika.</param>
+    /// <param name="password">Hasło użytkownika.</param>
+    /// <param name="email">Adres e-mail użytkownika.</param>
+    /// <param name="controller">Kontroler wywołujący rejestrację.</param>
+    /// <returns>Wynik zmiany zawierający informacje o powodzeniu lub niepowodzeniu rejestracji.</returns>
+    public async Task<ChangesResult> RegisterUserAsync(string? login, string? password, string? email,
+        Controller controller)
     {
         try
         {
             // Walidacja długości loginu, maila i hasła
             if (login.Length > 40 || password.Length > 40 || email.Length > 40)
                 return new ChangesResult(false, "Maksymalna długość loginu, hasła i adresu email to 40 znaków.");
-            
+
             // Sprawdzenie czy podany adres email został już użyty
             if (_dbContext.users.Any(u => u.mail == email))
                 return new ChangesResult(false, "Podany adres email został już użyty.");
@@ -125,9 +144,10 @@ public class AuthService : IAuthService
                 imageURL = "/images/avatars/avatar0.webp"
             };
 
-            string link = $"{Utilities.GetBuilder(controller).Uri.AbsoluteUri}Auth/verify?token={newUser.VerificationToken}";
+            var link =
+                $"{Utilities.GetBuilder(controller).Uri.AbsoluteUri}Auth/verify?token={newUser.VerificationToken}";
 
-            Message verification = new Message(new string[] {newUser.mail},
+            var verification = new Message(new[] { newUser.mail },
                 "Potwierdzenie Adresu mailowego", "Tutaj jest link aktywacji konta:\n" + link);
             SendTokenMail(verification);
 
@@ -145,13 +165,13 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Metody związane z rejestracja
+    ///     Metody związane z rejestracja
     /// </summary>
-    private bool IsPasswordValid(string password)
+    private bool IsPasswordValid(string? password)
     {
         // Sprawdzenie czy hasło spełnia wymagania: przynajmniej 8 znaków, duża litera i znak specjalny
-        if (password.Length < 8 && password.Length > 40 || !password.Any(char.IsUpper) 
-            || !password.Any(IsSpecialCharacter)) return false;
+        if ((password.Length < 8 && password.Length > 40) || !password.Any(char.IsUpper)
+                                                          || !password.Any(IsSpecialCharacter)) return false;
 
         return true;
     }
@@ -167,11 +187,13 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Metody związane z weryfikacja konta
+    ///     Weryfikuje konto użytkownika.
     /// </summary>
+    /// <param name="token">Token weryfikacji.</param>
+    /// <returns>Wynik zmiany zawierający informacje o powodzeniu lub niepowodzeniu weryfikacji.</returns>
     public async Task<ChangesResult> Verify(string token)
     {
-        User user = await _dbContext.users.FirstOrDefaultAsync(u => (u.VerificationToken == token));
+        var user = await _dbContext.users.FirstOrDefaultAsync(u => u.VerificationToken == token);
 
         if (user == null)
             return new ChangesResult(false, "Nieprawidlowy token.");
@@ -185,9 +207,15 @@ public class AuthService : IAuthService
         return new ChangesResult(true, "Weryfikacja przebiegła pomyślnie.");
     }
 
+    /// <summary>
+    ///     Wysyła link do resetowania hasła na adres e-mail użytkownika.
+    /// </summary>
+    /// <param name="email">Adres e-mail użytkownika.</param>
+    /// <param name="controller">Kontroler wywołujący wysyłanie linku.</param>
+    /// <returns>Wynik zmiany zawierający informacje o powodzeniu lub niepowodzeniu wysłania linku.</returns>
     public async Task<ChangesResult> SendPasswdLink(string email, Controller controller)
     {
-        User user = await _dbContext.users.FirstOrDefaultAsync(u => (u.mail == email));
+        var user = await _dbContext.users.FirstOrDefaultAsync(u => u.mail == email);
 
         if (user == null)
             return new ChangesResult(false, "brak maila w bazie");
@@ -195,9 +223,10 @@ public class AuthService : IAuthService
         user.PasswordResetToken = CreateRandomToken();
         user.ResetTokenExpires = DateTime.Now.AddMinutes(15);
 
-        string link = $"{Utilities.GetBuilder(controller).Uri.AbsoluteUri}Auth/ChangePassword?token={user.PasswordResetToken}";
+        var link =
+            $"{Utilities.GetBuilder(controller).Uri.AbsoluteUri}Auth/ChangePassword?token={user.PasswordResetToken}";
 
-        Message changeMail = new Message(new string[] { user.mail },
+        var changeMail = new Message(new[] { user.mail },
             "Resetowanie Hasla", "Tutaj jest link do zmiany hasla:\n" + link + "\n link będzie aktywny przez 15 minut");
         SendTokenMail(changeMail);
 
@@ -205,17 +234,20 @@ public class AuthService : IAuthService
         return new ChangesResult(true, "Wyslano link z resetowaniem hasla");
     }
 
-    public async Task<ChangesResult> ChangePasswd(string token, string password)
+    /// <summary>
+    ///     Zmienia hasło użytkownika.
+    /// </summary>
+    /// <param name="token">Token resetowania hasła.</param>
+    /// <param name="password">Nowe hasło użytkownika.</param>
+    /// <returns>Wynik zmiany zawierający informacje o powodzeniu lub niepowodzeniu zmiany hasła.</returns>
+    public async Task<ChangesResult> ChangePasswd(string token, string? password)
     {
-        User user = await _dbContext.users.FirstOrDefaultAsync(u => (u.PasswordResetToken == token));
+        var user = await _dbContext.users.FirstOrDefaultAsync(u => u.PasswordResetToken == token);
 
         if (user == null)
             return new ChangesResult(false, "brak maila w bazie");
 
-        if (user.ResetTokenExpires < DateTime.Now)
-        {
-            return new ChangesResult(false, "link wygasl");
-        }
+        if (user.ResetTokenExpires < DateTime.Now) return new ChangesResult(false, "link wygasl");
 
         user.password = HashPassword(password);
         user.ResetTokenExpires = null;
@@ -224,10 +256,6 @@ public class AuthService : IAuthService
         await _dbContext.SaveChangesAsync();
         return new ChangesResult(true, "Wyslano link z resetowaniem hasla");
     }
-    /// <summary>
-    /// Metody związane z mailami
-    /// </summary>
-    private readonly IEmailSender _emailSender;
 
     public void SendTokenMail(Message message)
     {

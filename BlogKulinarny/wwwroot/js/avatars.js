@@ -68,7 +68,7 @@ async function updateAvatar(avatarUrl) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ avatarUrl: avatarUrl }),
+        body: JSON.stringify({avatarUrl: avatarUrl}),
     });
 
     if (updateAvatarResponse.ok) {

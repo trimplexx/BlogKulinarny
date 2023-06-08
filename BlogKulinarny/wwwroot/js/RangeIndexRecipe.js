@@ -1,5 +1,4 @@
-﻿
-//
+﻿//
 window.addEventListener('DOMContentLoaded', (event) => {
     var difficultyLabel = document.getElementById('difficultyLabel');
     difficultyLabel.style.color = '#9c7c27';

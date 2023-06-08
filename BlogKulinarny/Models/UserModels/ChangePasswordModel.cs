@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BlogKulinarny.Models.UserModels;
+﻿namespace BlogKulinarny.Models.UserModels;
 
 public class ChangePasswordModel
 {

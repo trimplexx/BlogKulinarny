@@ -1,8 +1,7 @@
-﻿namespace BlogKulinarny.Models.RecipeModels
+﻿namespace BlogKulinarny.Models.RecipeModels;
+
+public class RecipesListViewModel
 {
-    public class RecipesListViewModel
-    {
-        public List<Recipe> Recipes { get; set; }
-        public List<Category> Categories { get; set; }
-    }
+    public List<Recipe> Recipes { get; set; }
+    public List<Category> Categories { get; set; }
 }

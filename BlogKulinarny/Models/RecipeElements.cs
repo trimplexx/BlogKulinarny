@@ -1,29 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
-namespace BlogKulinarny.Models
+namespace BlogKulinarny.Models;
+
+public class RecipeElements
 {
-    public class RecipeElements
-    {
-        [Key]
-        public int id { get; set; }
+    [Key] public int id { get; set; }
 
-        [Display(Name = "NoOfList")]
-        public int noOfList { get; set; }
+    [Display(Name = "NoOfList")] public int noOfList { get; set; }
 
-        [Display(Name = "ImageUrl")]
-        public string? imageURL { get; set; }
+    [Display(Name = "ImageUrl")] public string? imageURL { get; set; }
 
-        [Display(Name = "Description")]
-        public string description { get; set; }
+    [Display(Name = "Description")] public string description { get; set; }
 
-        //recipe
-        [Display(Name = "RecipeId")]
-        public int recipeId { get; set; }
+    //recipe
+    [Display(Name = "RecipeId")] public int recipeId { get; set; }
 
-        public Recipe recipe { get; set; }
+    public Recipe recipe { get; set; }
 
-        //Relationships
-        
-    }
+    //Relationships
 }

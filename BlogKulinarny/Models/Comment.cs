@@ -1,18 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlogKulinarny.Models
+namespace BlogKulinarny.Models;
+
+public class Comment
 {
-    public class Comment
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Text { get; set; }
+    public string Text { get; set; }
 
-        public int Rate { get; set; }
+    public int Rate { get; set; }
 
-        [Display(Name = "RecipeId")]
-        public int recipeId { get; set; }
+    [Display(Name = "RecipeId")] public int recipeId { get; set; }
 
-        public Recipe recipe { get; set; }
-    }
+    public Recipe recipe { get; set; }
 }

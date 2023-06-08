@@ -1,16 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlogKulinarny.Models
+namespace BlogKulinarny.Models;
+
+public class Category
 {
-    public class Category
-    {
-        [Key]
-        public int id { get; set; }
+    [Key] public int id { get; set; }
 
-        [Display(Name = "Name")]
-        public string name { get; set; }
+    [Display(Name = "Name")] public string name { get; set; }
 
-        //Relationships
-        public List<RecipesCategory> recipesCategories { get; set; }
-    }
+    //Relationships
+    public List<RecipesCategory> recipesCategories { get; set; }
 }

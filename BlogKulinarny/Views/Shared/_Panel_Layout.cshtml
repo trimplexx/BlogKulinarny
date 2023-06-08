@@ -1,16 +1,18 @@
-﻿@using BlogKulinarny.Data
+﻿@using System.Text
+@using BlogKulinarny.Data
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @functions {
+
     private bool IsAdmin()
     {
         int? userRank = null;
-        if (HttpContextAccessor.HttpContext.Session.TryGetValue("UserId", out byte[] userIdBytes)
-            && int.TryParse(System.Text.Encoding.UTF8.GetString(userIdBytes), out int userId))
+        if (HttpContextAccessor.HttpContext.Session.TryGetValue("UserId", out var userIdBytes)
+            && int.TryParse(Encoding.UTF8.GetString(userIdBytes), out var userId))
         {
             var dbContext = HttpContextAccessor.HttpContext.RequestServices.GetService(typeof(AppDbContext)) as AppDbContext;
             var user = dbContext.users.FirstOrDefault(u => u.Id == userId);
@@ -21,6 +23,7 @@
         }
         return userRank.HasValue && userRank.Value >= 1;
     }
+
 }
 
 <div class="containe">
@@ -29,40 +32,40 @@
         <div class="col-lg-3 col-md-4">
             <div class="border border-end-3 border-warning p-3">
                 <div class="row gy-3">
-                 <!-- Część Panelu bocznego dla użytkowników i adminów -->
-                <div class="col-12">
-                    <h4 class="text-center">Panel Użytkownika</h4>
-                </div>
-                <div class="col-6 col-md-12 d-grid">
-                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="EditUser">Edycja użytkownika</a>
-                </div>
-                <div class="col-6 col-md-12 d-grid">
-                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="AddRecipe">Dodawanie przepisów</a>
-                </div>
-                <div class="col-6 col-md-12 d-grid">
-                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Twoje przepisy</a>
-                </div>
-
-                @if (IsAdmin())
-                {
-                <!-- Część Panelu bocznego tylko dla adminów -->
+                    <!-- Część Panelu bocznego dla użytkowników i adminów -->
                     <div class="col-12">
-                        <hr class="hr"/>
-                        <h4 class="text-center">Panel Admina</h4>
+                        <h4 class="text-center">Panel Użytkownika</h4>
                     </div>
                     <div class="col-6 col-md-12 d-grid">
-                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedUsers">Zatwierdzanie użytkowników</a>
+                        <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="EditUser">Edycja użytkownika</a>
                     </div>
                     <div class="col-6 col-md-12 d-grid">
-                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedRecipes">Zatwierdzanie przepisów</a>
+                        <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="AddRecipe">Dodawanie przepisów</a>
                     </div>
                     <div class="col-6 col-md-12 d-grid">
-                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="RecipeList">Edycja przepisów</a>
+                        <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Twoje przepisy</a>
                     </div>
-                 }
+
+                    @if (IsAdmin())
+                    {
+                        <!-- Część Panelu bocznego tylko dla adminów -->
+                        <div class="col-12">
+                            <hr class="hr"/>
+                            <h4 class="text-center">Panel Admina</h4>
+                        </div>
+                        <div class="col-6 col-md-12 d-grid">
+                            <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedUsers">Zatwierdzanie użytkowników</a>
+                        </div>
+                        <div class="col-6 col-md-12 d-grid">
+                            <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="UnconfirmedRecipes">Zatwierdzanie przepisów</a>
+                        </div>
+                        <div class="col-6 col-md-12 d-grid">
+                            <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="RecipeList">Edycja przepisów</a>
+                        </div>
+                    }
                 </div>
             </div>
-        </div>       
+        </div>
 
         <!-- Main View -->
         <div class="col-lg-9 col-md-8">
