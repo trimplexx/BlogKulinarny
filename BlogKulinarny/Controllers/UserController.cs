@@ -240,6 +240,20 @@ namespace BlogKulinarny.Controllers
 
             return RedirectToAction("RecipeList", "User");
         }
-    }
+
+        /// <summary>
+        /// dodawanie przepisow
+        /// </summary>
+        public IActionResult EditRecipe(int recipeId)
+        {
+            var recipe = _dbContext.recipes
+                .Include(r => r.recipesCategories)
+                    .ThenInclude(rc => rc.category)
+                .Include(r => r.recipeElements)
+                .SingleOrDefault(r => r.isAccepted && r.id == recipeId);
+
+            return View(recipe);
+        }
+}
 }
 

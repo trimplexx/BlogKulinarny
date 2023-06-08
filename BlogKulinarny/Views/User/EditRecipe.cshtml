@@ -1,0 +1,121 @@
+﻿@model EditRecipeViewModel
+
+@{
+    Layout = "~/Views/Shared/_Panel_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col">
+            <form asp-action="EditRecipe" method="post">
+                <!-- Kafelek Przepisu -->
+                <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                    <div class="row p-2">
+                        <!-- Tytuł -->
+                        <div class="col-12 mb-0">
+                            <div class="text-center fw-bold fs-3">Edytowanie przepisu</div>
+                            <input type="text" class="form-control" asp-for="Title" value="@Model.Title" />
+                        </div>
+                        <!-- Obraz -->
+                        <div class="col-md-6 mb-2 mt-2">
+                            <label class="form-label text-nowrap">Obraz</label>
+                            <input type="text" class="form-control" asp-for="ImageURL" value="@Model.ImageURL" />
+                        </div>
+                        <!-- Trudność -->
+                        <div class="col-md-6 mb-2 mt-2">
+                            <label class="form-label text-nowrap">Trudność przepisu:</label>
+                            <span id="difficultyLabel">Średni</span>
+                            <input type="range" class="form-range" asp-for="Difficulty" value="@Model.Difficulty" onchange="updateDifficultyLabel(this)" />
+                        </div>
+                        <!-- Porcje -->
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label text-nowrap">Porcje przepisu</label>
+                            <input type="number" class="form-control" min="1" max="8" value="@Model.Portions" asp-for="Portions" />
+                        </div>
+                        <!-- Czas przygotowania -->
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label text-nowrap">Czas przygotowania przepisu</label>
+                            <input type="number" class="form-control" asp-for="AvgTime" min="1" max="400" value="@Model.AvgTime" />
+                        </div>
+                        <!-- Opis -->
+                        <div class="col-12 mb-2">
+                            <label class="form-label text-nowrap">Opis przepisu</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" asp-for="Description">@Model.Description</textarea>
+                        </div>
+                    </div>
+                    <!-- Tu lista -->
+                    <div class="col-12 mx-2 mb-2">
+                        <label class="form-label text-nowrap">Kategorie</label>
+                        <div class="input-group">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="listDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Wybierz z listy
+                                </button>
+                                <div class="dropdown-menu dropdown-scroll" aria-labelledby="listDropdown">
+                                    <!-- Tutaj dodaj opcje dla kategorii -->
+                                </div>
+                            </div>
+
+                            <!-- Tag -->
+                            <div class="border-2 border-transparent rounded-2 mx-5" id="tagContainer">
+                                <div class="row row-cols-auto align-items-center g-1 px-2" id="tagRow">
+                                    <!-- Tutaj dodaj wybrane tagi -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Składniki -->
+                    <div class="col-12 my-2" id="recipeElementsContainer">
+                        <label class="form-label text-nowrap">Składniki</label>
+                        <textarea class="form-control" id="recipeElements" rows="2" asp-for="Ingredients">@Model.Ingredients</textarea>
+                    </div>
+                </div>
+
+                <!-- Kafelek kroku -->
+                <div id="stepsContainer">
+                    @foreach (var step in Model.Steps)
+                    {
+                        <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3" id="stepTitle">
+                            <div class="row p-2">
+                                <div class="col-12">
+                                    <div class="row gx-0">
+                                        <div class="col-10">
+                                            <label class="form-label text-nowrap">Obraz</label>
+                                            <input type="text" class="form-control step-image" value="@step.ImageURL" />
+                                        </div>
+                                        <div class="col-1 offset-1 d-grid">
+                                            <div class="btn-group-vertical btn-group-md" role="group">
+                                                <button type="button" class="btn btn-danger fw-bold remove-step p-1 mr-3" onclick="removeStep(this)">Usuń</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Opis -->
+                                <div class="col-12 mb-2">
+                                    <label class="form-label text-nowrap">Opis przepisu</label>
+                                    <textarea class="form-control step-description" rows="2">@step.Description</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Przenieś ten wiersz powyżej przycisku -->
+                <script src="~/js/RangeIndexRecipe.js"></script>
+
+                <!-- Dodaj Krok -->
+                <div class="d-grid mt-3 shadow">
+                    <button class="btn btn-warning" onclick="addStep()" id="addBtn">Dodaj Krok</button>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-grid mt-3 shadow">
+                    <button type="submit" class="btn btn-success">Zapisz Przepis</button>
+                    <input type="hidden" asp-for="RecipeId" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
