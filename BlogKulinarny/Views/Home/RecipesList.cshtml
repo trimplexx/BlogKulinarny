@@ -61,14 +61,14 @@
                         <!-- Main -->
                         <div class="row g-0">
                             <div class="col-md-4">
-                                <a href="">
+                                <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })">
                                     <img src="@recipe.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" alt="...">
                                 </a>
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <a href="" class="text-decoration-none link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                        <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })" class="text-decoration-none link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
                                             @recipe.title
                                         </a>
                                     </h5>
