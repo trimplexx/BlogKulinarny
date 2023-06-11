@@ -5,6 +5,8 @@ namespace BlogKulinarny.Models
 {
     public class Recipe // brakuje relacji z category posts
     {
+
+
         public Recipe()
         {
             recipesCategories = new List<RecipesCategory>();

@@ -4,7 +4,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     var difficultyLabel = document.getElementById('difficultyLabel');
     difficultyLabel.style.color = '#9c7c27';
     difficultyLabel.style.fontWeight = 'bold';
-
+    var difficultyRange = document.getElementById('difficultyRange');
+    updateDifficultyLabel(difficultyRange);
     var range = document.querySelector('input[type="range"]');
     range.value = 50;
     updateDifficultyLabel(range);
@@ -17,7 +18,22 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     // Wyłącz przycisk "Dodaj Krok" na początku, jeśli pola są puste
     addBtn.disabled = true;
+
+    // Dodaj nasłuchiwanie na zdarzenie dblclick dla elementów tagu
+    var tagElements = document.querySelectorAll('.tag');
+    tagElements.forEach(function (tagElement) {
+        tagElement.addEventListener('dblclick', function () {
+            var tag = tagElement.textContent.trim();
+            removeTag(tag);
+        });
+    });
+
+    // Dodaj nasłuchiwanie na zdarzenie dla przycisku "Dodaj Krok"
+    addBtn.addEventListener('click', function () {
+        addStep();
+    });
 });
+
 
 // suwak poziomu trudnosci
 
@@ -28,10 +44,10 @@ function updateDifficultyLabel(range) {
     if (value <= 25) {
         difficultyLabel.textContent = 'Łatwy';
         difficultyLabel.style.color = 'green';
-    } else if (value <= 60) {
+    } else if (value <= 50) {
         difficultyLabel.textContent = 'Średni';
         difficultyLabel.style.color = '#9c7c27';
-    } else if (value <= 80) {
+    } else if (value <= 75) {
         difficultyLabel.textContent = 'Trudny';
         difficultyLabel.style.color = '#91411f';
     } else {
@@ -63,13 +79,18 @@ function addTag(tag) {
     tagElement.className = 'col-auto border border-2 rounded-2 border-warning mx-1 tag';
     tagElement.innerHTML = '<div class="p-1">' + tag + '</div>';
 
+    // Dodawanie obsługi zdarzenia dla usuwania tagu
+    tagElement.addEventListener('dblclick', function () {
+        removeTag(tag);
+    });
+
     // Dodawanie tagu do kontenera tagów
     tagContainer.appendChild(tagElement);
 
     // Aktualizacja wartości pola selectedTags
     var selectedTagsInput = document.getElementById('selectedTags');
     var tags = document.querySelectorAll('.tag');
-    var selectedTags = Array.from(tags).map(tag => tag.textContent.trim());
+    var selectedTags = Array.from(tags).map((tag) => tag.textContent.trim());
     selectedTagsInput.value = selectedTags.join(',');
 
     // Ustawienie stylu flex dla kontenera tagów
@@ -80,6 +101,25 @@ function selectTag(tag) {
     // Wywołanie funkcji do dodawania tagu
     addTag(tag);
 }
+
+function removeTag(tag) {
+    // Usuń tag z widoku
+    var tagElements = document.querySelectorAll('.tag');
+    for (var i = 0; i < tagElements.length; i++) {
+        var tagElement = tagElements[i];
+        if (tagElement.textContent.trim() === tag) {
+            tagElement.remove();
+            break;
+        }
+    }
+
+    // Zaktualizuj wartość pola selectedTags
+    var selectedTagsInput = document.getElementById('selectedTags');
+    var tags = document.querySelectorAll('.tag');
+    var selectedTags = Array.from(tags).map((tag) => tag.textContent.trim());
+    selectedTagsInput.value = selectedTags.join(',');
+}
+
 
 //zapisywanie krokow
 var stepsCount = 1;
@@ -179,6 +219,5 @@ function saveStepsToViewModel() {
     } catch (error) {
         console.error("Wystąpił błąd:", error);
     }
+
 }
-
-

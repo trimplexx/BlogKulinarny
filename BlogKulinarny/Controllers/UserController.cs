@@ -242,18 +242,49 @@ namespace BlogKulinarny.Controllers
         }
 
         /// <summary>
-        /// dodawanie przepisow
+        /// wczytanie widoku edycji przepisu
         /// </summary>
         public IActionResult EditRecipe(int recipeId)
         {
-            var recipe = _dbContext.recipes
+            var Rec = _dbContext.recipes
                 .Include(r => r.recipesCategories)
                     .ThenInclude(rc => rc.category)
                 .Include(r => r.recipeElements)
                 .SingleOrDefault(r => r.isAccepted && r.id == recipeId);
 
-            return View(recipe);
+            Recipe r = new Recipe();
+            r = Rec;
+            r.recipeElements = Rec.recipeElements;
+
+            var viewModel = new EditRecipeViewModel
+            {
+                recipe = r,
+                editRecipe = new AddRecipeViewModel
+                {
+                    Id = Rec.id,
+                    title = Rec.title, // Przypisz inne potrzebne wartości
+                    imageURL = Rec.imageURL,
+                    difficulty = Rec.difficulty,
+                    portions = Rec.portions,
+                    avgTime = Rec.avgTime,
+                    description = Rec.description,
+                    ingredients = Rec.recipeElements[0].description,
+                    userId = Rec.userId
+                }
+            };
+
+            return View(viewModel);
         }
-}
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeRecipeProperties(EditRecipeViewModel recipe)
+        {
+            //var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+            
+                var result = await _recipesService.ChangeRecipeValues(recipe);
+
+            return RedirectToAction("RecipeList", "User");
+        }
+    }
 }
 

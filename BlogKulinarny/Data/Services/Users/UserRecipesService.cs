@@ -2,6 +2,7 @@
 using BlogKulinarny.Models;
 using BlogKulinarny.Models.RecipeModels;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace BlogKulinarny.Data.Services.Users
@@ -53,7 +54,6 @@ namespace BlogKulinarny.Data.Services.Users
                 NoOfList++;
                 _dbContext.recipesElements.Add(eleIng);
 
-                //string[] imgArray = recipe.imageStep?.Split(",");
                 string[] Array = recipe.saveSteps?.Split(',');
                 for (int i = 0; i < Array.Length; i += 2)
                 {
@@ -78,19 +78,65 @@ namespace BlogKulinarny.Data.Services.Users
             }
         }
 
-        public async Task<ChangesResult> UpdateRecipe(Recipe recipe)
+        public async Task<ChangesResult> ChangeRecipeValues(EditRecipeViewModel recipe)
         {
-            try
+            // Edytowany przepis
+            var editedRecipe = _dbContext.recipes
+                .Include(r => r.recipeElements)
+                .SingleOrDefault(r => r.isAccepted && r.id == recipe.editRecipe.Id);
+
+            if (editedRecipe != null)
             {
-                _dbContext.recipes.Update(recipe);
-                await _dbContext.SaveChangesAsync();
-                return new ChangesResult(true, "Pomyslnie edytowano przepis");
+                // Aktualizacja właściwości przepisu
+                editedRecipe.title = recipe.editRecipe.title;
+                editedRecipe.imageURL = recipe.editRecipe.imageURL;
+                editedRecipe.description = recipe.editRecipe.description;
+                editedRecipe.difficulty = ConvertRange(recipe.editRecipe.difficulty);
+                editedRecipe.avgTime = recipe.editRecipe.avgTime;
+                editedRecipe.portions = recipe.editRecipe.portions;
+
+                // Usunięcie istniejących elementów przepisu
+                _dbContext.recipesElements.RemoveRange(editedRecipe.recipeElements);
+
+                // Dodanie nowych elementów przepisu
+                int noOfList = 0;
+                var newElements = new List<RecipeElements>();
+
+                // Dodawanie listy składników do bazy
+                var ingredientElement = new RecipeElements()
+                {
+                    noOfList = noOfList,
+                    description = recipe.editRecipe.ingredients,
+                    imageURL = "brak"
+                };
+                newElements.Add(ingredientElement);
+                noOfList++;
+
+                // Tworzenie listy kroków
+                string[] stepsArray = recipe.editRecipe.saveSteps?.Split(',');
+                for (int i = 0; i < stepsArray.Length; i += 2)
+                {
+                    var stepElement = new RecipeElements()
+                    {
+                        noOfList = noOfList,
+                        description = stepsArray[i] ?? "brak opisu",
+                        imageURL = stepsArray[i + 1]
+                    };
+                    newElements.Add(stepElement);
+                    noOfList++;
+                }
+
+                editedRecipe.recipeElements = newElements;
+
+                _dbContext.Update(editedRecipe);
+                await _dbContext.SaveChangesAsync(); // Zapisz zmiany w bazie danych
+                return new ChangesResult(true, "Pomyślnie edytowano przepis");
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine(ex);
-                return new ChangesResult(false, "wykryto wyjatek");
+                return new ChangesResult(false, "Przepis nie został odnaleziony.");
             }
+
         }
 
         public async Task<ChangesResult> DeleteRecipe(int recipeId)

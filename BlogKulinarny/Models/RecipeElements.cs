@@ -5,6 +5,7 @@ namespace BlogKulinarny.Models
 {
     public class RecipeElements
     {
+
         [Key]
         public int id { get; set; }
 

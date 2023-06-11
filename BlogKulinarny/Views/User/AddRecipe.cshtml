@@ -25,7 +25,9 @@
                         <div class="col-md-6 mb-2 mt-2">
                             <label class="form-label text-nowrap">Trudność przepisu:</label>
                             <span id="difficultyLabel">Średni</span>
-                            <input type="range" class="form-range" asp-for="difficulty" onchange="updateDifficultyLabel(this)" />
+                            <input type="range" class="form-range" value="50" id="difficultyRange" 
+                                onload="updateDifficultyLabel(this)" onchange="updateDifficultyLabel(this)">
+
                         </div>
                         <!-- Porcje -->
                         <div class="col-md-6 mb-2">
@@ -102,7 +104,7 @@
                 </div>
 
                 <!-- Przenieś ten wiersz powyżej przycisku -->
-                <script src="~/js/RangeIndexRecipe.js"></script>
+                <script src="~/js/AddRecipe.js"></script>
 
                 <!-- Dodaj Krok -->
                 <div class="d-grid mt-3 shadow">
