@@ -1,0 +1,72 @@
+﻿@model CategoryViewModel
+
+@{Layout = "~/Views/Shared/_Panel_Layout.cshtml";}
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <form asp-controller="Admin" asp-action="addCategory" method="post">
+         <div class="col-md-6 mb-2">
+            <label class="form-label text-nowrap">Dodaj kategorie:</label>
+            <div class="d-grid col-lg-4 col-md-12">
+                <input type="text" class="form-control" id="newCategory" asp-for="_newCategory">
+                <button type="submit" class="btn btn-success text-nowrap">Dodaj</button>
+            </div>
+         </div>
+        </form>
+        @foreach (var cat in Model._categories)
+        {
+        <div class="col-12 mt-2 mb-2">
+            <div class="border border-warning border-2 border-primary rounded-3 p-3 shadow bg-light bg-opacity-25">
+                <div class="row gy-3">
+                    <!-- Info -->
+                    <div class="col-7">
+                        <div class="row gy-3 gx-3">
+                            <div class="col-lg-4 col-md-7">
+                                <div class="py-2 text-truncate fw-bold" title="Nazwa użytkownika">
+                                    @cat.name
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Przyciski -->
+                    <div class="col-5">
+                        <div class="row gy-3 gx-3">
+                            <div class="d-grid col-lg-4 col-md-12">
+
+                            </div>
+                            <div class="d-grid col-lg-4 col-md-6">
+                                @if(cat.isAccepted == false)
+                                {
+                                <form asp-controller="Admin" asp-action="unlockCategory" method="post">
+                                    <div class="d-grid">
+                                        <input type="hidden" value="@cat.id" id="Catunlock" asp-for="_id" />
+                                        <button type="submit" class="btn btn-success text-nowrap">Odblokuj</button>
+                                    </div>
+                                </form>
+                                }
+                                @if (cat.isAccepted == true)
+                                {
+                                <form asp-controller="Admin" asp-action="lockCategory" method="post">
+                                    <div class="d-grid">
+                                        <input type="hidden" value="@cat.id" id="Catunlock" asp-for="_id" />
+                                        <button type="submit" class="btn btn-danger text-nowrap">Zablokuj</button>
+                                    </div>
+                                </form>
+                                }
+                            </div>
+                            <div class="d-grid col-lg-4 col-md-6">
+                                <form asp-controller="Admin" asp-action="deleteCategory" method="post">
+                                    <div class="d-grid">
+                                        <input type="hidden" value="@cat.id" id="Catunlock" asp-for="_id" />
+                                        <button type="submit" class="btn btn-warning text-nowrap">Usuń</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>

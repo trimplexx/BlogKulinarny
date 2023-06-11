@@ -56,7 +56,10 @@
                                 <div class="dropdown-menu dropdown-scroll" aria-labelledby="listDropdown">
                                     @foreach (var category in Model.categories)
                                     {
-                                        <a class="dropdown-item" href="#" onclick="selectTag('@category.name')">@category.name</a>
+                                        @if(category.isAccepted == true)
+                                        {
+                                            <a class="dropdown-item" href="#" onclick="selectTag('@category.name')">@category.name</a>
+                                        }
                                     }
                                 </div>
                             </div>

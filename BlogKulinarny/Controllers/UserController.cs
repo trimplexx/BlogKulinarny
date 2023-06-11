@@ -3,6 +3,7 @@ using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Data.Services.Admin;
 using BlogKulinarny.Data.Services.Users;
 using BlogKulinarny.Models;
+using BlogKulinarny.Models.AdminModels;
 using BlogKulinarny.Models.RecipeModels;
 using BlogKulinarny.Models.UserModels;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ namespace BlogKulinarny.Controllers
         {
             return PartialView(viewName);
         }
-        
+
         public IActionResult RecipeList()
         {
             try
@@ -285,6 +286,28 @@ namespace BlogKulinarny.Controllers
 
             return RedirectToAction("RecipeList", "User");
         }
+
+        //kategorie
+        public IActionResult AddCategory()
+        {
+            var category = _dbContext.categories.ToList();
+
+            var viewModel = new CategoryViewModel();
+
+            viewModel._categories = category;
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> CreateCategory(CategoryViewModel category)
+        {
+            //var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+
+            var result = await _recipesService.CreateCategory(category);
+
+            return RedirectToAction("AddCategory", "User");
+        }
+
     }
 }
 

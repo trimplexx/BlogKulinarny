@@ -1,5 +1,6 @@
 ﻿using BlogKulinarny.Data.Helpers;
 using BlogKulinarny.Models;
+using BlogKulinarny.Models.AdminModels;
 using BlogKulinarny.Models.RecipeModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -136,7 +137,6 @@ namespace BlogKulinarny.Data.Services.Users
             {
                 return new ChangesResult(false, "Przepis nie został odnaleziony.");
             }
-
         }
 
         public async Task<ChangesResult> DeleteRecipe(int recipeId)
@@ -150,7 +150,6 @@ namespace BlogKulinarny.Data.Services.Users
                     await _dbContext.SaveChangesAsync(); // Zapisz zmiany w bazie danych
 
                     // jeszcze trzeba tutaj dodac usuwanie wszystkich elementow przepisu
-
                     return new ChangesResult(true, "Pomyslnie usunieto przepis");
                 }
             }
@@ -163,8 +162,38 @@ namespace BlogKulinarny.Data.Services.Users
             return new ChangesResult(false, "wystapil blad");
         }
 
-        //metody pomocnicze
 
+        //categorie
+
+        public async Task<ChangesResult> CreateCategory(CategoryViewModel category)
+        {
+            try
+            {
+                var chekcer = _dbContext.categories.FirstOrDefault(u => u.name == category._newCategory);
+
+                if (chekcer == null)
+                {
+                    Category newElement = new Category();
+                    newElement.isAccepted = false;
+                    newElement.name = category._newCategory;
+                    _dbContext.categories.Add(newElement);
+                    await _dbContext.SaveChangesAsync(); // Zapisz zmiany w bazie danych
+
+                    return new ChangesResult(true, "Pomyslnie dodano kategorie");
+                }
+                else
+                {
+                    return new ChangesResult(false, "Juz wystepuje taka kategoria");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return new ChangesResult(false, "wykryto wyjatek");
+            }
+        }
+
+        //metody pomocnicze
         public int ConvertRange(int range)
         {
             if (range <= 25)

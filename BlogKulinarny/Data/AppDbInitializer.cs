@@ -84,12 +84,14 @@ namespace BlogKulinarny.Data
                     {
                         new Category()
                         {
-                            name = "kuchnia bombajska"
+                            name = "kuchnia bombajska",
+                            isAccepted = true
                         },
 
                         new Category()
                         {
-                            name = "kebab"
+                            name = "kebab",
+                            isAccepted = true
                         }
                     });
                     context.SaveChanges();

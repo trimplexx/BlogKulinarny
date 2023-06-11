@@ -42,7 +42,9 @@
                 <div class="col-6 col-md-12 d-grid">
                     <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="RecipeList">Twoje przepisy</a>
                 </div>
-
+                <div class="col-6 col-md-12 d-grid">
+                    <a class="btn btn-warning" asp-area="" asp-controller="User" asp-action="AddCategory">Dodaj Kategorie</a>
+                </div>
                 @if (IsAdmin())
                 {
                 <!-- Część Panelu bocznego tylko dla adminów -->
@@ -58,6 +60,9 @@
                     </div>
                     <div class="col-6 col-md-12 d-grid">
                         <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="RecipeList">Edycja przepisów</a>
+                    </div>
+                    <div class="col-6 col-md-12 d-grid">
+                        <a class="btn btn-warning" asp-area="" asp-controller="Admin" asp-action="Categories">Kategorie</a>
                     </div>
                  }
                 </div>

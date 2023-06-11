@@ -27,7 +27,7 @@ namespace BlogKulinarny.Controllers
         {
             return View();
         }
-        
+
         // uzytkownicy
         public IActionResult UnconfirmedUsers()
         {
@@ -58,6 +58,11 @@ namespace BlogKulinarny.Controllers
         {
             await _usersService.DeleteUser(model.userId);
             return Redirect("UnconfirmedUsers");
+        }
+
+        public IActionResult DetailsUser()
+        {
+            throw new NotImplementedException();
         }
 
         //przepis
@@ -91,11 +96,6 @@ namespace BlogKulinarny.Controllers
         {
             await _recipesService.DeleteRecipe(model.recipeId);
             return Redirect("UnconfirmedRecipes");
-        }
-
-        public IActionResult DetailsUser()
-        {
-            throw new NotImplementedException();
         }
 
         public IActionResult RecipeList()
@@ -132,6 +132,42 @@ namespace BlogKulinarny.Controllers
                 };
                 return View("Error", errorModel);
             }
+        }
+
+        //categorie
+        public IActionResult Categories()
+        {
+            var category = _dbContext.categories.ToList();
+
+            var viewModel = new CategoryViewModel();
+
+            viewModel._categories = category;
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> addCategory(CategoryViewModel category)
+        {
+            await _recipesService.addCategory(category);
+            return Redirect("Categories");
+        }
+
+        public async Task<IActionResult> lockCategory(CategoryViewModel category)
+        {
+            await _recipesService.lockCategory(category);
+            return Redirect("Categories");
+        }
+
+        public async Task<IActionResult> unlockCategory(CategoryViewModel category)
+        {
+            await _recipesService.unlockCategory(category);
+            return Redirect("Categories");
+        }
+
+        public async Task<IActionResult> deleteCategory(CategoryViewModel category)
+        {
+            await _recipesService.deleteCategory(category);
+            return Redirect("Categories");
         }
     }
 }
