@@ -3,50 +3,92 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col">
-            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3 mb-3">
                 <div class="row p-2">
-                    <div class="col-12 mb-0">
-                        <div class="text-center fw-bold fs-3">@Model.title</div>
+                    <div class="col-12 mb-3">
+                        <div class="text-center fw-bold fs-1">@Model.title</div>
                     </div>
                     <div class="col-md-6 mb-2 mt-2">
-                        <img src="@Model.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" alt="...">
+                        <img src="@Model.imageURL" class="img-fluid mx-5 border border-2 border-warning rounded-3" style="width: 350px; height: 300px;" alt="...">
                     </div>
-                    <div class="col-md-6 mb-2 mt-2">
-                        <label class="form-label text-nowrap">Trudność przepisu: @Model.difficulty</label>
+                    <div class="col-6 mb-2">
+                        <label class="form-label text-nowrap fw-bold">Opis przepisu:</label>
+                        <div class="border border-2 border-warning rounded-3 bg-light bg-light bg-opacity-25 px-2">
+                            <div class="form-label" style="min-height: 150px;">
+                                @Model.description
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label text-nowrap">Porcje przepisu: @Model.portions</label>
+                    <div class="col-6 mb-2 mt-2">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <label class="form-label text-nowrap">Trudność przepisu:</label>
+                                    </th>
+                                    <td>
+                                        @if (Model.difficulty == 1)
+                                        {
+                                            <label class="form-label text-nowrap text-success">Łatwy</label>
+                                        }
+                                        else if (Model.difficulty == 2)
+                                        {
+                                            <label class="form-label text-nowrap text-warning">Średni</label>
+                                        }
+                                        else if (Model.difficulty == 3)
+                                        {
+                                            <label class="form-label text-nowrap text-danger">Trudny</label>
+                                        }
+                                        else
+                                        {
+                                            <alabel class="form-label text-nowrap text-danger">Bardzo trudny</alabel>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label class="form-label text-nowrap">Porcje przepisu:</label>
+                                    </th>
+                                    <td>
+                                        <label class="form-label text-nowrap">@Model.portions</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label class="form-label text-nowrap">Czas przygotowania przepisu:</label>
+                                    </th>
+                                    <td>
+                                        <label class="form-label text-nowrap">@Model.avgTime min</label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label text-nowrap">Czas przygotowania przepisu: @Model.avgTime</label>
-                    </div>
-                    <div class="col-12 mb-2">
-                        <label class="form-label text-nowrap">Opis przepisu:</label>
-                        <div class="form-label" style="min-height: 150px;">@Model.description</div>
+                    <div class="col-6 my-2">
+                        <label class="form-label text-nowrap fw-bold">Składniki:</label>
+                        <div class="border border-2 border-warning rounded-3 bg-light bg-light bg-opacity-25 px-2">
+                            @if (Model.recipeElements != null && Model.recipeElements.Any())
+                            {
+                                <div class="form-label" style="min-height: 80px;">@Model.recipeElements[0].description</div>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 mx-2 mb-2">
-                    <label class="form-label text-nowrap">Kategorie</label>
+                    <label class="form-label text-nowrap fw-bold">Kategorie</label>
                     <div class="input-group">
                         <div class="border-2 border-transparent  rounded-2 mx-5 " id="tagContainer">
                             <div class="row row-cols-auto" id="tagListContainer">
                                 @foreach (var category in Model.recipesCategories)
                                 {
-                                    <div class="card-link border border-warning border-2 rounded-3 
+                                    <a href="/Home/RecipesList?SearchForRecipe=@category.category.name" class="card-link border border-warning border-2 rounded-3
                                         bg-light bg-opacity-25 text-decoration-none link-secondary link-offset-2 
                                             link-underline-opacity-25 link-underline-opacity-100-hover">
                                         #@category.category.name
-                                    </div>
+                                    </a>
                                 }
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 my-2">
-                        <label class="form-label text-nowrap">Składniki:</label>
-                        @if (Model.recipeElements != null && Model.recipeElements.Any())
-                        {
-                            <div class="form-label" style="min-height: 80px;">@Model.recipeElements[0].description</div>
-                        }
                     </div>
                 </div>
             </div>
@@ -57,7 +99,7 @@
                 {
                     @if (step.imageURL != "brak")
                     {
-                        <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                        <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3 mb-3">
                             <div class="row p-2">
                                 <div class="col-12">
                                     <div class="row gx-0">
