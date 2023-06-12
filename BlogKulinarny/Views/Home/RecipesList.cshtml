@@ -50,7 +50,7 @@
         </div>
 
         <!-- Recipes -->
-        <div class="col-lg-9 mt-3 recipes">
+        <div class="col-lg-9 mt-2 mb-3 recipes">
             <div class="row">
                 <!-- One card -->
                 @foreach (var recipe in Model)
@@ -95,7 +95,7 @@
                                                 {
                                                     <a class="text-danger text-decoration-none">Trudny</a>
                                                 }
-                                                else if (recipe.difficulty == 4)
+                                                else
                                                 {
                                                     <a class="text-danger text-decoration-none">Bardzo trudny</a>
                                                 }
