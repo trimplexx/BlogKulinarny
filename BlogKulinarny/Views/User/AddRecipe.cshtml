@@ -12,8 +12,10 @@
                 <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
                     <div class="row gy-2 p-2">
                         <!-- Tytuł -->
+                        <div class="col-12 text-center fw-bold fs-3">Dodawanie Przepisu</div>
+                        <!-- Nazwa Przepisu -->
                         <div class="col-12">
-                            <div class="text-center fw-bold fs-3 mb-3">Dodawanie postów</div>
+                            <label class="form-label text-nowrap">Nazwa Przepisu</label>
                             <input type="text" class="form-control" asp-for="title" />
                         </div>
                         <!-- Obraz -->
@@ -44,7 +46,12 @@
                             <label class="form-label text-nowrap">Opis przepisu</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" asp-for="description"></textarea>
                         </div>
-                        <!-- Tu lista tagów -->
+                        <!-- Składniki -->
+                        <div class="col-12 " id="recipeElementsContainer">
+                            <label class="form-label text-nowrap">Składniki</label>
+                            <textarea class="form-control" id="recipeElements" rows="2" required asp-for="ingredients"></textarea>
+                        </div>
+                        <!-- Tu wybieranie tagów -->
                         <div class="col-12 ">
                             <label class="form-label text-nowrap">Kategorie</label>
                             <div class="input-group">
@@ -55,25 +62,21 @@
                                     <div class="dropdown-menu dropdown-scroll" aria-labelledby="listDropdown">
                                         @foreach (var category in Model.categories)
                                         {
-                                            @if(category.isAccepted == true)
+                                            @if (category.isAccepted == true)
                                             {
                                                 <a class="dropdown-item" href="#" onclick="selectTag('@category.name')">@category.name</a>
                                             }
                                         }
                                     </div>
                                 </div>
-
-                                <!-- Tag -->
-                                 <div class="border-2 border-transparent  rounded-2 mx-5 " id="tagContainer">
-                                    <div class="row row-cols-auto" id="tagListContainer">
-                                    </div>
-                                </div>
                             </div>
                         </div> 
-                        <!-- Składniki -->
-                        <div class="col-12 " id="recipeElementsContainer">
-                            <label class="form-label text-nowrap">Składniki</label>
-                            <textarea class="form-control" id="recipeElements" rows="2" required asp-for="ingredients"></textarea>
+                        <!-- Tagi -->
+                        <div class="col-12">
+                            <div class="border-2 border-transparent rounded-2 mx-3" id="tagContainer">
+                                <div class="row" id="tagListContainer">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
