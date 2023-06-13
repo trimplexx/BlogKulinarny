@@ -38,7 +38,7 @@
                         </div>
                         <!-- Czas przygotowania -->
                         <div class="col-md-6">
-                            <label class="form-label text-nowrap">Czas przygotowania przepisu</label>
+                            <label class="form-label text-nowrap">Czas przygotowania przepisu [min]</label>
                             <input type="number" class="form-control" asp-for="avgTime" min="1" max="400" value="30"/>
                         </div>
                         <!-- Opis -->
@@ -64,7 +64,7 @@
                                         {
                                             @if (category.isAccepted == true)
                                             {
-                                                <a class="dropdown-item" href="#" onclick="selectTag('@category.name')">@category.name</a>
+                                                <button type="button" class="dropdown-item btn-dark" onclick="selectTag('@category.name')">@category.name</button>
                                             }
                                         }
                                     </div>
