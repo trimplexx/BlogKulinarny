@@ -1,22 +1,27 @@
-﻿namespace BlogKulinarny.Models.RecipeModels;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class AddRecipeViewModel
+namespace BlogKulinarny.Models.RecipeModels
 {
-    //recipe
-    public string title { get; set; }
-    public string imageURL { get; set; }
-    public string description { get; set; }
-    public int difficulty { get; set; }
-    public int avgTime { get; set; }
-    public int portions { get; set; }
-    public int userId { get; set; }
+    public class AddRecipeViewModel
+    {
+        //recipe
 
-    //recipeElements
-    public string selectedTags { get; set; }
+        public int Id { get; set; }
+        public string title { get; set; }
+        public string imageURL { get; set; }
+        public string description { get; set; }
+        public int difficulty { get; set; }
+        public int avgTime { get; set; }
+        public int portions { get; set; }
+        public int userId { get; set; }
 
-    public List<Category> categories { get; set; }
+        //recipeElements
+        public string selectedTags { get; set; }
 
-    public string ingredients { get; set; }
+        public List<Category> categories { get; set; }
 
-    public string saveSteps { get; set; }
+        public string ingredients { get; set; }
+
+        public string saveSteps { get; set; }
+    }
 }

@@ -10,74 +10,81 @@
             <form asp-action="CreateRecipe" method="post">
                 <!-- Kafelek Przepisu -->
                 <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
-                    <div class="row p-2">
+                    <div class="row gy-2 p-2">
                         <!-- Tytuł -->
-                        <div class="col-12 mb-0">
-                            <div class="text-center fw-bold fs-3">Dodawanie postów</div>
-                            <input type="text" class="form-control" asp-for="title"/>
+                        <div class="col-12 text-center fw-bold fs-3">Dodawanie Przepisu</div>
+                        <!-- Nazwa Przepisu -->
+                        <div class="col-12">
+                            <label class="form-label text-nowrap">Nazwa Przepisu</label>
+                            <input type="text" class="form-control" asp-for="title" />
                         </div>
                         <!-- Obraz -->
-                        <div class="col-md-6 mb-2 mt-2">
+                        <div class="col-md-6 ">
                             <label class="form-label text-nowrap">Obraz</label>
-                            <input type="text" class="form-control" asp-for="imageURL"/>
+                            <input type="text" class="form-control" asp-for="imageURL" />
                         </div>
                         <!-- Trudność -->
-                        <div class="col-md-6 mb-2 mt-2">
+                        <div class="col-md-6 ">
                             <label class="form-label text-nowrap">Trudność przepisu:</label>
                             <span id="difficultyLabel">Średni</span>
-                            <input type="range" class="form-range" asp-for="difficulty" onchange="updateDifficultyLabel(this)"/>
+                            <input type="range" class="form-range" value="50" id="difficultyRange" 
+                                onload="updateDifficultyLabel(this)" onchange="updateDifficultyLabel(this)">
+
                         </div>
                         <!-- Porcje -->
-                        <div class="col-md-6 mb-2">
+                        <div class="col-md-6 ">
                             <label class="form-label text-nowrap">Porcje przepisu</label>
-                            <input type="number" class="form-control" min="1" max="8" value="4" asp-for="portions"/>
+                            <input type="number" class="form-control" min="1" max="8" value="4" asp-for="portions" />
                         </div>
                         <!-- Czas przygotowania -->
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label text-nowrap">Czas przygotowania przepisu</label>
+                        <div class="col-md-6">
+                            <label class="form-label text-nowrap">Czas przygotowania przepisu [min]</label>
                             <input type="number" class="form-control" asp-for="avgTime" min="1" max="400" value="30"/>
                         </div>
                         <!-- Opis -->
-                        <div class="col-12 mb-2">
+                        <div class="col-12 ">
                             <label class="form-label text-nowrap">Opis przepisu</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" asp-for="description"></textarea>
                         </div>
-                    </div>
-                    <!-- Tu lista -->
-                    <div class="col-12 mx-2 mb-2">
-                        <label class="form-label text-nowrap">Kategorie</label>
-                        <div class="input-group">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="listDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Wybierz z listy
-                                </button>
-                                <div class="dropdown-menu dropdown-scroll" aria-labelledby="listDropdown">
-                                    @foreach (var category in Model.categories)
-                                    {
-                                        <a class="dropdown-item" href="#" onclick="selectTag('@category.name')">@category.name</a>
-                                    }
-                                </div>
-                            </div>
-
-                            <!-- Tag -->
-                            <div class="border-2 border-transparent  rounded-2 mx-5 " id="tagContainer">
-                                <div class="row row-cols-auto" id="tagListContainer">
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Składniki -->
-                        <div class="col-12 my-2" id="recipeElementsContainer">
+                        <div class="col-12 " id="recipeElementsContainer">
                             <label class="form-label text-nowrap">Składniki</label>
                             <textarea class="form-control" id="recipeElements" rows="2" required asp-for="ingredients"></textarea>
                         </div>
+                        <!-- Tu wybieranie tagów -->
+                        <div class="col-12 ">
+                            <label class="form-label text-nowrap">Kategorie</label>
+                            <div class="input-group">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="listDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Wybierz z listy
+                                    </button>
+                                    <div class="dropdown-menu dropdown-scroll" aria-labelledby="listDropdown">
+                                        @foreach (var category in Model.categories)
+                                        {
+                                            @if (category.isAccepted == true)
+                                            {
+                                                <button type="button" class="dropdown-item btn-dark" onclick="selectTag('@category.name')">@category.name</button>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                        <!-- Tagi -->
+                        <div class="col-12">
+                            <div class="border-2 border-transparent rounded-2 mx-3" id="tagContainer">
+                                <div class="row" id="tagListContainer">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Kafelek kroku -->
-                <div id="stepsContainer">
+            
+               <!-- Kafelek kroku -->
+                <div id="stepsContainer"> 
                     <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3" id="stepTitle">
-                        <div class="row p-2">
+                        <div class="row gy-3 p-2">
                             <div class="col-12">
                                 <div class="row gx-0">
                                     <div class="col-10">
@@ -102,7 +109,7 @@
                 </div>
 
                 <!-- Przenieś ten wiersz powyżej przycisku -->
-                <script src="~/js/RangeIndexRecipe.js"></script>
+                <script src="~/js/AddRecipe.js"></script>
 
                 <!-- Dodaj Krok -->
                 <div class="d-grid mt-3 shadow">
@@ -110,10 +117,10 @@
                 </div>
 
                 <!-- Submit -->
-                <div class="d-grid mt-3 shadow">
+                <div class="d-grid mt-3 mb-3 shadow">
                     <button type="submit" class="btn btn-success" onclick="saveStepsToViewModel()">Dodaj Przepis</button>
-                    <input type="hidden" id="selectedTags" name="selectedTags"/>
-                    <input type="hidden" id="saveSteps" name="saveSteps"/>
+                    <input type="hidden" id="selectedTags" name="selectedTags" />
+                    <input type="hidden" id="saveSteps" name="saveSteps" />
                 </div>
             </form>
         </div>

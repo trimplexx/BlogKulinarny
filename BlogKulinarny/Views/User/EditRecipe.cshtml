@@ -1,0 +1,118 @@
+﻿@model EditRecipeViewModel
+
+@{
+    Layout = "~/Views/Shared/_Panel_Layout.cshtml";
+}
+
+<div class="container">
+
+    <div class="row justify-content-center">
+        <div class="col">
+            <form asp-action="ChangeRecipeProperties" method="post">
+                <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                    <div class="row p-2">
+                        <div class="col-12 mb-0">
+                            <div class="text-center fw-bold fs-3">
+                                <input type="text" class="form-control" value="@Model.recipe.title" asp-for="editRecipe.title">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2 mt-2">
+                            <label class="form-label text-nowrap">Link do zdjęcia:</label>
+                            <input type="text" class="form-control" value="@Model.recipe.imageURL" asp-for="editRecipe.imageURL">
+                        </div>
+                        <div class="col-md-6 mb-2 mt-2">
+                            <label class="form-label text-nowrap">Trudność przepisu:</label>
+                            <span id="difficultyLabel">Średni</span>
+                                <input type="range" class="form-range" value="(@Model.recipe.difficulty * 10)" 
+                                asp-for="editRecipe.difficulty" id="difficultyRange" onchange="updateDifficultyLabel(this)">
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label text-nowrap">Porcje przepisu:</label>
+                            <input type="text" class="form-control" value="@Model.recipe.portions" min="1" max="8" asp-for="editRecipe.portions">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label text-nowrap">Czas przygotowania przepisu:</label>
+                            <input type="text" class="form-control" value="@Model.recipe.avgTime" asp-for="editRecipe.avgTime" min="1" max="400">
+                        </div>
+                        <div class="col-12 mb-2">
+                            <label class="form-label text-nowrap">Opis przepisu:</label>
+                            <textarea class="form-control" rows="4" asp-for="editRecipe.description">@Model.recipe.description</textarea>
+                        </div>
+                    </div>
+                    <div class="col-12 mx-2 mb-2">
+                        <label class="form-label text-nowrap">Kategorie</label>
+                        <div class="input-group">
+                            <div class="border-2 border-transparent rounded-2 mx-5 " id="tagContainer">
+                                <div class="row row-cols-auto" id="tagListContainer">
+                                    @foreach (var category in Model.recipe.recipesCategories)
+                                    {
+                                        <div class="card-link border border-warning border-2 rounded-3 bg-light bg-opacity-25 text-decoration-none link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                            #@category.category.name
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 my-2">
+                            <div class="col-12 my-2">
+                                <label class="form-label text-nowrap">Składniki:</label>
+                                <textarea class="form-control" rows="2" name="editRecipe.ingredients">@Model.recipe.recipeElements[0].description</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista kroków -->
+                @if (Model.recipe.recipeElements != null && Model.recipe.recipeElements.Any())
+                {
+                    <div id="stepContainer">
+                        @for (int i = 1; i < Model.recipe.recipeElements.Count; i++)
+                        {
+                            var step = Model.recipe.recipeElements[i];
+                            if (step.imageURL != "brak")
+                            {
+                                <div id="step-@i">
+                                    <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                                        <div class="row p-2">
+                                            <div class="col-12">
+                                                <div class="row gx-0">
+                                                    <div class="col-10">
+                                                        <label class="form-label text-nowrap">Krok nr. @(i)</label>
+                                                        <label class="form-label text-nowrap">Link do zdjęcia:</label>
+                                                        <input type="text" class="form-control" value="@step.imageURL">
+                                                        <img src="@step.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" id="eleImage" alt="...">
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <button class="btn btn-danger btn-sm float-end" onclick="removeStepEdit(@i)">Usuń krok</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mb-2">
+                                                <textarea class="form-control" rows="2" id="eleDetails">@step.description</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+
+                <script src="~/js/EditRecipe.js"></script>
+
+                <div class="row justify-content-end m-3">
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-success" onclick="saveStepsToViewModel()">Edytuj Przepis</button>
+                        <input type="hidden" id="editRecipe.saveSteps" name="editRecipe.saveSteps" />
+                        <input type="hidden" asp-for="editRecipe.Id" value="@Model.editRecipe.Id" />
+                        <input type="hidden" asp-for="editRecipe.userId" value="@Model.editRecipe.userId" />
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-secondary">Odrzuć zmiany</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

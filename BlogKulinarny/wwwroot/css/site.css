@@ -45,3 +45,9 @@ body {
     border-color: #FFC107;
     box-shadow: none;
 }
+
+.customCheck:checked {
+    background-color: #198754;
+    border-color: #198754;
+    box-shadow: none;
+}
