@@ -29,9 +29,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
 
     // Dodaj nasłuchiwanie na zdarzenie dla przycisku "Dodaj Krok"
-    addBtn.addEventListener('click', function () {
-        addStep();
-    });
+
 });
 
 
