@@ -4,6 +4,7 @@ using BlogKulinarny.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogKulinarny.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230614085407_commFixv3")]
+    partial class commFixv3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,6 +53,9 @@ namespace BlogKulinarny.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CommentId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Rate")
                         .HasColumnType("int");
 
@@ -64,6 +70,8 @@ namespace BlogKulinarny.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
 
                     b.HasIndex("recipeId");
 
@@ -202,8 +210,12 @@ namespace BlogKulinarny.Migrations
 
             modelBuilder.Entity("BlogKulinarny.Models.Comment", b =>
                 {
-                    b.HasOne("BlogKulinarny.Models.Recipe", "recipe")
+                    b.HasOne("BlogKulinarny.Models.Comment", null)
                         .WithMany("comments")
+                        .HasForeignKey("CommentId");
+
+                    b.HasOne("BlogKulinarny.Models.Recipe", "recipe")
+                        .WithMany()
                         .HasForeignKey("recipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -265,10 +277,13 @@ namespace BlogKulinarny.Migrations
                     b.Navigation("recipesCategories");
                 });
 
-            modelBuilder.Entity("BlogKulinarny.Models.Recipe", b =>
+            modelBuilder.Entity("BlogKulinarny.Models.Comment", b =>
                 {
                     b.Navigation("comments");
+                });
 
+            modelBuilder.Entity("BlogKulinarny.Models.Recipe", b =>
+                {
                     b.Navigation("recipeElements");
 
                     b.Navigation("recipesCategories");
