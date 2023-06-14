@@ -3,34 +3,31 @@
 @{Layout = "~/Views/Shared/_Panel_Layout.cshtml";}
 
 <div class="container-fluid mt-3">
-    <div class="row">
-        <form asp-controller="User" asp-action="CreateCategory" method="post">
-         <div class="col-md-6 mb-2">
-            <label class="form-label text-nowrap">Dodaj kategorie:</label>
-            <div class="d-grid col-lg-4 col-md-12">
-                <input type="text" class="form-control mb-3" id="newCategory" asp-for="_newCategory">
-                <button type="submit" class="btn btn-success text-nowrap">Dodaj</button>
-            </div>
-         </div>
-        </form>
+    <div class="row g-2">
+        <div class="col-12">
+            <form asp-controller="User" asp-action="CreateCategory" method="post">
+                <div class="row">
+                    <div class="col-auto text-truncate">
+                        <label class="">Dodaj kategorie:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" id="newCategory" asp-for="_newCategory">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success">Dodaj</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="py-2 text-truncate fw-bold" title="Kategoria">
         Dostepne kategorie:
         </div>
         @foreach (var cat in Model._categories)
         {
-        <div class="col-3 mt-2 mb-2">
+        <div class="col-auto">
             <div class="border border-warning border-2 border-primary rounded-3 p-3 shadow bg-light bg-opacity-25">
-                <div class="row gy-3">
-                    <!-- Info -->
-                    <div class="col-12">
-                        <div class="row gy-3 gx-3">
-                            <div class="col-12">
-                                <div class="py-2 text-truncate fw-bold" title="Kategoria">
-                                    @cat.name
-                                </div>
-                            </div>
-                        </div>
-                    </div>                 
+                <div class=" text-truncate fw-bold" title="Kategoria">
+                    @cat.name
                 </div>
             </div>
         </div>

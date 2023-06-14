@@ -1,17 +1,17 @@
 ﻿@model BlogKulinarny.Models.Recipe
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col">
-            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3 mb-3">
-                <div class="row p-2">
-                    <div class="col-12 mb-3">
+    <div class="row gy-3 py-3">
+        <div class="col-12">
+            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25">
+                <div class="row gx-2 gy-2">
+                    <div class="col-12">
                         <div class="text-center fw-bold fs-1">@Model.title</div>
                     </div>
-                    <div class="col-md-6 mb-2 mt-2">
+                    <div class="col-md-6 col-12 d-flex justify-content-center">
                         <img src="@Model.imageURL" class="border border-2 border-warning rounded-3" style="width: 300px; height: 250px;" alt="...">
                     </div>
-                    <div class="col-6 mb-2">
+                    <div class="col-md-6 col-12">
                         <label class="form-label text-nowrap fw-bold">Opis przepisu:</label>
                         <div class="border border-2 border-warning rounded-3 bg-light bg-light bg-opacity-25 px-2">
                             <div class="form-label" style="min-height: 150px;">
@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-2 mt-2">
+                    <div class="col-md-6">
                         <table class="table">
                             <tbody>
                                 <tr>
@@ -64,7 +64,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-6 my-2">
+                    <div class="col-md-6 col-12">
                         <label class="form-label text-nowrap fw-bold">Składniki:</label>
                         <div class="border border-2 border-warning rounded-3 bg-light bg-light bg-opacity-25 px-2">
                             @if (Model.recipeElements != null && Model.recipeElements.Any())
@@ -74,10 +74,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 mx-2 mb-2">
+                <div class="col-12">
                     <label class="form-label text-nowrap fw-bold">Kategorie:</label>
                     <div class="input-group">
-                        <div class="border-2 border-transparent  rounded-2 mx-5 " id="tagContainer">
+                        <div class="border-2 border-transparent rounded-2 mx-3" id="tagContainer">
                             <div class="row row-cols-auto" id="tagListContainer">
                                 @foreach (var category in Model.recipesCategories)
                                 {
@@ -92,40 +92,39 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            @if (Model.recipeElements != null && Model.recipeElements.Any())
+        @if (Model.recipeElements != null && Model.recipeElements.Any())
+        {
+            @foreach (var step in Model.recipeElements)
             {
-                @foreach (var step in Model.recipeElements)
+                @if (step.imageURL != "brak")
                 {
-                    @if (step.imageURL != "brak")
-                    {
-                        <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3 mb-3">
-                            <div class="row p-2">
+                    <div class="col-12">
+                        <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25">
+                            <div class="row gx-2 gy-2">
                                 <div class="col-12">
-                                    <div class="form-check-sm mt-1 mb-1">
+                                    <div class="form-check-sm">
                                         <input class="form-check-input checkbox-class customCheck" type="checkbox" name="stepOption" value="true" id="flexStep1" onchange="updateBorders()">
                                         <label class="form-check-label text-nowrap" for="flexStep">
                                             Krok nr. @(Model.recipeElements.IndexOf(step))
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-2 mt-1 mb-1">
-                                    <div class="row gx-0">
-                                        <div class="col-10">
-                                            <img src="@step.imageURL" class="border border-2 border-warning rounded-3" style="width: 150px; height: 100px;" alt="...">
-                                        </div>
-                                    </div>
+                                <div class="col-auto">
+
+                                    <img src="@step.imageURL" class="border border-2 border-warning rounded-3 img-fluid" style="width: 150px; height: 100px;" alt="...">
                                 </div>
-                                <div class="col-10 mt-1 mb-1">
+                                <div class="col">
                                     <div class="border border-2 border-warning rounded-3 bg-light bg-light bg-opacity-25 px-2">
                                         <div class="form-label customLabel" style="min-height: 80px;">@step.description</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    }
+                     </div>
                 }
             }
-        </div>
+        }
     </div>
 </div>
