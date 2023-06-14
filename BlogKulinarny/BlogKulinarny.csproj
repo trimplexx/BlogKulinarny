@@ -7,40 +7,41 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="Views\NewFolder1\**"/>
-        <Compile Remove="Views\NewFolder2\**"/>
-        <Compile Remove="Views\NewFolder\**"/>
-        <Content Remove="Views\NewFolder1\**"/>
-        <Content Remove="Views\NewFolder2\**"/>
-        <Content Remove="Views\NewFolder\**"/>
-        <EmbeddedResource Remove="Views\NewFolder1\**"/>
-        <EmbeddedResource Remove="Views\NewFolder2\**"/>
-        <EmbeddedResource Remove="Views\NewFolder\**"/>
-        <None Remove="Views\NewFolder1\**"/>
-        <None Remove="Views\NewFolder2\**"/>
-        <None Remove="Views\NewFolder\**"/>
+        <Compile Remove="Views\NewFolder1\**" />
+        <Compile Remove="Views\NewFolder2\**" />
+        <Compile Remove="Views\NewFolder\**" />
+        <Content Remove="Views\NewFolder1\**" />
+        <Content Remove="Views\NewFolder2\**" />
+        <Content Remove="Views\NewFolder\**" />
+        <EmbeddedResource Remove="Views\NewFolder1\**" />
+        <EmbeddedResource Remove="Views\NewFolder2\**" />
+        <EmbeddedResource Remove="Views\NewFolder\**" />
+        <None Remove="Views\NewFolder1\**" />
+        <None Remove="Views\NewFolder2\**" />
+        <None Remove="Views\NewFolder\**" />
+        <None Include="wwwroot\css\_CommentsPartial.css" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="bootstrap" Version="5.2.3"/>
-        <PackageReference Include="FontAwesome" Version="4.7.0"/>
-        <PackageReference Include="MailKit" Version="4.0.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5"/>
+        <PackageReference Include="bootstrap" Version="5.2.3" />
+        <PackageReference Include="FontAwesome" Version="4.7.0" />
+        <PackageReference Include="MailKit" Version="4.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Exchange.WebServices" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Exchange.WebServices" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Migrations\"/>
+        <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>

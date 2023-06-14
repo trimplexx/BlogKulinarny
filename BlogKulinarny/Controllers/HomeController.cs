@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using BlogKulinarny.Data;
 using BlogKulinarny.Data.Services.Admin;
+using BlogKulinarny.Migrations;
 using BlogKulinarny.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,15 +47,17 @@ public class HomeController : Controller
     ///     Wyświetla stronę ze szczegółami przepisu.
     /// </summary>
     /// <param name="recipeId">Identyfikator przepisu do wyświetlenia.</param>
-    public IActionResult RecipeDetails(int recipeId)
+    public async Task<IActionResult> RecipeDetails(int recipeId)
     {
         try
         {
-            var recipe = _dbContext.recipes
+            var recipe = await _dbContext.recipes
                 .Include(r => r.recipesCategories)
                 .ThenInclude(rc => rc.category)
                 .Include(r => r.recipeElements)
-                .SingleOrDefault(r => r.isAccepted && r.id == recipeId);
+                .Include(r => r.comments)
+                .ThenInclude(c => c.user)
+                .SingleOrDefaultAsync(r => r.isAccepted && r.id == recipeId);
 
             return View(recipe);
         }
@@ -66,6 +69,67 @@ public class HomeController : Controller
             };
 
             return View("Error", errorViewModel);
+        }
+    }
+    
+    [HttpPost]
+    public IActionResult AddComment(Comment model)
+    {
+        string userId = HttpContext.Session.GetString("UserId");
+            model.userId = int.Parse(userId);
+
+            // Tworzenie nowego komentarza i uzupełnianie właściwości
+            Comment comment = new Comment
+            {
+                recipeId = model.recipeId,
+                userId = model.userId,
+                Rate = model.Rate,
+                Text = model.Text
+            };
+
+            // Dodawanie komentarza do bazy danych (załóżmy, że _context jest instancją DbContext)
+            _dbContext.comments.Add(comment);
+            _dbContext.SaveChanges();
+
+            // Przekierowywanie użytkownika do szczegółów przepisu
+            return RedirectToAction("RecipeDetails", new { recipeId = model.recipeId });
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> EditComment(int commentId, string text, int rate)
+    {
+        var comment = await _dbContext.comments.FindAsync(commentId);
+
+        if (comment != null)
+        {
+            comment.Text = text;
+            comment.Rate = rate;
+            _dbContext.comments.Update(comment);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteComment(int commentId)
+    {
+        var comment = await _dbContext.comments.FindAsync(commentId);
+
+        if (comment != null)
+        {
+            _dbContext.comments.Remove(comment);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
+        }
+        else
+        {
+            return NotFound();
         }
     }
 

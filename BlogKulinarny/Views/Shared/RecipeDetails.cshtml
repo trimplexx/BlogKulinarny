@@ -1,5 +1,4 @@
 ﻿@model Recipe
-
 <div class="container">
     <div class="row gy-3 py-3">
         <div class="col-12">
@@ -22,45 +21,45 @@
                     <div class="col-md-6">
                         <table class="table">
                             <tbody>
-                                <tr>
-                                    <th>
-                                        <label class="form-label text-nowrap">Trudność przepisu:</label>
-                                    </th>
-                                    <td>
-                                        @if (Model.difficulty == 1)
-                                        {
-                                            <label class="form-label text-nowrap text-success">Łatwy</label>
-                                        }
-                                        else if (Model.difficulty == 2)
-                                        {
-                                            <label class="form-label text-nowrap text-warning">Średni</label>
-                                        }
-                                        else if (Model.difficulty == 3)
-                                        {
-                                            <label class="form-label text-nowrap text-danger">Trudny</label>
-                                        }
-                                        else
-                                        {
-                                            <alabel class="form-label text-nowrap text-danger">Bardzo trudny</alabel>
-                                        }
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <label class="form-label text-nowrap">Porcje przepisu:</label>
-                                    </th>
-                                    <td>
-                                        <label class="form-label text-nowrap">@Model.portions</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <label class="form-label text-nowrap">Czas przygotowania przepisu:</label>
-                                    </th>
-                                    <td>
-                                        <label class="form-label text-nowrap">@Model.avgTime min</label>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <th>
+                                    <label class="form-label text-nowrap">Trudność przepisu:</label>
+                                </th>
+                                <td>
+                                    @if (Model.difficulty == 1)
+                                    {
+                                        <label class="form-label text-nowrap text-success">Łatwy</label>
+                                    }
+                                    else if (Model.difficulty == 2)
+                                    {
+                                        <label class="form-label text-nowrap text-warning">Średni</label>
+                                    }
+                                    else if (Model.difficulty == 3)
+                                    {
+                                        <label class="form-label text-nowrap text-danger">Trudny</label>
+                                    }
+                                    else
+                                    {
+                                        <alabel class="form-label text-nowrap text-danger">Bardzo trudny</alabel>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label class="form-label text-nowrap">Porcje przepisu:</label>
+                                </th>
+                                <td>
+                                    <label class="form-label text-nowrap">@Model.portions</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label class="form-label text-nowrap">Czas przygotowania przepisu:</label>
+                                </th>
+                                <td>
+                                    <label class="form-label text-nowrap">@Model.avgTime min</label>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -122,9 +121,11 @@
                                 </div>
                             </div>
                         </div>
-                     </div>
+                    </div>
                 }
             }
         }
     </div>
+        <!-- Render the comments partial view -->
+        @await Html.PartialAsync("_CommentsPartial", Model)
 </div>

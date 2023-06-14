@@ -1,0 +1,222 @@
+﻿@model Recipe
+@using Microsoft.AspNetCore.Http
+@{
+    var isUserLoggedIn = !string.IsNullOrEmpty(Context.Session.GetString("UserId"));
+}
+<div class="row">
+        <div class="col-md-6">
+    <h3 class="text-center">Napisz swój komentarz</h3>
+    <div class="border border-2 border-warning rounded-3 p-3">
+    @if (isUserLoggedIn)
+    {
+        <form method="post" asp-controller="Home" asp-action="AddComment" class="row">
+            <input type="hidden" name="RecipeId" value="@Model.id"/>
+            <div class="col-md-12">
+                <label for="commentText" class="form-label">Dodaj komentarz:</label>
+                <textarea class="form-control" name="Text" id="commentText" maxlength="250" rows="3" required style="resize: none; overflow: auto;"></textarea>
+                <small class="form-text text-danger">*max 250 znaków</small>
+            </div>
+            <div class="col-md-12">
+                <h3>Oceń przepis:</h3>
+                <div class="rating mb-3">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <input type="radio" name="Rate" value="@i" id="rate@(i)" class="rate-input" required>
+                        <label for="rate@(i)" class="star rating-star"></label>
+                    }
+                </div>
+                <button type="submit" class="btn btn-warning">Dodaj komentarz</button>
+            </div>
+        </form>
+    }
+    else
+        {
+            <div class="alert alert-warning">Musisz się zalogować, aby ocenić przepis i dodać komentarz.</div>
+        }
+    </div>
+</div>
+<div class="col-md-6">
+    <h3 class="text-center">Komentarze:</h3>
+            <div class="border border-2 border-warning rounded-3 p-3 overflow-auto" style="max-height: 500px;">
+    @if (Model.comments != null && Model.comments.Any())
+    {
+        <ul class="list-unstyled">
+            @foreach (var comment in Model.comments)
+            {
+                <li class="my-3">
+                    <div class="comment border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25">
+                        <div class="d-flex align-items-center">
+                            <img src="@(!string.IsNullOrEmpty(comment.user.imageURL) ? comment.user.imageURL : "/images/avatars/avatar0.png")" class="bi bi-person-circle" style="font-size: 40px; width: 40px; height: 40px; border-radius: 50%;"/>
+                            <div class="ms-2">
+                                <p>
+                                    <strong>@comment.user.login</strong>
+                                    <span class="comment-rating">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <span class="star @(i <= comment.Rate ? "star-filled" : "")"></span>
+                                        }
+                                    </span>
+                                </p>
+                                <p>@comment.Text</p>
+                            </div>
+                            @if (isUserLoggedIn && comment.userId == int.Parse(Context.Session.GetString("UserId")))
+                            {
+                                <div class="ms-auto">
+                                    <button class="btn btn-outline-secondary btn-sm me-1 edit-comment" data-comment-id="@comment.Id" data-comment-text="@comment.Text" data-comment-rate="@comment.Rate">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm delete-comment" data-comment-id="@comment.Id">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="alert alert-info">Brak komentarzy dla tego przepisu. Bądź pierwszy!</div>
+    }
+    </div>
+</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCommentModalLabel">Edytuj komentarz</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editCommentForm">
+                    <input type="hidden" id="editCommentId" name="CommentId">
+                    <div class="mb-3">
+                        <label for="editCommentText" class="form-label">Treść komentarza</label> <textarea class="form-control" id="editCommentText" name="Text" rows="3" required maxlength="250" style="resize: none;"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCommentRate" class="form-label">Ocena</label>
+                        <div class="rating">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <input type="radio"name="Rate" value="@i" id="edit-rate@(i)" class="rate-input" required>
+                                <label for="edit-rate@(i)" class="star rating-star"></label>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button> <button type="button" class="btn btn-warning" id="saveCommentChanges">Zapisz zmiany</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- ... -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    function setRating(ratingStars, rateInputs, selectedIndex) {
+        for (let i = 0; i < ratingStars.length; i++) {
+            if (i <= selectedIndex) {
+                ratingStars[i].style.color = '#f1c40f';
+            } else {
+                ratingStars[i].style.color = '#ccc';
+            }
+            rateInputs[4 - i].checked = (i === selectedIndex);
+        }
+    }
+
+    const rateInputs = document.querySelectorAll('.rate-input');
+    const ratingContainer = document.querySelector('.rating');
+    const ratingStars = ratingContainer.querySelectorAll('.rating-star');
+
+    ratingStars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            setRating(ratingStars, rateInputs, index);
+        });
+    });
+
+    // Inicjalizacja okna modalnego
+    const editCommentModal = new bootstrap.Modal(document.getElementById('editCommentModal'));
+
+    // Wartości związane z edycją komentarza
+    const editCommentId = document.getElementById('editCommentId');
+    const editCommentText = document.getElementById('editCommentText');
+    const editCommentRateInputs = document.querySelectorAll('#editCommentModal .rate-input');
+    const editCommentRatingContainer = document.querySelector('#editCommentModal .rating');
+    const editCommentRatingStars = editCommentRatingContainer.querySelectorAll('.rating-star');
+
+    editCommentRatingStars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            setRating(editCommentRatingStars, editCommentRateInputs, index);
+        });
+    });
+       // Obsługa przycisków edycji komentarza
+       const editCommentButtons = document.querySelectorAll('.edit-comment');
+       editCommentButtons.forEach(button => {
+           button.addEventListener('click', () => {
+               const commentId = button.dataset.commentId;
+               const commentText = button.dataset.commentText;
+               const commentRate = button.dataset.commentRate;
+   
+               editCommentId.value = commentId;
+               editCommentText.value = commentText;
+               editCommentRateInputs[commentRate - 1].checked = true;
+   
+               editCommentModal.show();
+           });
+       });
+   
+       // Obsługa zapisywania zmian w oknie modalnym
+       const saveCommentChanges = document.getElementById('saveCommentChanges');
+       saveCommentChanges.addEventListener('click', () => {
+           const editCommentForm = document.getElementById('editCommentForm');
+           
+           if (editCommentForm.checkValidity()) {
+               const data = new FormData(editCommentForm);
+   
+               // Wysyłanie żądania edycji komentarza
+               fetch('/Home/EditComment', {
+                   method: 'POST',
+                   body: data
+               })
+               .then(response => {
+                   if (response.ok) {
+                       location.reload();
+                   } else {
+                       alert('Wystąpił błąd podczas edycji komentarza.');
+                   }
+               });
+           }
+       });
+   
+       const deleteCommentButtons = document.querySelectorAll('.delete-comment');
+   
+       deleteCommentButtons.forEach(button => {
+           button.addEventListener('click', () => {
+               const commentId = button.dataset.commentId;
+   
+               if (confirm('Czy na pewno chcesz usunąć komentarz?')) {
+                   // Przygotuj dane do wysłania do kontrolera
+                   const data = new FormData();
+                   data.append('CommentId', commentId);
+   
+                   // Wysyłanie żądania usunięcia komentarza (tutaj można dodać obsługę zapytania AJAX)
+                   fetch('/Home/DeleteComment', {
+                       method: 'POST',
+                       body: data
+                   })
+                   .then(response => {
+                       if (response.ok) {
+                           location.reload();
+                       } else {
+                           alert('Wystąpił błąd podczas usuwania komentarza.');
+                       }
+                   });
+               }
+           });
+       });
+   });
+</script>
