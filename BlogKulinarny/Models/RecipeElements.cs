@@ -26,5 +26,6 @@ namespace BlogKulinarny.Models
 
         //Relationships
         
+        
     }
 }

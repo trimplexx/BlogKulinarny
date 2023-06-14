@@ -57,5 +57,7 @@ namespace BlogKulinarny.Models
         public List<RecipesCategory> recipesCategories { get; set; }
 
         public List<RecipeElements> recipeElements { get; set; }
+
+        public List<Comment> comments { get; set; }
     }
 }

@@ -14,5 +14,9 @@ namespace BlogKulinarny.Models
         public int recipeId { get; set; }
 
         public Recipe recipe { get; set; }
+
+        public int userId { get; set; }
+
+        public User user { get; set; }
     }
 }
