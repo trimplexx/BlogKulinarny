@@ -1,0 +1,23 @@
+﻿@model DeleteAccountModel
+
+<div class="p-2">
+    <div class="text-center fw-bold fs-3 mb-3">Usuwanie konta</div>
+    <form asp-controller="User" asp-action="DeleteAccount" method="post">
+        <!-- Hasło -->
+        <div class="mb-2">
+            <label class="form-label text-nowrap">Hasło*</label>
+            <input type="password" class="form-control" required asp-for="Password" id="password"/>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <!-- Checkbox Potwierdzenie -->
+        <div class="mb-2 form-check">
+            <input type="checkbox" class="form-check-input" required asp-for="ConfirmDeletion" id="confirmDeletion"/>
+            <label class="form-check-label" for="confirmDeletion">Potwierdzam, że chcę usunąć konto</label>
+        </div>
+        <!-- Przycisk Usuń -->
+        <div class="mb-3 hstack">
+            <button type="submit" class="btn btn-danger me-auto">Usuń konto</button>
+            <button type="button" class="btn btn-outline-warning text-dark" onclick="showEditProfile()">Anuluj</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,8 @@
+﻿@if (TempData["NotificationMessageType"] != null && TempData["NotificationMessage"] != null)
+{
+    var alertType = TempData["NotificationMessageType"].ToString().ToLower() == "success" ? "alert-success" : "alert-danger";
+    <div class="alert @alertType mt-3 alert-dismissible fade show" role="alert">
+        @TempData["NotificationMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}

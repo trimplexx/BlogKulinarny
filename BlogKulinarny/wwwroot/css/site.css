@@ -1,18 +1,53 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    z-index: 9999;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    display: block;
+    background-image: url('../images/BGTop.svg'), url('../images/BGBottom.svg');
+    background-size: 81%, 73%;
+    background-attachment: fixed, scroll;
+    background-repeat: no-repeat;
+    background-position: 50% 80%, center bottom 60px;
+}
+
+.world {
+    padding-top: 75px;
+}
+
+.form-select:focus,
+.form-control:focus,
+.btn:focus,
+.form-check-input:focus {
+    box-shadow: none;
+}
+
+.form-check-input:checked {
+    background-color: #FFC107;
+    border-color: #FFC107;
+    box-shadow: none;
+}
+
+.customCheck:checked {
+    background-color: #198754;
+    border-color: #198754;
+    box-shadow: none;
 }

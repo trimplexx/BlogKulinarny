@@ -10,6 +10,9 @@ namespace BlogKulinarny.Models
         [Display(Name = "Name")]
         public string name { get; set; }
 
+        [Display(Name = "isAccepted")]
+        public bool isAccepted { get; set; }
+
         //Relationships
         public List<RecipesCategory> recipesCategories { get; set; }
     }

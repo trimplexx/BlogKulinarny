@@ -5,6 +5,25 @@ namespace BlogKulinarny.Models
 {
     public class Recipe // brakuje relacji z category posts
     {
+
+
+        public Recipe()
+        {
+            recipesCategories = new List<RecipesCategory>();
+        }
+
+        public Recipe(bool isAccepted, string title, string imageURL, string description, int difficulty, int avgTime, int portions, int userId)
+        {
+            this.isAccepted = isAccepted;
+            this.title = title;
+            this.imageURL = imageURL;
+            this.description = description;
+            this.difficulty = difficulty;
+            this.avgTime = avgTime;
+            this.portions = portions;
+            this.userId = userId;
+        }
+
         [Key]
         public int id { get; set; }
 
@@ -36,5 +55,9 @@ namespace BlogKulinarny.Models
 
         //Relationships
         public List<RecipesCategory> recipesCategories { get; set; }
+
+        public List<RecipeElements> recipeElements { get; set; }
+
+        public List<Comment> comments { get; set; }
     }
 }

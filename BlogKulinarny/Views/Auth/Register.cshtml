@@ -1,5 +1,87 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model RegistrationViewModel
+
+<div class="container">
+    <div class="row justify-content-center">
+        <!-- Panel Rejestracji -->
+        <div class="col-lg-6">
+            <div class="border border-2 border-warning rounded-3 p-3 shadow bg-light bg-opacity-25 mt-3">
+                <div class="p-2">
+                    <!-- Form -->
+                    <form asp-controller="Auth" asp-action="Register" method="post">
+                        <!-- Tytuł -->
+                        <div class="mb-0">
+                            <div class="text-center fw-bold fs-3">Zarejestruj się</div>
+                        </div>
+                        <!-- Login -->
+                        <div class="mb-2">
+                            <label class="form-label text-nowrap">Login*</label>
+                            <input type="text" class="form-control" required asp-for="Login"/>
+                            <span asp-validation-for="Login" class="text-danger"></span>
+                        </div>
+                        <!-- Email -->
+                        <div class="mb-2">
+                            <label class="form-label text-nowrap">Adres Email*</label>
+                            <input type="email" class="form-control" required asp-for="Email"/>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <!-- Hasło -->
+                        <div>
+                            <div class="mb-2">
+                                <label class="form-label text-nowrap">Hasło*</label>
+                                <input type="password" id="Password" class="form-control" required asp-for="Password"/>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <!-- Powtórz hasło -->
+                            <div class="mb-2">
+                                <label class="form-label text-nowrap">Powtórz hasło*</label>
+                                <input id="ConfirmPassword" type="password" class="form-control" required asp-for="ConfirmPassword"/>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+                            <div class="mb-1 form-text">
+                                Twoje hasło musi mieć 8 znaków, wielką literę oraz znak specjalny
+                            </div>
+                            <div class="mb-2 form-check">
+                                <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePasswordVisibility()"/>
+                                <label class="form-check-label" for="showPassword">Pokaż hasło</label>
+                            </div>
+                        </div>
+                        <!-- Checkbox - Akceptuj regulamin -->
+                        <div class="mb-1 form-check">
+                            <input type="checkbox" class="form-check-input" id="AcceptTerms" required/>
+                            <label class="form-check-label" for="AcceptTerms">Akceptuję regulamin*</label>
+                        </div>
+                        <!-- Text - Wymagane pola -->
+                        <div class="mb-1">
+                            <div class="form-text">
+                                * - Wymagane pola.
+                            </div>
+                        </div>
+                        <!-- Komunikat błędu -->
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <!-- Powrót do strony logowania -->
+                        <div class="hstack">
+                            <button type="submit" class="btn btn-success me-auto">Zarejestruj się</button>
+                            <a asp-area="" asp-controller="Auth" asp-action="Login" class="btn btn-secondary" role="button">Powrót do logowania</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("Password");
+        var confirmPasswordInput = document.getElementById("ConfirmPassword");
+        var showPasswordCheckbox = document.getElementById("showPassword");
+
+        if (showPasswordCheckbox.checked) {
+            passwordInput.type = "text";
+            confirmPasswordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+            confirmPasswordInput.type = "password";
+        }
+    }
+</script>

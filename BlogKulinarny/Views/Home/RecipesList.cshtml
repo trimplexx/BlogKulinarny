@@ -1,0 +1,115 @@
+﻿@model List<BlogKulinarny.Models.Recipe>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3 sidebar border-end border-warning border-1">
+            <!-- Dodaj tutaj zawartość panelu bocznego -->
+            <!-- Przykładowa treść -->
+            <form action="/Home/RecipesList" method="get">
+                <div class="row mt-2">
+                    <div class="input-group input-group-sm">
+                        <button class="btn btn-warning text-secondary" type="submit" id="button-addon1"><i class="bi bi-search"></i></button>
+                        <input type="text" class="form-control border-warning" name="SearchForRecipe" placeholder="Szukaj przepisu" aria-label="Example text with button addon" aria-describedby="button-addon1" value="@ViewBag.SearchForRecipe">
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <h4>Sortowanie:</h4>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="checkbox" name="sortOption1" value="true" id="flexCheckDefault1" @(ViewBag.SortOption1 == "true" ? "checked" : "")>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Alfabetycznie
+                        </label>
+                    </div>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="checkbox" name="sortOption2" value="true" id="flexCheckDefault2" @(ViewBag.SortOption2 == "true" ? "checked" : "")>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Czas wykonania
+                        </label>
+                    </div>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="checkbox" name="unlock" value="true" id="flexCheckDefault3" onchange="enableRadioButtons()" @(ViewBag.unlock == "true" ? "checked" : "")>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Poziom trudności
+                        </label>
+                    </div>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="radio" name="sortOption3" id="sortEasiest" value="easiest" @(ViewBag.SortOption3 == "easiest" ? "checked" : "") @(ViewBag.unlock == "true" ? "" : "disabled")>
+                        <label class="form-check-label" for="sortEasiest">
+                            Najłatwiejsze
+                        </label>
+                    </div>
+                    <div class="form-check-sm mt-1 mb-1">
+                        <input class="form-check-input" type="radio" name="sortOption3" id="sortHardest" value="hardest" @(ViewBag.SortOption3 == "hardest" ? "checked" : "") @(ViewBag.unlock == "true" ? "" : "disabled")>
+                        <label class="form-check-label" for="sortHardest">
+                            Najtrudniejsze
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Recipes -->
+        <div class="col-lg-9 mt-2 mb-3 recipes">
+            <div class="row">
+                <!-- One card -->
+                @foreach (var recipe in Model)
+                {
+                <div class="col-12 mt-2 mb-2">
+                    <!-- Card Body -->
+                    <div class="card border-warning border-2 border-primary rounded-3 shadow bg-light bg-opacity-25">
+                        <!-- Main -->
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })">
+                                    <img src="@recipe.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" alt="...">
+                                </a>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })" class="text-decoration-none link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                            @recipe.title
+                                        </a>
+                                    </h5>
+                                    <div class="overflow-auto p-1 border-top border-2 border-warning" style="max-height: 100px;">
+                                        @foreach (var tag in recipe.recipesCategories)
+                                        {
+                                            <a href="/Home/RecipesList?SearchForRecipe=@tag.category.name" class="card-link border border-warning border-2 rounded-3 bg-light bg-opacity-25 text-decoration-none link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                                #@tag.category.name
+                                            </a>
+                                        }
+                                    </div>
+                                    <p class="card-text mt-3"><small class="text-body-secondary">
+                                        Ilość porcji: <i class="bi bi-egg-fried text-info"></i> @recipe.portions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Poziom trudności: <i class="bi bi-capslock-fill text-danger"></i>
+                                                @if (recipe.difficulty == 1)
+                                                {
+                                                    <a class="text-success text-decoration-none">Łatwy</a>
+                                                }
+                                                else if (recipe.difficulty == 2)
+                                                {
+                                                    <a class="text-warning text-decoration-none">Średni</a>
+                                                }
+                                                else if (recipe.difficulty == 3)
+                                                {
+                                                    <a class="text-danger text-decoration-none">Trudny</a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="text-danger text-decoration-none">Bardzo trudny</a>
+                                                }
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        Czas przygotowania: <i class="bi bi-stopwatch text-primary"></i> @recipe.avgTime min
+                                    </small></p>
+                                    <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })" class="btn btn-warning text-nowrap">Szczegóły</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
