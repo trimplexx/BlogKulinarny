@@ -80,8 +80,8 @@
                                                     <div class="col-10">
                                                         <label class="form-label text-nowrap">Krok nr. @(i)</label>
                                                         <label class="form-label text-nowrap">Link do zdjęcia:</label>
-                                                        <input type="text" class="form-control" value="@step.imageURL">
-                                                        <img src="@step.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" id="eleImage" alt="...">
+                                                        <input type="text" class="form-control" value="@step.imageURL" id="eleImage" >
+                                                        <img src="@step.imageURL" class="img-fluid rounded-start" style="width: 250px; height: 200px;" alt="...">
                                                     </div>
                                                     <div class="col-2">
                                                         <button class="btn btn-danger btn-sm float-end" onclick="removeStepEdit(@i)">Usuń krok</button>
@@ -89,7 +89,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-12 mb-2">
-                                                <textarea class="form-control" rows="2" id="eleDetails">@step.description</textarea>
+                                                <textarea class="form-control" rows="2" id="eleDetails" name="stepDescriptions[@i]">@step.description</textarea>
                                             </div>
                                         </div>
                                     </div>

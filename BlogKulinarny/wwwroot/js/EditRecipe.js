@@ -2,12 +2,30 @@
     var difficultyRange = document.getElementById('difficultyRange');
     updateDifficultyLabel(difficultyRange);
 
-    var addBtn = document.getElementById("addBtn");
-    addBtn.addEventListener('click', function () {
-        createStep();
-    });
+    addEventListenersForExistingSteps();
 
+    if (difficultyRange) {
+        difficultyRange.addEventListener('input', function () {
+            updateDifficultyLabel(difficultyRange);
+        });
+    }
 });
+
+// Funkcja do dodawania nasłuchiwania zdarzeń dla istniejących kroków
+function addEventListenersForExistingSteps() {
+    var stepElements = document.querySelectorAll("#stepContainer > div");
+    stepElements.forEach(function (stepElement, index) {
+        addEventListenersForStep(stepElement, index);
+    });
+}
+
+// Funkcja do dodawania nasłuchiwania zdarzeń dla nowo utworzonych kroków
+function addEventListenersForStep(stepElement, index) {
+    var removeBtn = stepElement.querySelector('.btn-danger');
+    removeBtn.addEventListener('click', function () {
+        removeStepEdit(index);
+    });
+}
 
 // suwak poziomu trudności
 function updateDifficultyLabel(range) {
@@ -29,15 +47,23 @@ function updateDifficultyLabel(range) {
     }
 }
 
+function removeStepEdit(index) {
+    var stepContainer = document.getElementById("stepContainer");
+    var stepElement = document.getElementById("step-" + index);
+    if (stepContainer && stepElement) {
+        stepContainer.removeChild(stepElement);
+    }
+}
+
 function saveStepsToViewModel() {
     try {
         var saveStepsInput = document.getElementById('editRecipe.saveSteps');
         var saveStepsInputValues = [];
         var stepElements = document.querySelectorAll("#stepContainer > div");
 
-        stepElements.forEach(function (stepElement, index) {
-            var imageInput = stepElement.querySelector('.step-image');
-            var descriptionTextarea = stepElement.querySelector('.step-description');
+        stepElements.forEach(function (stepElement) {
+            var imageInput = stepElement.querySelector('.form-control[id^="eleImage"]');
+            var descriptionTextarea = stepElement.querySelector('.form-control[id^="eleDetails"]');
 
             if (imageInput && descriptionTextarea) {
                 var imageInputValue = imageInput.value;
@@ -46,7 +72,7 @@ function saveStepsToViewModel() {
                 console.log("imageInput:", imageInputValue);
                 console.log("descriptionTextarea:", descriptionTextareaValue);
 
-                var stepInputValue = [imageInputValue, descriptionTextareaValue].join(',');
+                var stepInputValue = [descriptionTextareaValue, imageInputValue].join(',');
                 saveStepsInputValues.push(stepInputValue);
             }
         });
@@ -62,41 +88,3 @@ function saveStepsToViewModel() {
     }
 }
 
-function createStep() {
-    event.preventDefault();
-    var index = loadLastStep();
-    var stepTitle = document.getElementById("step-" + index);
-    var clone = stepTitle.cloneNode(true);
-
-    // Resetowanie wartości pól tekstowych
-    var clonedImageInput = clone.querySelector(".step-image");
-    clonedImageInput.value = "";
-
-    var clonedDescriptionTextarea = clone.querySelector(".step-description");
-    clonedDescriptionTextarea.value = "";
-
-    var stepContainer = document.getElementById("stepContainer");
-    stepContainer.insertAdjacentElement("beforeend", clone);
-
-    // Dodawanie nasłuchiwania zdarzeń dla nowo utworzonych elementów
-    addEventListenersForStep(clone);
-}
-
-function loadLastStep() {
-    var lastStepElement = document.querySelector('#stepContainer > div:last-child');
-    if (lastStepElement) {
-        var lastStepId = lastStepElement.id;
-        var lastStepIndex = lastStepId.split('-')[1];
-        console.log("ID ostatniego elementu:", lastStepId);
-        console.log("Indeks ostatniego elementu:", lastStepIndex);
-        return lastStepIndex;
-    }
-}
-
-function removeStepEdit(index) {
-    var stepContainer = document.getElementById("stepContainer");
-    var stepElement = document.getElementById("step-" + index);
-    if (stepContainer && stepElement) {
-        stepContainer.removeChild(stepElement);
-    }
-}
