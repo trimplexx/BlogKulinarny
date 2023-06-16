@@ -24,13 +24,16 @@
         </div>
         @foreach (var cat in Model._categories)
         {
-        <div class="col-auto">
-            <div class="border border-warning border-2 border-primary rounded-3 p-3 shadow bg-light bg-opacity-25">
-                <div class=" text-truncate fw-bold" title="Kategoria">
-                    @cat.name
+            @if(cat.isAccepted == true)
+            {
+            <div class="col-auto">
+                <div class="border border-warning border-2 border-primary rounded-3 p-3 shadow bg-light bg-opacity-25">
+                    <div class=" text-truncate fw-bold" title="Kategoria">
+                        @cat.name
+                    </div>
                 </div>
             </div>
-        </div>
+            }
         }
     </div>
 </div>

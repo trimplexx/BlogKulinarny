@@ -41,6 +41,9 @@ namespace BlogKulinarny.Controllers
             return PartialView(viewName);
         }
 
+        /// <summary>
+        /// Wyswietlanie przepisow
+        /// </summary>
         public IActionResult RecipeList()
         {
             try
@@ -77,6 +80,9 @@ namespace BlogKulinarny.Controllers
             }
         }
 
+        /// <summary>
+        /// Uzytkownik
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> EditUser()
         {
@@ -283,6 +289,16 @@ namespace BlogKulinarny.Controllers
             //var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
             
                 var result = await _recipesService.ChangeRecipeValues(recipe);
+
+            return RedirectToAction("RecipeList", "User");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRecipe(int recipeId)
+        {
+            //var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+
+            var result = await _recipesService.DeleteRecipe(recipeId);
 
             return RedirectToAction("RecipeList", "User");
         }

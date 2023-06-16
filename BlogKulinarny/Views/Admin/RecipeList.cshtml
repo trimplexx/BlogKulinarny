@@ -69,7 +69,8 @@
                                 </form>
                                 <!-- ButtonInfo -->
                                 <div class="d-grid col-4 col-sm-12">
-                                    <button type="button" class="btn btn-warning text-nowrap">Szczegóły</button>
+                                    <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })" 
+                                    class="btn btn-warning text-nowrap">Szczegóły</a>
                                 </div>
                             </div>
                         </div>
