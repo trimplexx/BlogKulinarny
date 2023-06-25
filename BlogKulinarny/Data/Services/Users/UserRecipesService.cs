@@ -61,10 +61,10 @@ namespace BlogKulinarny.Data.Services.Users
                     RecipeElements ele = new RecipeElements();
 
                     ele.noOfList = NoOfList;
-                    ele.description = Array[i] ?? "brak opisu";
                     ele.recipeId = recp.id;
                     ele.recipe = recp;
-                    ele.imageURL = Array[i+1];
+                    ele.imageURL = Array[i];
+                    ele.description = Array[i+1] ?? "brak opisu";
                     _dbContext.recipesElements.Add(ele);
                     NoOfList++;
                 }
