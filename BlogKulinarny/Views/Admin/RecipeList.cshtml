@@ -46,6 +46,11 @@
                                                 </div>
                                             }
                                         </div>
+                                        @if(recipe.isAccepted == false){
+                                            <div class="text-truncate text-danger" title="Autor" color='danger'>
+                                               Przepis niezaakceptowany
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>

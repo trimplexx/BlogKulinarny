@@ -95,7 +95,7 @@ namespace BlogKulinarny.Controllers
         public async Task<IActionResult> DeleteRecipe(AdminUsersViewModel model)
         {
             await _recipesService.DeleteRecipe(model.recipeId);
-            return Redirect("UnconfirmedRecipes");
+            return Redirect("RecipeList");
         }
 
         public IActionResult RecipeList()
@@ -117,9 +117,7 @@ namespace BlogKulinarny.Controllers
                 }
 
                 var userRecipes = _dbContext.recipes.Include(r => r.user).Include(r => r.recipesCategories)
-                    .ThenInclude(rc => rc.category)
-                    .Where(r => r.isAccepted == true)
-                    .ToList();
+                    .ThenInclude(rc => rc.category).ToList();
 
                 return View(userRecipes);
             }
