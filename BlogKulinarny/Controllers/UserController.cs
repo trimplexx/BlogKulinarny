@@ -41,6 +41,9 @@ namespace BlogKulinarny.Controllers
             return PartialView(viewName);
         }
 
+        /// <summary>
+        /// Wyswietlanie przepisow
+        /// </summary>
         public IActionResult RecipeList()
         {
             try
@@ -60,8 +63,7 @@ namespace BlogKulinarny.Controllers
                 }
 
                 var userRecipes = _dbContext.recipes.Include(r => r.user).Include(r => r.recipesCategories)
-                    .ThenInclude(rc => rc.category)
-                    .Where(r => r.isAccepted == true).Where(r => r.userId == userIdAsInt)
+                    .ThenInclude(rc => rc.category).Where(r => r.userId == userIdAsInt)
                     .ToList();
 
                 return View(userRecipes);
@@ -77,6 +79,9 @@ namespace BlogKulinarny.Controllers
             }
         }
 
+        /// <summary>
+        /// Uzytkownik
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> EditUser()
         {
@@ -251,7 +256,7 @@ namespace BlogKulinarny.Controllers
                 .Include(r => r.recipesCategories)
                     .ThenInclude(rc => rc.category)
                 .Include(r => r.recipeElements)
-                .SingleOrDefault(r => r.isAccepted && r.id == recipeId);
+                .SingleOrDefault(r => r.id == recipeId);
 
             Recipe r = new Recipe();
             r = Rec;
@@ -283,6 +288,16 @@ namespace BlogKulinarny.Controllers
             //var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
             
                 var result = await _recipesService.ChangeRecipeValues(recipe);
+
+            return RedirectToAction("RecipeList", "User");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRecipe(int recipeId)
+        {
+            //var userId = _httpContextAccessor.HttpContext?.Session.GetString("UserId");
+
+            var result = await _recipesService.DeleteRecipe(recipeId);
 
             return RedirectToAction("RecipeList", "User");
         }

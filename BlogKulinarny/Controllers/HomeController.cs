@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using BlogKulinarny.Data;
 using BlogKulinarny.Data.Services.Admin;
-using BlogKulinarny.Migrations;
 using BlogKulinarny.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +56,7 @@ public class HomeController : Controller
                 .Include(r => r.recipeElements)
                 .Include(r => r.comments)
                 .ThenInclude(c => c.user)
-                .SingleOrDefaultAsync(r => r.isAccepted && r.id == recipeId);
+                .SingleOrDefaultAsync(r => r.id == recipeId);
 
             return View(recipe);
         }

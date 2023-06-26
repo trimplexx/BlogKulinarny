@@ -13,6 +13,8 @@ namespace BlogKulinarny.Models
         [Display(Name = "RecipeId")]
         public int recipeId { get; set; }
 
+        public int? isBlocked { get; set; }
+
         public Recipe recipe { get; set; }
 
         public int userId { get; set; }

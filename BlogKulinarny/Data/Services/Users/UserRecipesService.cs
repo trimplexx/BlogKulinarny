@@ -61,10 +61,10 @@ namespace BlogKulinarny.Data.Services.Users
                     RecipeElements ele = new RecipeElements();
 
                     ele.noOfList = NoOfList;
-                    ele.description = Array[i] ?? "brak opisu";
                     ele.recipeId = recp.id;
                     ele.recipe = recp;
-                    ele.imageURL = Array[i+1];
+                    ele.imageURL = Array[i];
+                    ele.description = Array[i+1] ?? "brak opisu";
                     _dbContext.recipesElements.Add(ele);
                     NoOfList++;
                 }
@@ -84,7 +84,7 @@ namespace BlogKulinarny.Data.Services.Users
             // Edytowany przepis
             var editedRecipe = _dbContext.recipes
                 .Include(r => r.recipeElements)
-                .SingleOrDefault(r => r.isAccepted && r.id == recipe.editRecipe.Id);
+                .SingleOrDefault(r => r.id == recipe.editRecipe.Id);
 
             if (editedRecipe != null)
             {
@@ -92,7 +92,7 @@ namespace BlogKulinarny.Data.Services.Users
                 editedRecipe.title = recipe.editRecipe.title;
                 editedRecipe.imageURL = recipe.editRecipe.imageURL;
                 editedRecipe.description = recipe.editRecipe.description;
-                editedRecipe.difficulty = ConvertRange(recipe.editRecipe.difficulty);
+                editedRecipe.difficulty = recipe.editRecipe.difficulty;
                 editedRecipe.avgTime = recipe.editRecipe.avgTime;
                 editedRecipe.portions = recipe.editRecipe.portions;
 
@@ -164,7 +164,6 @@ namespace BlogKulinarny.Data.Services.Users
 
 
         //categorie
-
         public async Task<ChangesResult> CreateCategory(CategoryViewModel category)
         {
             try

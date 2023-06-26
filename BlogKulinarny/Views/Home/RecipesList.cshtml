@@ -68,11 +68,12 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })" class="text-decoration-none link-warning link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                        <a href="@Url.Action("RecipeDetails", "Home", new { recipeId = recipe.id })" 
+                                        class="text-decoration-none link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
                                             @recipe.title
                                         </a>
                                     </h5>
-                                    <div class="overflow-auto p-1 border-top border-2 border-warning" style="max-height: 100px;">
+                                    <div class="overflow-auto p-1 border-top border-4 border-black" style="max-height: 100px;">
                                         @foreach (var tag in recipe.recipesCategories)
                                         {
                                             <a href="/Home/RecipesList?SearchForRecipe=@tag.category.name" class="card-link border border-warning border-2 rounded-3 bg-light bg-opacity-25 text-decoration-none link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">

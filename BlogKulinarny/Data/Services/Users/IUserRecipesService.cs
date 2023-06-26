@@ -8,7 +8,6 @@ namespace BlogKulinarny.Data.Services.Users
     {
         Task<ChangesResult> CreateRecipe(AddRecipeViewModel recipe);
 
-
         Task<ChangesResult> DeleteRecipe(int recipeId);
     }
 }
